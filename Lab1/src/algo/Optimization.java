@@ -27,9 +27,9 @@ public class Optimization {
             double f1 = f.apply(x - epsilon);
             double f2 = f.apply(x + epsilon);
             if (f1 < f2) {
-                left = x;
-            } else {
                 right = x;
+            } else {
+                left = x;
             }
             printBounds(left, right);
         } while (checkBounds(left, right, epsilon));
