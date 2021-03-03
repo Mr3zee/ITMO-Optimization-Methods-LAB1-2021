@@ -31,7 +31,6 @@ public class Optimization {
             } else {
                 left = x;
             }
-            printBounds(left, right);
         } while (checkBounds(left, right, epsilon));
         return new OptimizationResult(f.apply(x));
     });
