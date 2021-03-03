@@ -1,4 +1,5 @@
 **/.idea
 **/javafx-sdk-*
+**/target
 *.iml
 **/out
