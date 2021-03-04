@@ -134,42 +134,28 @@ public class Optimization {
                 / ((fa - fb) * (c - b) + (fc - fb) * (b - a));
     }
 
-    private static final double BRENT_CONST = (3 - Math.sqrt(5)) / 2;
-
     public static final Algorithm BRENT = unwrapAlgo((f, left, right) -> {
         double a, c, x, w, v, d, e, g, u, fx, fw, fv;
-        x = w = v = getMiddle(left, right);
-        fx = fw = fv = f.apply(x);
         a = left;
         c = right;
+        x = w = v = a + REVERSED_GOLDEN_CONST * (c - a);
+        fx = fw = fv = f.apply(x);
         d = e = c - a;
         while(checkBounds(a, c, epsilon)) {
             g = e;
             e = d;
-            if (threesome(w, x, v) && threesome(fw, fx, fv)) {
-                double t = parabolicMinimum(f, w, x, v);
-                if ((a + epsilon) <= t && t <= (c - epsilon) && Math.abs(t - x) < (g / 2)) {
-                    u = t;
-                    d = Math.abs(u - x);
+            if (threesome(w, x, v) && threesome(fw, fx, fv)
+                    && (u = parabolicMinimum(f, w, x, v)) == u
+                    && a <= u && u <= c && Math.abs(u - x) < (g / 2)) {
+                // u accepted
+            } else  {
+                // u - rejected, u - golden section
+                if (x < getMiddle(a, c)) {
+                    e = c - x;
+                    u = x + REVERSED_GOLDEN_CONST * e;
                 } else {
-                    if (x < ((c - a) / 2)) {
-                        u = x + BRENT_CONST * (c - x);
-                        d = c - x;
-                    } else {
-                        u = x - BRENT_CONST * (x - a);
-                        d = x - a;
-                    }
-                }
-            } else {
-                if (x < ((c - a) / 2)) {
-                    u = x + BRENT_CONST * (c - x);
-                    d = c - x;
-                } else {
-                    u = x - BRENT_CONST * (x - a);
-                    d = x - a;
-                }
-                if (Math.abs(u - x) < epsilon) {
-                    u = x + (u - x) / Math.abs(u - x) * epsilon;
+                    e = x - a;
+                    u = x - REVERSED_GOLDEN_CONST * e;
                 }
             }
             double fu = f.apply(u);
@@ -195,10 +181,12 @@ public class Optimization {
                     fv = fu;
                 }
             }
+            d = c - a;
         }
         return new OptimizationResult(f.apply(x));
     });
 
+    // TODO: 04.03.2021 rename 
     private static boolean threesome(double a, double b, double c) {
         return a != b && b != c && c != a;
     }
