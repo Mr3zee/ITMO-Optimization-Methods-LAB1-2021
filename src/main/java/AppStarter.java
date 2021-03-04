@@ -12,5 +12,7 @@ public class AppStarter {
         System.out.println(result1.getResult());
         OptimizationResult result2 = Optimization.run(Optimization.FIBONACCI, Variant.VAR_5);
         System.out.println(result2.getResult());
+        OptimizationResult result3 = Optimization.run(Optimization.PARABOLIC, Variant.VAR_5);
+        System.out.println(result3.getResult());
     }
 }

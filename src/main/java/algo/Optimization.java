@@ -91,7 +91,6 @@ public class Optimization {
                 mu = lambda;
                 lambda = getFibonacciVar(left, right, n, k + 2, k);
             }
-            printBounds(left, right);
         }
         return new OptimizationResult(f.apply(getMiddle(an, bn)));
     });
@@ -115,11 +114,25 @@ public class Optimization {
         return arr;
     }
 
-    private static final Algorithm PARABOLIC = unwrapAlgo((f, left, right) -> {
-
-        double result = 0;
-        return new OptimizationResult(result);
+    public static final Algorithm PARABOLIC = unwrapAlgo((f, left, right) -> {
+        double a = left, b = getMiddle(left, right), c = right, x;
+        while (checkBounds(a, c, epsilon)) {
+            x = parabolicMinimum(f, a, b, c);
+            if (x < b) {
+                c = b;
+            } else {
+                a = b;
+            }
+            b = x;
+        }
+        return new OptimizationResult(f.apply(b));
     });
+
+    private static double parabolicMinimum(Function<Double, Double> f, double a, double b, double c) {
+        double fa = f.apply(a), fb = f.apply(b), fc = f.apply(c);
+        return b + 0.5 * ((fa - fb) * (c - b) * (c - b) - (fc - fb) * (b - a) * (b - a))
+                / ((fa - fb) * (c - b) + (fc - fb) * (b - a));
+    }
 
     private static void printBounds(double left, double right) {
         System.out.format("[%s, %s]\n", left, right);
