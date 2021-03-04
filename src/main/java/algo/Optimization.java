@@ -49,14 +49,13 @@ public class Optimization {
     public static final Algorithm GOLDEN_SECTION = unwrappedAlgo((f, left, right) -> {
         do {
             double delta = (right - left) * REVERSED_GOLDEN_CONST;
-            double x1 = left + delta;
-            double x2 = right - delta;
-            if (f.apply(x1) < f.apply(x2)) {
+            double x1 = right - delta;
+            double x2 = left + delta;
+            if (f.apply(x1) > f.apply(x2)) {
                 left = x1;
             } else {
                 right = x2;
             }
-            printBounds(left, right);
         } while (checkBounds(left, right, epsilon));
         return new OptimizationResult(f.apply(getMiddle(left, right)));
     });
