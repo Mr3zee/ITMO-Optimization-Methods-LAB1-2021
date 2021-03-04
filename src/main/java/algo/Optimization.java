@@ -1,6 +1,7 @@
 package algo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -12,7 +13,7 @@ public class Optimization {
         Optimization.epsilon = epsilon;
     }
 
-    private static Algorithm unwrappedAlgo(TFunction<Function<Double, Double>, Double, Double, OptimizationResult> algo) {
+    private static Algorithm unwrapAlgo(TFunction<Function<Double, Double>, Double, Double, OptimizationResult> algo) {
         return new Algorithm(variant -> algo.apply(variant.f, variant.left, variant.right));
     }
 
@@ -20,7 +21,7 @@ public class Optimization {
         return function.f.apply(variant);
     }
 
-    public static final Algorithm DICHOTOMY = unwrappedAlgo((f, left, right) -> {
+    public static final Algorithm DICHOTOMY = unwrapAlgo((f, left, right) -> {
         double x;
         do {
             x = getMiddle(left, right);
@@ -45,7 +46,7 @@ public class Optimization {
 
     private static final double REVERSED_GOLDEN_CONST = (Math.sqrt(5) - 1) / 2;
 
-    public static final Algorithm GOLDEN_SECTION = unwrappedAlgo((f, left, right) -> {
+    public static final Algorithm GOLDEN_SECTION = unwrapAlgo((f, left, right) -> {
         do {
             double delta = (right - left) * REVERSED_GOLDEN_CONST;
             double x1 = right - delta;
@@ -59,19 +60,18 @@ public class Optimization {
         return new OptimizationResult(f.apply(getMiddle(left, right)));
     });
 
-    private static final int FIBONACCI_ITERATIONS = 1475;
-
     private static final List<Double> FIBONACCI_NUMBERS = getNFibonacci();
 
-    public static final Algorithm FIBONACCI = unwrappedAlgo((f, left, right) -> {
+    public static final Algorithm FIBONACCI = unwrapAlgo((f, left, right) -> {
+        int n = calculateFibonacciConst(left, right, epsilon);
         int k = 0;
-        double lambda = getFibonacciVar(left, right, k + 2, k);
-        double mu = getFibonacciVar(left, right, k + 1, k);
+        double lambda = getFibonacciVar(left, right, n, k + 2, k);
+        double mu = getFibonacciVar(left, right, n, k + 1, k);
 
         double an, bn;
         while (true) {
             k++;
-            if (k == FIBONACCI_ITERATIONS - 2) {
+            if (k == n - 2) {
                 mu = lambda + epsilon;
                 if (f.apply(mu) >= f.apply(lambda)) {
                     an = lambda;
@@ -85,29 +85,41 @@ public class Optimization {
             if (f.apply(lambda) > f.apply(mu)) {
                 left = lambda;
                 lambda = mu;
-                mu = getFibonacciVar(left, right, k + 1, k);
+                mu = getFibonacciVar(left, right, n, k + 1, k);
             } else {
                 right = mu;
                 mu = lambda;
-                lambda = getFibonacciVar(left, right, k + 2, k);
+                lambda = getFibonacciVar(left, right, n, k + 2, k);
             }
+            printBounds(left, right);
         }
         return new OptimizationResult(f.apply(getMiddle(an, bn)));
     });
 
-    private static double getFibonacciVar(double a, double b, int i, int j) {
-        return a + FIBONACCI_NUMBERS.get(FIBONACCI_ITERATIONS - i) / FIBONACCI_NUMBERS.get(FIBONACCI_ITERATIONS - j) * (b - a);
+    private static int calculateFibonacciConst(double left, double right, double epsilon) {
+        return Math.min(1475, Math.abs(Collections.binarySearch(FIBONACCI_NUMBERS, (right - left) / epsilon)) + 1);
+    }
+
+
+    private static double getFibonacciVar(double a, double b, int n, int i, int j) {
+        return a + FIBONACCI_NUMBERS.get(n - i) / FIBONACCI_NUMBERS.get(n - j) * (b - a);
     }
 
     private static List<Double> getNFibonacci() {
-        List<Double> arr = new ArrayList<>(FIBONACCI_ITERATIONS + 1);
+        List<Double> arr = new ArrayList<>(1476);
         arr.add(1.0);
         arr.add(1.0);
-        for (int i = 2; i <= FIBONACCI_ITERATIONS; i++) {
+        for (int i = 2; i < 1476; i++) {
             arr.add(arr.get(i - 1) + arr.get(i - 2));
         }
         return arr;
     }
+
+    private static final Algorithm PARABOLIC = unwrapAlgo((f, left, right) -> {
+
+        double result = 0;
+        return new OptimizationResult(result);
+    });
 
     private static void printBounds(double left, double right) {
         System.out.format("[%s, %s]\n", left, right);
