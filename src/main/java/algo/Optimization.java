@@ -61,11 +61,12 @@ public class Optimization {
 
     private static final int FIBONACCI_ITERATIONS = 1475;
 
+    private static final List<Double> FIBONACCI_NUMBERS = getNFibonacci();
+
     public static final Algorithm FIBONACCI = unwrappedAlgo((f, left, right) -> {
-        List<Double> fibonacci = getNFibonacci(FIBONACCI_ITERATIONS);
         int k = 0;
-        double lambda = getFibonacciVar(fibonacci, left, right, FIBONACCI_ITERATIONS - k - 2, FIBONACCI_ITERATIONS - k);
-        double mu = getFibonacciVar(fibonacci, left, right, FIBONACCI_ITERATIONS - k - 1, FIBONACCI_ITERATIONS - k);
+        double lambda = getFibonacciVar(left, right, k + 2, k);
+        double mu = getFibonacciVar(left, right, k + 1, k);
 
         double an, bn;
         while (true) {
@@ -84,26 +85,25 @@ public class Optimization {
             if (f.apply(lambda) > f.apply(mu)) {
                 left = lambda;
                 lambda = mu;
-                mu = getFibonacciVar(fibonacci, left, right, FIBONACCI_ITERATIONS - k - 1, FIBONACCI_ITERATIONS - k);
+                mu = getFibonacciVar(left, right, k + 1, k);
             } else {
                 right = mu;
                 mu = lambda;
-                lambda = getFibonacciVar(fibonacci, left, right, FIBONACCI_ITERATIONS - k - 2, FIBONACCI_ITERATIONS - k);
+                lambda = getFibonacciVar(left, right, k + 2, k);
             }
-            printBounds(left, right);
         }
         return new OptimizationResult(f.apply(getMiddle(an, bn)));
     });
 
-    private static double getFibonacciVar(List<Double> fibonacci, double a, double b, int i, int j) {
-        return a + fibonacci.get(i) / fibonacci.get(j) * (b - a);
+    private static double getFibonacciVar(double a, double b, int i, int j) {
+        return a + FIBONACCI_NUMBERS.get(FIBONACCI_ITERATIONS - i) / FIBONACCI_NUMBERS.get(FIBONACCI_ITERATIONS - j) * (b - a);
     }
 
-    public static List<Double> getNFibonacci(int n) {
-        List<Double> arr = new ArrayList<>(n + 1);
+    private static List<Double> getNFibonacci() {
+        List<Double> arr = new ArrayList<>(FIBONACCI_ITERATIONS + 1);
         arr.add(1.0);
         arr.add(1.0);
-        for (int i = 2; i <= n; i++) {
+        for (int i = 2; i <= FIBONACCI_ITERATIONS; i++) {
             arr.add(arr.get(i - 1) + arr.get(i - 2));
         }
         return arr;
