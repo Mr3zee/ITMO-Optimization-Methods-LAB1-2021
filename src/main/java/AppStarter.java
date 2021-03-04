@@ -14,5 +14,7 @@ public class AppStarter {
         System.out.println(result2.getResult());
         OptimizationResult result3 = Optimization.run(Optimization.PARABOLIC, Variant.VAR_5);
         System.out.println(result3.getResult());
+        OptimizationResult result4 = Optimization.run(Optimization.BRENT, Variant.VAR_5);
+        System.out.println(result4.getResult());
     }
 }

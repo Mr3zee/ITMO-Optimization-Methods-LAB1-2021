@@ -134,6 +134,75 @@ public class Optimization {
                 / ((fa - fb) * (c - b) + (fc - fb) * (b - a));
     }
 
+    private static final double BRENT_CONST = (3 - Math.sqrt(5)) / 2;
+
+    public static final Algorithm BRENT = unwrapAlgo((f, left, right) -> {
+        double a, c, x, w, v, d, e, g, u, fx, fw, fv;
+        x = w = v = getMiddle(left, right);
+        fx = fw = fv = f.apply(x);
+        a = left;
+        c = right;
+        d = e = c - a;
+        while(checkBounds(a, c, epsilon)) {
+            g = e;
+            e = d;
+            if (threesome(w, x, v) && threesome(fw, fx, fv)) {
+                double t = parabolicMinimum(f, w, x, v);
+                if ((a + epsilon) <= t && t <= (c - epsilon) && Math.abs(t - x) < (g / 2)) {
+                    u = t;
+                    d = Math.abs(u - x);
+                } else {
+                    if (x < ((c - a) / 2)) {
+                        u = x + BRENT_CONST * (c - x);
+                        d = c - x;
+                    } else {
+                        u = x - BRENT_CONST * (x - a);
+                        d = x - a;
+                    }
+                }
+            } else {
+                if (x < ((c - a) / 2)) {
+                    u = x + BRENT_CONST * (c - x);
+                    d = c - x;
+                } else {
+                    u = x - BRENT_CONST * (x - a);
+                    d = x - a;
+                }
+                if (Math.abs(u - x) < epsilon) {
+                    u = x + (u - x) / Math.abs(u - x) * epsilon;
+                }
+            }
+            double fu = f.apply(u);
+            if (fu <= fx) {
+                if (u >= x) {
+                    a = x;
+                } else {
+                    c = x;
+                }
+                v = w; w = x; x = u;
+                fv = fw; fw = fx; fx = fu;
+            } else {
+                if (u >= x) {
+                    c = u;
+                } else {
+                    a = u;
+                }
+                if (fu <= fw || w == x) {
+                    v = w; w = u;
+                    fv = fw; fw = fu;
+                } else if (fu <= fv || v == x || v == w) {
+                    v = u;
+                    fv = fu;
+                }
+            }
+        }
+        return new OptimizationResult(f.apply(x));
+    });
+
+    private static boolean threesome(double a, double b, double c) {
+        return a != b && b != c && c != a;
+    }
+
     private static void printBounds(double left, double right) {
         System.out.format("[%s, %s]\n", left, right);
     }
