@@ -31,6 +31,7 @@ public class Optimization {
             } else {
                 left = x;
             }
+            printBounds(left, right);
         } while (checkBounds(left, right, epsilon));
         return new OptimizationResult(f.apply(x));
     });
@@ -46,18 +47,14 @@ public class Optimization {
     private static final double REVERSED_GOLDEN_CONST = (Math.sqrt(5) - 1) / 2;
 
     public static final Algorithm GOLDEN_SECTION = unwrappedAlgo((f, left, right) -> {
-        double delta = (right - left) * REVERSED_GOLDEN_CONST;
-        double x1 = left + delta;
-        double x2 = right - delta;
         do {
-            if (f.apply(x1) > f.apply(x2)) {
+            double delta = (right - left) * REVERSED_GOLDEN_CONST;
+            double x1 = left + delta;
+            double x2 = right - delta;
+            if (f.apply(x1) < f.apply(x2)) {
                 left = x1;
-                x1 = x2;
-                x2 = right + left - x1;
             } else {
                 right = x2;
-                x2 = x1;
-                x1 = right + left - x2;
             }
             printBounds(left, right);
         } while (checkBounds(left, right, epsilon));

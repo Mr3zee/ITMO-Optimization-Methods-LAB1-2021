@@ -20,7 +20,6 @@ public enum Variant {
     public final double right;
 
     Variant(Function<Double, Double> f, double left, double right) {
-        assert left < right;
         this.f = f;
         this.left = left;
         this.right = right;

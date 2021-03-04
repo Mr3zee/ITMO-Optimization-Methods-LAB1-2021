@@ -2,3 +2,4 @@
 **/javafx-sdk-*
 *.iml
 **/out
+**/target
