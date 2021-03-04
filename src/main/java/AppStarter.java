@@ -10,5 +10,7 @@ public class AppStarter {
         System.out.println(result.getResult());
         OptimizationResult result1 = Optimization.run(Optimization.DICHOTOMY, Variant.VAR_5);
         System.out.println(result1.getResult());
+        OptimizationResult result2 = Optimization.run(Optimization.FIBONACCI, Variant.VAR_5);
+        System.out.println(result2.getResult());
     }
 }

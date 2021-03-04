@@ -31,7 +31,6 @@ public class Optimization {
             } else {
                 left = x;
             }
-            printBounds(left, right);
         } while (checkBounds(left, right, epsilon));
         return new OptimizationResult(f.apply(x));
     });
@@ -60,17 +59,18 @@ public class Optimization {
         return new OptimizationResult(f.apply(getMiddle(left, right)));
     });
 
+    private static final int FIBONACCI_ITERATIONS = 1475;
+
     public static final Algorithm FIBONACCI = unwrappedAlgo((f, left, right) -> {
-        int n = (int) ((right - left) / epsilon) + 1;
-        List<Double> fibonacci = getNFibonacci(n);
+        List<Double> fibonacci = getNFibonacci(FIBONACCI_ITERATIONS);
         int k = 0;
-        double lambda = getFibonacciVar(fibonacci, left, right, n - k - 2, n - k);
-        double mu = getFibonacciVar(fibonacci, left, right, n - k - 1, n - k);
+        double lambda = getFibonacciVar(fibonacci, left, right, FIBONACCI_ITERATIONS - k - 2, FIBONACCI_ITERATIONS - k);
+        double mu = getFibonacciVar(fibonacci, left, right, FIBONACCI_ITERATIONS - k - 1, FIBONACCI_ITERATIONS - k);
 
         double an, bn;
         while (true) {
             k++;
-            if (k == n - 2) {
+            if (k == FIBONACCI_ITERATIONS - 2) {
                 mu = lambda + epsilon;
                 if (f.apply(mu) >= f.apply(lambda)) {
                     an = lambda;
@@ -84,11 +84,11 @@ public class Optimization {
             if (f.apply(lambda) > f.apply(mu)) {
                 left = lambda;
                 lambda = mu;
-                mu = getFibonacciVar(fibonacci, left, right, n - k - 1, n - k);
+                mu = getFibonacciVar(fibonacci, left, right, FIBONACCI_ITERATIONS - k - 1, FIBONACCI_ITERATIONS - k);
             } else {
                 right = mu;
                 mu = lambda;
-                lambda = getFibonacciVar(fibonacci, left, right, n - k - 2, n - k);
+                lambda = getFibonacciVar(fibonacci, left, right, FIBONACCI_ITERATIONS - k - 2, FIBONACCI_ITERATIONS - k);
             }
             printBounds(left, right);
         }
@@ -99,7 +99,7 @@ public class Optimization {
         return a + fibonacci.get(i) / fibonacci.get(j) * (b - a);
     }
 
-    private static List<Double> getNFibonacci(int n) {
+    public static List<Double> getNFibonacci(int n) {
         List<Double> arr = new ArrayList<>(n + 1);
         arr.add(1.0);
         arr.add(1.0);
