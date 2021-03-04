@@ -114,16 +114,26 @@ public class Optimization {
         return arr;
     }
 
-    public static final Algorithm PARABOLIC = unwrapAlgo((f, left, right) -> {
-        double a = left, b = getMiddle(left, right), c = right, x;
+    public static final Algorithm PARABOLIC = unwrapAlgo((f, a, c) -> {
+        double b = getMiddle(a, c), x;
+        // FIXME: 05.03.2021 check x in bound + wtf
         while (checkBounds(a, c, epsilon)) {
             x = parabolicMinimum(f, a, b, c);
-            if (x < b) {
-                c = b;
+            if (f.apply(x) < f.apply(b)) {
+                if (x < b) {
+                    c = b;
+                } else {
+                    a = b;
+                }
+                b = x;
             } else {
-                a = b;
+                if (x < b) {
+                    a = x;
+                } else {
+                    c = x;
+                }
             }
-            b = x;
+//            printBounds(a, c);
         }
         return new OptimizationResult(f.apply(b));
     });
@@ -134,10 +144,8 @@ public class Optimization {
                 / ((fa - fb) * (c - b) + (fc - fb) * (b - a));
     }
 
-    public static final Algorithm BRENT = unwrapAlgo((f, left, right) -> {
-        double a, c, x, w, v, d, e, g, u, fx, fw, fv;
-        a = left;
-        c = right;
+    public static final Algorithm BRENT = unwrapAlgo((f, a, c) -> {
+        double x, w, v, d, e, g, u, fx, fw, fv;
         x = w = v = a + REVERSED_GOLDEN_CONST * (c - a);
         fx = fw = fv = f.apply(x);
         d = e = c - a;
