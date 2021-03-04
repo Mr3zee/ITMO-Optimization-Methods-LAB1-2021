@@ -7,21 +7,15 @@ import java.util.function.Function;
 
 public class Optimization {
 
-    private static double epsilon = 0.00001;
-
-    public static void setEpsilon(double epsilon) {
-        Optimization.epsilon = epsilon;
+    private static Algorithm unwrapAlgo(FFunction<Function<Double, Double>, Double, Double, Double, OptimizationResult> algo) {
+        return new Algorithm((variant, epsilon) -> algo.apply(variant.f, variant.left, variant.right, epsilon));
     }
 
-    private static Algorithm unwrapAlgo(TFunction<Function<Double, Double>, Double, Double, OptimizationResult> algo) {
-        return new Algorithm(variant -> algo.apply(variant.f, variant.left, variant.right));
+    public static OptimizationResult run(Algorithm algorithm, Variant variant, double epsilon) {
+        return algorithm.f.apply(variant, epsilon);
     }
 
-    public static OptimizationResult run(Algorithm function, Variant variant) {
-        return function.f.apply(variant);
-    }
-
-    public static final Algorithm DICHOTOMY = unwrapAlgo((f, left, right) -> {
+    public static final Algorithm DICHOTOMY = unwrapAlgo((f, left, right, epsilon) -> {
         double x;
         do {
             x = getMiddle(left, right);
@@ -46,7 +40,7 @@ public class Optimization {
 
     private static final double REVERSED_GOLDEN_CONST = (Math.sqrt(5) - 1) / 2;
 
-    public static final Algorithm GOLDEN_SECTION = unwrapAlgo((f, left, right) -> {
+    public static final Algorithm GOLDEN_SECTION = unwrapAlgo((f, left, right, epsilon) -> {
         do {
             double delta = (right - left) * REVERSED_GOLDEN_CONST;
             double x1 = right - delta;
@@ -62,7 +56,7 @@ public class Optimization {
 
     private static final List<Double> FIBONACCI_NUMBERS = getNFibonacci();
 
-    public static final Algorithm FIBONACCI = unwrapAlgo((f, left, right) -> {
+    public static final Algorithm FIBONACCI = unwrapAlgo((f, left, right, epsilon) -> {
         int n = calculateFibonacciConst(left, right, epsilon);
         int k = 0;
         double lambda = getFibonacciVar(left, right, n, k + 2, k);
@@ -114,9 +108,8 @@ public class Optimization {
         return arr;
     }
 
-    public static final Algorithm PARABOLIC = unwrapAlgo((f, a, c) -> {
+    public static final Algorithm PARABOLIC = unwrapAlgo((f, a, c, epsilon) -> {
         double b = getMiddle(a, c), x;
-        // FIXME: 05.03.2021 check x in bound + wtf
         while (checkBounds(a, c, epsilon)) {
             x = parabolicMinimum(f, a, b, c);
             if (f.apply(x) < f.apply(b)) {
@@ -133,7 +126,6 @@ public class Optimization {
                     c = x;
                 }
             }
-//            printBounds(a, c);
         }
         return new OptimizationResult(f.apply(b));
     });
@@ -144,7 +136,7 @@ public class Optimization {
                 / ((fa - fb) * (c - b) + (fc - fb) * (b - a));
     }
 
-    public static final Algorithm BRENT = unwrapAlgo((f, a, c) -> {
+    public static final Algorithm BRENT = unwrapAlgo((f, a, c, epsilon) -> {
         double x, w, v, d, e, g, u, fx, fw, fv;
         x = w = v = a + REVERSED_GOLDEN_CONST * (c - a);
         fx = fw = fv = f.apply(x);

@@ -8,9 +8,11 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Tester {
+    private static final double EPSILON = 0.000001;
+
     public static void main(String[] args) {
         VARIANTS.forEach((kV, vV) -> {
-            ALGORITHMS.forEach((kA, vA) -> test(vA, kA, vV, kV));
+            ALGORITHMS.forEach((kA, vA) -> test(vA, kA, vV, kV, EPSILON));
             System.out.println();
         });
 //        test(Optimization.PARABOLIC, "PARABOLIC", Variant.VAR_7, "VAR_7");
@@ -37,8 +39,8 @@ public class Tester {
             "BRENT", Optimization.BRENT
     );
 
-    private static void test(Algorithm algorithm, String algoName, Variant variant, String varName) {
-        OptimizationResult result = Optimization.run(algorithm, variant);
-        System.out.format(Locale.US,"Algorithm %s, %s: %.18f\n", algoName, varName, result.getResult());
+    private static void test(Algorithm algorithm, String algoName, Variant variant, String varName, double epsilon) {
+        OptimizationResult result = Optimization.run(algorithm, variant, epsilon);
+        System.out.format(Locale.US,"Algorithm %14s, %s: %.18f\n", algoName, varName, result.getResult());
     }
 }
