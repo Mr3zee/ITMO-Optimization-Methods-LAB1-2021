@@ -1,5 +1,7 @@
 package algo;
 
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Function;
 
 public enum Variant {
@@ -18,6 +20,21 @@ public enum Variant {
     public final Function<Double, Double> f;
     public double left;
     public final double right;
+
+    public static final Map<String, Variant> VARIANTS = new TreeMap<>();
+
+    public static void init() {
+        VARIANTS.put("VAR 1", VAR_1);
+        VARIANTS.put("VAR 2", VAR_2);
+        VARIANTS.put("VAR 3", VAR_3);
+        VARIANTS.put("VAR 4", VAR_4);
+        VARIANTS.put("VAR 5", VAR_5);
+        VARIANTS.put("VAR 6", VAR_6);
+        VARIANTS.put("VAR 7", VAR_7);
+        VARIANTS.put("VAR 8", VAR_8);
+        VARIANTS.put("VAR 9", VAR_9);
+        VARIANTS.put("VAR 10", VAR_10);
+    }
 
     Variant(Function<Double, Double> f, double left, double right) {
         this.f = f;

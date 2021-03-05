@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.*?>
@@ -23,6 +26,14 @@
                 </SplitPane>
                 <AnchorPane layoutX="225.0" layoutY="614.0" prefHeight="114.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" />
                 <AnchorPane layoutX="225.0" prefHeight="69.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <LineChart fx:id="lineChart" layoutX="225.0" layoutY="69.0" prefHeight="538.0" prefWidth="1055.0" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="69.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </LineChart>
             </children>
         </AnchorPane>
     </children>

@@ -1,8 +1,6 @@
 package algo;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 public class Optimization {
@@ -193,5 +191,15 @@ public class Optimization {
 
     private static void printBounds(double left, double right) {
         System.out.format("[%s, %s]\n", left, right);
+    }
+
+    public static final Map<String, Algorithm> ALGORITHMS = new TreeMap<>();
+
+    public static void init() {
+        ALGORITHMS.put("DICHOTOMY", DICHOTOMY);
+        ALGORITHMS.put("GOLDEN SECTION", GOLDEN_SECTION);
+        ALGORITHMS.put("FIBONACCI", FIBONACCI);
+        ALGORITHMS.put("PARABOLIC", PARABOLIC);
+        ALGORITHMS.put("BRENT", BRENT);
     }
 }

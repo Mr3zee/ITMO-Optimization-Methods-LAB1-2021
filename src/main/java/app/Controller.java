@@ -1,10 +1,15 @@
 package app;
 
+import algo.Algorithm;
+import algo.Optimization;
+import algo.OptimizationResult;
+import algo.Variant;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +17,7 @@ import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -20,9 +26,12 @@ public class Controller implements Initializable {
     @Override
     public void initialize(final URL url, final ResourceBundle rb) {
         // TODO: 05.03.2021 графики следами шрека
+        Optimization.init();
+        Variant.init();
         setupSplitPane();
         loadFont();
         setupListViews();
+        setLineChart();
     }
 
     @FXML
@@ -59,32 +68,25 @@ public class Controller implements Initializable {
 
     private void setupListViews() {
         listAlgo.setCellFactory(a -> new ToggleListCell(algoGroup));
-        listVariants.setCellFactory(a -> new ToggleListCell(variantsGroup));
-
-        listAlgoNames.addAll(
-                "BRENT", "PARABOLIC", "GOLDEN SECTION", "DICHOTOMY", "FIBONACCI"
-        );
-
-        listVariantsNames.addAll(
-                "VAR_1", "VAR_2", "VAR_3", "VAR_4", "VAR_5", "VAR_6", "VAR_7", "VAR_8", "VAR_9", "VAR_10"
-        );
-
+        listAlgoNames.addAll(Optimization.ALGORITHMS.keySet());
         listAlgo.setItems(listAlgoNames);
-
-        listVariants.setItems(listVariantsNames);
-
         algoGroup.selectedToggleProperty().addListener(changeToggleImage);
+
+        listVariants.setCellFactory(a -> new ToggleListCell(variantsGroup));
+        listVariantsNames.addAll(Variant.VARIANTS.keySet());
+        listVariants.setItems(listVariantsNames);
         variantsGroup.selectedToggleProperty().addListener(changeToggleImage);
     }
 
     @SuppressWarnings("unchecked")
-    private static final ChangeListener<Toggle> changeToggleImage = (o, oldT, newT) -> {
+    private final ChangeListener<Toggle> changeToggleImage = (o, oldT, newT) -> {
         if (oldT != null) {
             ((Consumer<Boolean>) oldT.getUserData()).accept(false);
         }
         if (newT != null) {
             ((Consumer<Boolean>) newT.getUserData()).accept(true);
         }
+        setLineChart();
     };
 
     private static class ToggleListCell extends ListCell<String> {
@@ -115,11 +117,31 @@ public class Controller implements Initializable {
                 toggleButton.setFont(toggleFont);
                 toggleButton.setGraphic(iv);
                 toggleButton.setUserData(setSelected.apply(toggleButton));
-                // Add Listeners if any
                 setGraphic(toggleButton);
             }
         }
     }
 
+    @FXML
+    private LineChart<Double, Double> lineChart;
 
+    private void setLineChart() {
+        ToggleButton algoButton = (ToggleButton) algoGroup.getSelectedToggle();
+        ToggleButton variantButton = (ToggleButton) variantsGroup.getSelectedToggle();
+        if (algoButton != null && variantButton != null) {
+            String algoName = algoButton.textProperty().getValue();
+            String variantName = variantButton.textProperty().getValue();
+            Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
+            Variant variant = Variant.VARIANTS.get(variantName);
+            lineChart.setStyle("-fx-opacity: 1;");
+            test(algorithm, algoName, variant, variantName, 0.00001);
+        } else {
+            lineChart.setStyle("-fx-opacity: 0;");
+        }
+    }
+
+    public static void test(Algorithm algorithm, String algoName, Variant variant, String variantName, double epsilon) {
+        OptimizationResult result = Optimization.run(algorithm, variant, epsilon);
+        System.out.format(Locale.US,"Algorithm %14s, %s: %.18f\n", algoName, variantName, result.getResult());
+    }
 }

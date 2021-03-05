@@ -37,7 +37,7 @@ public class Tester {
             "BRENT", Optimization.BRENT
     );
 
-    private static void test(Algorithm algorithm, String algoName, Variant variant, String varName, double epsilon) {
+    public static void test(Algorithm algorithm, String algoName, Variant variant, String varName, double epsilon) {
         OptimizationResult result = Optimization.run(algorithm, variant, epsilon);
         System.out.format(Locale.US,"Algorithm %14s, %s: %.18f\n", algoName, varName, result.getResult());
     }
