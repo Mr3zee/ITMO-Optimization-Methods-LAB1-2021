@@ -28,6 +28,8 @@ public class App extends Application {
         stage.getIcons().add(new Image("icon.jpg"));
         stage.setTitle("Optimization Swamp");
         stage.setScene(new Scene(root));
+        stage.setMinWidth(1280 + 20);
+        stage.setMinHeight(720 + 40);
         stage.show();
     }
 }

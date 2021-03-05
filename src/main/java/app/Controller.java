@@ -4,16 +4,39 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.text.Font;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
+    @Override
+    public void initialize(final URL url, final ResourceBundle rb) {
+        // TODO: 05.03.2021 графики следами шрека
+        setupSplitPane();
+        loadFont();
+        setupListViews();
+    }
+
+    @FXML
+    private SplitPane splitPane;
+
+    private void setupSplitPane() {
+        splitPane.setDividerPositions(0.4, 0.6);
+    }
+
+    private static Font radioFont;
+
+    private void loadFont() {
+        try {
+            radioFont = Font.loadFont(getClass().getResource("/Shrek-Font.ttf").openStream(), 21);
+        } catch (IOException e) {
+            radioFont = Font.getDefault();
+        }
+    }
+
 
     @FXML
     private ListView<String> listAlgo;
@@ -29,10 +52,7 @@ public class Controller implements Initializable {
 
     private static final ToggleGroup variantsGroup = new ToggleGroup();
 
-    private static final Font radioFont = Font.loadFont("https://fonts.googleapis.com/css2?family=Chicle&display=swap", 19);
-
-    @Override
-    public void initialize(final URL url, final ResourceBundle rb) {
+    private void setupListViews() {
         listAlgo.setCellFactory(a -> new RadioListCell(algoGroup));
         listVariants.setCellFactory(a -> new RadioListCell(variantsGroup));
 
