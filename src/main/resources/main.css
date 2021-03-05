@@ -1,0 +1,44 @@
+.root {
+    /*--limerick: #B0C400;
+    --pear: #D5DE2E;
+    --coyote-brown: #795A2D;
+    --pineapple: #523213;
+    --sage: #C3BC95;
+    --dark-vanila: #D3CCA5;*/
+
+    -fx-background-color: #B0C400;
+}
+
+.side-pane {
+    -fx-border-width: 0;
+    -fx-background-color: #523213;
+    -fx-padding: 0;
+}
+
+.side-pane > .split-pane-divider {
+    -fx-background-color: #C3BC95;
+}
+
+.select-pane {
+    -fx-background-color: #795A2D;
+}
+
+.scroll-pane > .viewport  {
+    -fx-background-color: #523213;
+}
+
+.list-cell:odd {
+    -fx-background-color: #523213;
+}
+
+.list-cell:even {
+    -fx-background-color: #523213;
+}
+
+.list-cell {
+    -fx-pref-height: 40;
+}
+
+.radio-button {
+    -fx-text-fill: #C3BC95;
+}

@@ -3,7 +3,6 @@ import algo.Optimization;
 import algo.OptimizationResult;
 import algo.Variant;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -15,7 +14,6 @@ public class Tester {
             ALGORITHMS.forEach((kA, vA) -> test(vA, kA, vV, kV, EPSILON));
             System.out.println();
         });
-//        test(Optimization.PARABOLIC, "PARABOLIC", Variant.VAR_7, "VAR_7");
     }
 
     private static final Map<String, Variant> VARIANTS = Map.of(
