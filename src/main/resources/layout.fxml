@@ -7,7 +7,7 @@
     <children>
         <AnchorPane minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <SplitPane fx:id="splitPane" dividerPositions="0.37637362637362637" orientation="VERTICAL" prefHeight="728.0" prefWidth="184.0" styleClass="side-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <SplitPane fx:id="splitPane" dividerPositions="0.37637362637362637" orientation="VERTICAL" prefHeight="720.0" prefWidth="225.0" styleClass="side-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                             <children>
@@ -21,8 +21,8 @@
                         </AnchorPane>
                     </items>
                 </SplitPane>
-                <AnchorPane layoutX="184.0" layoutY="614.0" prefHeight="114.0" prefWidth="1096.0" styleClass="select-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="184.0" AnchorPane.rightAnchor="0.0" />
-                <AnchorPane layoutX="184.0" prefHeight="69.0" prefWidth="1096.0" styleClass="select-pane" AnchorPane.leftAnchor="184.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <AnchorPane layoutX="225.0" layoutY="614.0" prefHeight="114.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" />
+                <AnchorPane layoutX="225.0" prefHeight="69.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             </children>
         </AnchorPane>
     </children>

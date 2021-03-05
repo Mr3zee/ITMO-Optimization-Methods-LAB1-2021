@@ -23,8 +23,61 @@
     -fx-background-color: #795A2D;
 }
 
-.scroll-pane > .viewport  {
-    -fx-background-color: #523213;
+.list-view .scroll-bar:horizontal,
+.list-view .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.list-view .scroll-bar:horizontal .track,
+.list-view .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0.0em;
+    -fx-border-radius: 2.0em;
+}
+
+
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0.0em;
+    -fx-padding: 0.0 0.0 10.0 0.0;
+
+}
+
+.list-view .scroll-bar:vertical .increment-button,
+.list-view .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0.0em;
+    -fx-padding: 0.0 10.0 0.0 0.0;
+
+}
+
+.list-view .scroll-bar .increment-arrow,
+.list-view .scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0.15em 0.0;
+}
+
+.list-view .scroll-bar:vertical .increment-arrow,
+.list-view .scroll-bar:vertical .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0.0 0.15em;
+}
+
+.list-view .scroll-bar:horizontal .thumb,
+.list-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #D3CCA5;
+    -fx-background-insets: 2.0, 0.0, 0.0;
+    -fx-background-radius: 2.0em;
+}
+
+.list-view .scroll-bar:horizontal .thumb:hover,
+.list-view .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #C3BC95;
+    -fx-background-insets: 2.0, 0.0, 0.0;
+    -fx-background-radius: 2.0em;
 }
 
 .list-cell:odd {
@@ -36,9 +89,19 @@
 }
 
 .list-cell {
-    -fx-pref-height: 40;
+    -fx-pref-height: 50;
+    -fx-alignment: center;
+    -fx-padding: 0 0 0 0;
 }
 
-.radio-button {
+.toggle-button {
     -fx-text-fill: #C3BC95;
+    -fx-border-radius: 20;
+    -fx-pref-width: 190;
+    -fx-background-color: transparent;
+}
+
+.toggle-button:selected {
+    -fx-text-fill: #C3BC95;
+    -fx-background-color: #D3CCA5;
 }
