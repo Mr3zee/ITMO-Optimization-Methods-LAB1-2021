@@ -13,11 +13,19 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import org.jfree.fx.FXGraphics2D;
+import org.scilab.forge.jlatexmath.Box;
+import org.scilab.forge.jlatexmath.TeXConstants;
+import org.scilab.forge.jlatexmath.TeXFormula;
+import org.scilab.forge.jlatexmath.TeXIcon;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,6 +44,7 @@ public class Controller implements Initializable {
         setupSplitPane();
         loadFont();
         setupListViews();
+        setupCanvas();
         setLineChart();
     }
 
@@ -49,11 +58,7 @@ public class Controller implements Initializable {
     private static Font toggleFont;
 
     private void loadFont() {
-        try {
-            toggleFont = Font.loadFont(getClass().getResource("/Shrek-Font.ttf").openStream(), 20);
-        } catch (IOException e) {
-            toggleFont = Font.getDefault();
-        }
+        toggleFont = Font.loadFont(getClass().getResourceAsStream("/Shrek-Font.ttf"), 20);
     }
 
 
@@ -153,8 +158,36 @@ public class Controller implements Initializable {
         }
     }
 
-    public static void test(Algorithm algorithm, String algoName, Variant variant, String variantName, double epsilon) {
+    private static void test(Algorithm algorithm, String algoName, Variant variant, String variantName, double epsilon) {
         OptimizationResult result = Optimization.run(algorithm, variant, epsilon);
         System.out.format(Locale.US,"Algorithm %14s, %s: %.18f\n", algoName, variantName, result.getResult());
+    }
+
+    @FXML
+    private TextField formulaText;
+
+    @FXML
+    private TextField epsilonText;
+
+    @FXML
+    private StackPane fxCanvasPane;
+
+    @FXML
+    private StackPane epsilonCanvasPane;
+
+    private void setupCanvas() {
+        Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/base/jlm_cmmi10.ttf"), 1);
+        Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/maths/jlm_cmsy10.ttf"), 1);
+        Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/latin/jlm_cmr10.ttf"), 1);
+
+        createTex("f(x)=", fxCanvasPane);
+        createTex("\\varepsilon=", epsilonCanvasPane);
+    }
+
+    private void createTex(String tex, StackPane pane) {
+        TexCanvas texCanvas = new TexCanvas(tex);
+        pane.getChildren().add(texCanvas);
+        texCanvas.widthProperty().bind(pane.widthProperty());
+        texCanvas.heightProperty().bind(pane.heightProperty());
     }
 }

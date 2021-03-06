@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <AnchorPane minHeight="720.0" minWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Controller">
     <children>
         <AnchorPane minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -25,15 +23,22 @@
                     </items>
                 </SplitPane>
                 <AnchorPane layoutX="225.0" layoutY="614.0" prefHeight="114.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" />
-                <AnchorPane layoutX="225.0" prefHeight="69.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <LineChart fx:id="lineChart" layoutX="225.0" layoutY="69.0" prefHeight="538.0" prefWidth="1055.0" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="69.0">
-              <xAxis>
-                <CategoryAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis side="LEFT" />
-              </yAxis>
-            </LineChart>
+                <AnchorPane layoutX="225.0" prefHeight="69.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <TextField fx:id="formulaText" layoutX="119.0" layoutY="13.0" prefHeight="46.0" prefWidth="492.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="119.0" AnchorPane.topAnchor="13.0" />
+                        <TextField fx:id="epsilonText" layoutX="838.0" layoutY="22.0" prefHeight="25.0" prefWidth="174.0" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="838.0" AnchorPane.topAnchor="22.0" />
+                  <StackPane fx:id="fxCanvasPane" layoutX="55.0" layoutY="21.0" prefHeight="31.0" prefWidth="57.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="55.0" AnchorPane.topAnchor="23.0" />
+                  <StackPane fx:id="epsilonCanvasPane" layoutX="794.0" layoutY="22.0" prefHeight="25.0" prefWidth="37.0" AnchorPane.bottomAnchor="24.0" AnchorPane.rightAnchor="224.0" AnchorPane.topAnchor="20.0" />
+                    </children>
+                </AnchorPane>
+                <LineChart fx:id="lineChart" layoutX="225.0" layoutY="69.0" prefHeight="538.0" prefWidth="1055.0" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="69.0">
+                    <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis side="LEFT" />
+                    </yAxis>
+                </LineChart>
             </children>
         </AnchorPane>
     </children>
