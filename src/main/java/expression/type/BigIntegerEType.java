@@ -9,6 +9,8 @@ public class BigIntegerEType extends AbstractEType<BigInteger> implements Forbid
         super(value);
     }
 
+    private static final BigIntegerEType TWO = new BigIntegerEType(BigInteger.TWO);
+
     @Override
     protected BigInteger calcAdd(BigInteger v) {
         return value().add(v);
@@ -47,7 +49,7 @@ public class BigIntegerEType extends AbstractEType<BigInteger> implements Forbid
 
     @Override
     protected BigInteger calcPow2() {
-        return value().pow(2);
+        return TWO.calcPow(value());
     }
 
     @Override

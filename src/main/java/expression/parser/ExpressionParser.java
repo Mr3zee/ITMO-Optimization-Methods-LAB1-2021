@@ -135,7 +135,6 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     private CommonExpression<T> expressionWrapper(String word) {
         CommonExpression<T> nextExpression = lowLevelParse.get();
         return switch (word) {
-            case "count" -> new Count<>(nextExpression);
             case "pow2" -> new Pow2<>(nextExpression);
             case "log2" -> new Log2<>(nextExpression);
             default -> null;

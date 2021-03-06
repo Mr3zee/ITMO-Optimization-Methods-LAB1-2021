@@ -32,4 +32,9 @@ public class Negate<T extends Number> extends UnaryOperations<T> {
     public boolean dependsOnOrder() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return String.format("-%s", expression);
+    }
 }

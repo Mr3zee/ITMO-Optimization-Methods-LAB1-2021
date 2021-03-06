@@ -45,7 +45,7 @@ public class UncheckedIntegerEType extends AbstractEType<Integer> implements For
 
     @Override
     protected Integer calcPow2() {
-        return (int) Math.pow(value(), 2);
+        return (int) Math.pow(2, value());
     }
 
     @Override

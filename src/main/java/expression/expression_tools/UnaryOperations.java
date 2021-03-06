@@ -20,7 +20,7 @@ public abstract class UnaryOperations<T extends Number> implements CommonExpress
 
     @Override
     public String toString() {
-        return "(" + getOperand() + expression + ")";
+        return String.format("%s(%s)",getOperand(), expression);
     }
 
     @Override

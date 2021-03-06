@@ -42,7 +42,7 @@ public class DoubleEType extends AbstractEType<Double> {
 
     @Override
     protected Double calcPow2() {
-        return Math.pow(value(), 2);
+        return Math.pow(2, value());
     }
 
     @Override
