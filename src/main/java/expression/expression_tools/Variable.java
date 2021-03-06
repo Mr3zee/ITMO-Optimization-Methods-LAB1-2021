@@ -30,6 +30,11 @@ public class Variable<T extends Number> implements CommonExpression<T> {
     }
 
     @Override
+    public String toTex() {
+        return toString();
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(name);
     }

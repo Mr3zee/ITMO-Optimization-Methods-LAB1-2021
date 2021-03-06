@@ -18,6 +18,11 @@ public class Pow2<T extends Number> extends UnaryOperations<T> {
     }
 
     @Override
+    public String toTex() {
+        return String.format("(2 ^ %s)", expression.toTex());
+    }
+
+    @Override
     protected int primary() {
         return 4079;
     }

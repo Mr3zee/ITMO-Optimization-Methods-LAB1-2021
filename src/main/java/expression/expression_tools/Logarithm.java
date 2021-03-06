@@ -10,17 +10,16 @@ public class Logarithm<T extends Number> extends BinaryOperations<T> {
     @Override
     protected EType<T> toCalculate(EType<T> firstArg, EType<T> secondArg) {
         return firstArg.log(secondArg);
-//        int ans = 0;
-//        while (firstArg != 0) {
-//            firstArg /= secondArg;
-//            ans++;
-//        }
-//        return ans - 1;
     }
 
     @Override
     protected String getOperand() {
         return "//";
+    }
+
+    @Override
+    public String toTex() {
+        return String.format("(\\log_%s %s)", firstExp.toTex(), secondExp.toTex());
     }
 
     @Override

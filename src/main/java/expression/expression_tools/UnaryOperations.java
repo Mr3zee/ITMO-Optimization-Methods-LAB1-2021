@@ -24,8 +24,8 @@ public abstract class UnaryOperations<T extends Number> implements CommonExpress
     }
 
     @Override
-    public String toMiniString() {
-        return getOperand() + expression;
+    public String toTex() {
+        return String.format("%s(%s)",getOperand(), expression.toTex());
     }
 
     protected abstract String getOperand();

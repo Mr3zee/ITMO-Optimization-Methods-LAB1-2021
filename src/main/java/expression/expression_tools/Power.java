@@ -14,7 +14,7 @@ public class Power<T extends Number> extends BinaryOperations<T> {
 
     @Override
     protected String getOperand() {
-        return "**";
+        return "^";
     }
 
     @Override

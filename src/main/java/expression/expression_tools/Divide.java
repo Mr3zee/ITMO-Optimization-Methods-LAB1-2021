@@ -18,6 +18,11 @@ public class Divide<T extends Number> extends BinaryOperations<T> {
     }
 
     @Override
+    public String toTex() {
+        return String.format("(\\frac{%s}{%s})", firstExp.toTex(), secondExp.toTex());
+    }
+
+    @Override
     protected int primary() {
         return 1213;
     }

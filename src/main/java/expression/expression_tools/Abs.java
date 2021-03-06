@@ -18,6 +18,11 @@ public class Abs<T extends Number> extends UnaryOperations<T> {
     }
 
     @Override
+    public String toTex() {
+        return String.format("\\left|%s\\right|", expression);
+    }
+
+    @Override
     protected int primary() {
         return 1607;
     }

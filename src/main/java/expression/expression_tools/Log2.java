@@ -10,17 +10,16 @@ public class Log2<T extends Number> extends UnaryOperations<T> {
     @Override
     protected EType<T> toCalculate(EType<T> arg) {
         return arg.log2();
-//        int ans = 0;
-//        while (arg != 0) {
-//            arg >>= 1;
-//            ans++;
-//        }
-//        return ans - 1;
     }
 
     @Override
     protected String getOperand() {
         return "log2 ";
+    }
+
+    @Override
+    public String toTex() {
+        return String.format("(\\log_2 %s)", expression.toTex());
     }
 
     @Override

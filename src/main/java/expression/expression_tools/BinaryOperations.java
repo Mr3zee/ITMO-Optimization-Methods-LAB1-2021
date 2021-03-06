@@ -5,8 +5,8 @@ import expression.type.EType;
 import java.util.Objects;
 
 public abstract class BinaryOperations<T extends Number> implements CommonExpression<T> {
-    private final CommonExpression<T> firstExp;
-    private final CommonExpression<T> secondExp;
+    protected final CommonExpression<T> firstExp;
+    protected final CommonExpression<T> secondExp;
 
     public BinaryOperations(CommonExpression<T> firstExp, CommonExpression<T> secondExp) {
         this.firstExp = firstExp;
@@ -22,17 +22,12 @@ public abstract class BinaryOperations<T extends Number> implements CommonExpres
 
     @Override
     public String toString() {
-        return "(" + firstExp + ' ' + getOperand() + ' ' + secondExp + ")";
+        return String.format("(%s %s %s)", firstExp, getOperand(), secondExp);
     }
 
     @Override
-    public String toMiniString() {
-        boolean firstHigherPriority = this.getPriority() > firstExp.getPriority();
-        boolean secondHigherPriority = this.getPriority() > secondExp.getPriority() ||
-                (this.getPriority() == secondExp.getPriority() && (this.dependsOnOrder() || secondExp.dependsOnOrder()));
-        return (firstHigherPriority ? "(" : "") + firstExp.toMiniString() + (firstHigherPriority ? ")" : "")
-                + ' ' + getOperand() + ' ' +
-                (secondHigherPriority ? "(" : "") + secondExp.toMiniString() + (secondHigherPriority ? ")" : "");
+    public String toTex() {
+        return String.format("(%s %s %s)", firstExp.toTex(), getOperand(), secondExp.toTex());
     }
 
     protected abstract String getOperand();
