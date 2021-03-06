@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -26,6 +27,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(final URL url, final ResourceBundle rb) {
         // TODO: 05.03.2021 графики следами шрека
+        // TODO: 06.03.2021 shrek progress bar
         Optimization.init();
         Variant.init();
         setupSplitPane();
@@ -125,6 +127,14 @@ public class Controller implements Initializable {
     @FXML
     private LineChart<Double, Double> lineChart;
 
+    private static void disable(Node node) {
+        node.setStyle("-fx-opacity: 0;");
+    }
+
+    private static void enable(Node node) {
+        node.setStyle("-fx-opacity: 1;");
+    }
+
     private void setLineChart() {
         ToggleButton algoButton = (ToggleButton) algoGroup.getSelectedToggle();
         ToggleButton variantButton = (ToggleButton) variantsGroup.getSelectedToggle();
@@ -133,10 +143,10 @@ public class Controller implements Initializable {
             String variantName = variantButton.textProperty().getValue();
             Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
             Variant variant = Variant.VARIANTS.get(variantName);
-            lineChart.setStyle("-fx-opacity: 1;");
+            enable(lineChart);
             test(algorithm, algoName, variant, variantName, 0.00001);
         } else {
-            lineChart.setStyle("-fx-opacity: 0;");
+            disable(lineChart);
         }
     }
 
