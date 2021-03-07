@@ -1,10 +1,10 @@
 .root {
-    /*--limerick: #B0C400;
-    --pear: #D5DE2E;
-    --coyote-brown: #795A2D;
-    --pineapple: #523213;
-    --sage: #C3BC95;
-    --dark-vanila: #D3CCA5;*/
+    /*--limerick: #B0C400;*/
+    /*--pear: #D5DE2E;*/
+    /*--coyote-brown: #795A2D;*/
+    /*--pineapple: #523213;*/
+    /*--sage: #C3BC95;*/
+    /*--dark-vanila: #D3CCA5;*/
 
     -fx-background-color: #B0C400;
 }
@@ -107,5 +107,14 @@
 }
 
 #lineChart {
-    -fx-opacity: 0;
+    visibility: hidden;
+}
+
+.text-field {
+    -fx-padding: 7;
+}
+
+#formulaCanvasPane, #answerCanvasPane {
+    -fx-background-color: #e2e2e2;
+    -fx-background-radius: 3;
 }

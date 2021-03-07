@@ -7,18 +7,27 @@ import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
+import java.awt.*;
+
 class TexCanvas extends Canvas {
     private final FXGraphics2D graphics;
 
     private final Box box;
 
-    public TexCanvas(String tex) {
+    private final float dx;
+    private final float dy;
+
+    public TexCanvas(String tex, float dx, float dy) {
+        this.dx = dx;
+        this.dy = dy;
+
         this.graphics = new FXGraphics2D(getGraphicsContext2D());
         this.graphics.scale(20, 20);
 
         // create a formula
         TeXFormula formula = new TeXFormula(tex);
-        TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 20);
+        formula.setColor(new Color(0, 0, 0));
+        TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 25);
 
         // the 'Box' seems to be the thing we can draw directly to Graphics2D
         this.box = icon.getBox();
@@ -32,7 +41,7 @@ class TexCanvas extends Canvas {
         double width = getWidth();
         double height = getHeight();
         getGraphicsContext2D().clearRect(0, 0, width, height);
-        this.box.draw(graphics, 0, 1);
+        this.box.draw(graphics, dx, dy);
     }
 
     @Override

@@ -3,6 +3,7 @@
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane minHeight="720.0" minWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Controller">
     <children>
@@ -22,16 +23,37 @@
                         </AnchorPane>
                     </items>
                 </SplitPane>
-                <AnchorPane layoutX="225.0" layoutY="614.0" prefHeight="114.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" />
-                <AnchorPane layoutX="225.0" prefHeight="69.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <AnchorPane layoutX="225.0" layoutY="614.0" prefHeight="114.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <TextField fx:id="leftField" layoutX="812.0" layoutY="10.0" prefHeight="43.0" prefWidth="202.0" promptText="Enter Left Bound" AnchorPane.leftAnchor="812.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="rightField" layoutX="812.0" layoutY="61.0" prefHeight="43.0" prefWidth="202.0" promptText="Enter Right Bound" AnchorPane.leftAnchor="812.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <StackPane fx:id="leftCanvasPane" layoutX="743.0" layoutY="19.0" prefHeight="31.0" prefWidth="69.0" />
+                  <StackPane fx:id="rightCanvasPane" layoutX="736.0" layoutY="69.0" prefHeight="31.0" prefWidth="76.0" />
+                  <StackPane fx:id="formulaCanvasPane" layoutX="40.0" layoutY="10.0" prefHeight="94.0" prefWidth="514.0" AnchorPane.leftAnchor="40.0" />
+               </children></AnchorPane>
+                <AnchorPane layoutX="225.0" prefHeight="86.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <TextField fx:id="formulaText" layoutX="119.0" layoutY="13.0" prefHeight="46.0" prefWidth="492.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="119.0" AnchorPane.topAnchor="13.0" />
-                        <TextField fx:id="epsilonText" layoutX="838.0" layoutY="22.0" prefHeight="25.0" prefWidth="174.0" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="838.0" AnchorPane.topAnchor="22.0" />
-                  <StackPane fx:id="fxCanvasPane" layoutX="55.0" layoutY="21.0" prefHeight="31.0" prefWidth="57.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="55.0" AnchorPane.topAnchor="23.0" />
-                  <StackPane fx:id="epsilonCanvasPane" layoutX="794.0" layoutY="22.0" prefHeight="25.0" prefWidth="37.0" AnchorPane.bottomAnchor="24.0" AnchorPane.rightAnchor="224.0" AnchorPane.topAnchor="20.0" />
+                        <TextField fx:id="formulaField" layoutX="108.0" layoutY="22.0" prefHeight="43.0" prefWidth="492.0" promptText="Enter Your Formula Here" AnchorPane.leftAnchor="108.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                        <TextField fx:id="epsilonField" layoutX="734.0" layoutY="22.0" prefHeight="43.0" prefWidth="261.0" promptText="Enter Epsilon Value" text="0.00001" AnchorPane.leftAnchor="734.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <StackPane fx:id="fxCanvasPane" layoutX="43.0" layoutY="31.0" prefHeight="31.0" prefWidth="57.0" AnchorPane.leftAnchor="43.0" />
+                  <StackPane fx:id="epsilonCanvasPane" layoutX="690.0" layoutY="31.0" prefHeight="25.0" prefWidth="37.0" AnchorPane.leftAnchor="690.0" />
                     </children>
                 </AnchorPane>
-                <LineChart fx:id="lineChart" layoutX="225.0" layoutY="69.0" prefHeight="538.0" prefWidth="1055.0" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="69.0">
+                <LineChart fx:id="lineChart" layoutX="225.0" layoutY="86.0" prefHeight="521.0" prefWidth="1055.0" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
                     <xAxis>
                         <CategoryAxis side="BOTTOM" />
                     </xAxis>

@@ -91,6 +91,10 @@ public class IntegerEType extends UncheckedIntegerEType {
         return new IntegerEType(v);
     }
 
+    public static EType<Integer> toType(Integer v) {
+        return new IntegerEType(v);
+    }
+
     public static EType<Integer> parseInteger(String v) {
         return new IntegerEType(Integer.parseInt(v));
     }

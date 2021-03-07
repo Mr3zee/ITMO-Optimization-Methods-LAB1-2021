@@ -7,7 +7,7 @@ public class Tester {
     public static void main(String[] args) {
         Parser<Double> parser = new ExpressionParser<>(DoubleEType::parseDouble);
 
-        var e = parser.parse("4 // (pow2(2))");
+        var e = parser.parse("");
         System.out.println(e.evaluate(new DoubleEType(2.0)));
         System.out.println(e.toTex());
     }

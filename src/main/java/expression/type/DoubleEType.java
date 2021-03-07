@@ -31,11 +31,6 @@ public class DoubleEType extends AbstractEType<Double> {
     }
 
     @Override
-    protected Double calcBitCount() {
-        return (double) Long.bitCount(Double.doubleToLongBits(value()));
-    }
-
-    @Override
     protected Double calcAbs() {
         return Math.abs(value());
     }
@@ -62,6 +57,10 @@ public class DoubleEType extends AbstractEType<Double> {
 
     @Override
     public EType<Double> valueOf(Double v) {
+        return new DoubleEType(v);
+    }
+
+    public static EType<Double> toType(Double v) {
         return new DoubleEType(v);
     }
 

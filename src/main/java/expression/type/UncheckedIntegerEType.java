@@ -34,11 +34,6 @@ public class UncheckedIntegerEType extends AbstractEType<Integer> implements For
     }
 
     @Override
-    protected Integer calcBitCount() {
-        return Integer.bitCount(value());
-    }
-
-    @Override
     protected Integer calcAbs() {
         return Math.abs(value());
     }
@@ -65,6 +60,10 @@ public class UncheckedIntegerEType extends AbstractEType<Integer> implements For
 
     @Override
     public EType<Integer> valueOf(Integer v) {
+        return new UncheckedIntegerEType(v);
+    }
+
+    public static EType<Integer> toType(Integer v) {
         return new UncheckedIntegerEType(v);
     }
 

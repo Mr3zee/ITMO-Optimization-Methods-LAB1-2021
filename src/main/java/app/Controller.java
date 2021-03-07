@@ -4,6 +4,10 @@ import algo.Algorithm;
 import algo.Optimization;
 import algo.OptimizationResult;
 import algo.Variant;
+import expression.exceptions.ExpressionException;
+import expression.parser.ExpressionParser;
+import expression.parser.Parser;
+import expression.type.DoubleEType;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,8 +35,9 @@ public class Controller implements Initializable {
         Optimization.init();
         Variant.init();
         setupSplitPane();
-        loadFont();
+        loadFonts();
         setupListViews();
+        setupFields();
         setupCanvas();
         setLineChart();
     }
@@ -44,10 +49,12 @@ public class Controller implements Initializable {
         splitPane.setDividerPositions(0.4, 0.6);
     }
 
-    private static Font toggleFont;
+    private static Font shrekFont;
+    private static Font texFont;
 
-    private void loadFont() {
-        toggleFont = Font.loadFont(getClass().getResourceAsStream("/Shrek-Font.ttf"), 20);
+    private void loadFonts() {
+        shrekFont = Font.loadFont(getClass().getResourceAsStream("/Shrek-Font.ttf"), 20);
+        texFont = Font.loadFont(getClass().getResourceAsStream("/Tex-Font.ttf"), 19);
     }
 
 
@@ -113,7 +120,7 @@ public class Controller implements Initializable {
             } else {
                 ToggleButton toggleButton = new ToggleButton(obj);
                 toggleButton.setToggleGroup(group);
-                toggleButton.setFont(toggleFont);
+                toggleButton.setFont(shrekFont);
                 toggleButton.setGraphic(iv);
                 toggleButton.setUserData(setSelected.apply(toggleButton));
                 setGraphic(toggleButton);
@@ -125,38 +132,79 @@ public class Controller implements Initializable {
     private LineChart<Double, Double> lineChart;
 
     private static void disable(Node node) {
-        node.setStyle("-fx-opacity: 0;");
+        node.setStyle("visibility: hidden;");
     }
 
     private static void enable(Node node) {
-        node.setStyle("-fx-opacity: 1;");
+        node.setStyle("visibility: visible;");
     }
 
     private void setLineChart() {
         ToggleButton algoButton = (ToggleButton) algoGroup.getSelectedToggle();
-        ToggleButton variantButton = (ToggleButton) variantsGroup.getSelectedToggle();
-        if (algoButton != null && variantButton != null) {
+        Variant variant = getVariant();
+        Double epsilon = getEpsilon();
+        if (algoButton != null && variant != null && epsilon != null) {
             String algoName = algoButton.textProperty().getValue();
-            String variantName = variantButton.textProperty().getValue();
             Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
-            Variant variant = Variant.VARIANTS.get(variantName);
             enable(lineChart);
-            test(algorithm, algoName, variant, variantName, 0.00001);
+            test(algorithm, algoName, variant, variant.getName(), epsilon);
+            // TODO: 06.03.2021 todo
         } else {
             disable(lineChart);
         }
     }
 
-    private static void test(Algorithm algorithm, String algoName, Variant variant, String variantName, double epsilon) {
+    private void test(Algorithm algorithm, String algoName, Variant variant, String variantName, double epsilon) {
         OptimizationResult result = Optimization.run(algorithm, variant, epsilon);
         System.out.format(Locale.US,"Algorithm %14s, %s: %.18f\n", algoName, variantName, result.getResult());
     }
 
-    @FXML
-    private TextField formulaText;
+    private static final Parser<Double> PARSER = new ExpressionParser<>(DoubleEType::parseDouble);
 
     @FXML
-    private TextField epsilonText;
+    private TextField formulaField;
+
+    @FXML
+    private TextField epsilonField;
+
+    @FXML
+    private TextField leftField;
+
+    @FXML
+    private TextField rightField;
+
+    private void setupFields() {
+        formulaField.setFont(texFont);
+        epsilonField.setFont(texFont);
+        leftField.setFont(texFont);
+        rightField.setFont(texFont);
+        formulaField.textProperty().addListener(e -> setLineChart());
+        epsilonField.textProperty().addListener(e -> setLineChart());
+    }
+
+    private Double getEpsilon() {
+        try {
+            return Double.parseDouble(epsilonField.textProperty().getValue());
+        } catch (NumberFormatException ignored) {
+            return null;
+        }
+    }
+
+    private Variant getVariant() {
+        try {
+            return Variant.createVariant(
+                    PARSER.parse(formulaField.textProperty().getValue()).toFunction(DoubleEType::toType),
+                    0.1,
+                    2.5
+            );
+        } catch (ExpressionException ignored) {
+            ToggleButton variantButton = (ToggleButton) variantsGroup.getSelectedToggle();
+            if (variantButton != null) {
+                return Variant.VARIANTS.get(variantButton.textProperty().getValue());
+            }
+            return null;
+        }
+    }
 
     @FXML
     private StackPane fxCanvasPane;
@@ -164,17 +212,29 @@ public class Controller implements Initializable {
     @FXML
     private StackPane epsilonCanvasPane;
 
+    @FXML
+    private StackPane leftCanvasPane;
+
+    @FXML
+    private StackPane rightCanvasPane;
+
+    @FXML
+    private StackPane formulaCanvasPane;
+
     private void setupCanvas() {
         Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/base/jlm_cmmi10.ttf"), 1);
         Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/maths/jlm_cmsy10.ttf"), 1);
         Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/latin/jlm_cmr10.ttf"), 1);
 
-        createTex("f(x)=", fxCanvasPane);
-        createTex("\\varepsilon=", epsilonCanvasPane);
+        createTex("f(x)=", fxCanvasPane, 0, 1);
+        createTex("\\varepsilon=", epsilonCanvasPane, 0, 1);
+        createTex("left=", leftCanvasPane, 0, 1);
+        createTex("right=", rightCanvasPane, 0, 1);
+        createTex("Your formula will be displayed here", formulaCanvasPane, 0.5f, 2.7f);
     }
 
-    private void createTex(String tex, StackPane pane) {
-        TexCanvas texCanvas = new TexCanvas(tex);
+    private void createTex(String tex, StackPane pane, float dx, float dy) {
+        TexCanvas texCanvas = new TexCanvas(tex.replace(" ", "\\;"), dx, dy);
         pane.getChildren().add(texCanvas);
         texCanvas.widthProperty().bind(pane.widthProperty());
         texCanvas.heightProperty().bind(pane.heightProperty());

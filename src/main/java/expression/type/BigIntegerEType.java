@@ -38,11 +38,6 @@ public class BigIntegerEType extends AbstractEType<BigInteger> implements Forbid
     }
 
     @Override
-    protected BigInteger calcBitCount() {
-        return new BigInteger(String.valueOf(value().bitCount()));
-    }
-
-    @Override
     protected BigInteger calcAbs() {
         return value().abs();
     }
@@ -77,6 +72,10 @@ public class BigIntegerEType extends AbstractEType<BigInteger> implements Forbid
 
     @Override
     public EType<BigInteger> valueOf(BigInteger v) {
+        return new BigIntegerEType(v);
+    }
+
+    public static EType<BigInteger> toType(BigInteger v) {
         return new BigIntegerEType(v);
     }
 
