@@ -114,7 +114,8 @@
     -fx-padding: 7;
 }
 
-#formulaCanvasPane, #answerCanvasPane {
+#formulaCanvasPane {
     -fx-background-color: #e2e2e2;
     -fx-background-radius: 3;
 }
+

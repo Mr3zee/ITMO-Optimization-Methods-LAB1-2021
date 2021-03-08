@@ -20,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.Locale;
@@ -40,6 +41,7 @@ public class Controller implements Initializable {
         setupFields();
         setupCanvas();
         setLineChart();
+        setupTextFields();
     }
 
     @FXML
@@ -49,12 +51,14 @@ public class Controller implements Initializable {
         splitPane.setDividerPositions(0.4, 0.6);
     }
 
-    private static Font shrekFont;
-    private static Font texFont;
+    private static Font shrekFont20;
+    private static Font shrekFont24;
+    private static Font texFont19;
 
     private void loadFonts() {
-        shrekFont = Font.loadFont(getClass().getResourceAsStream("/Shrek-Font.ttf"), 20);
-        texFont = Font.loadFont(getClass().getResourceAsStream("/Tex-Font.ttf"), 19);
+        shrekFont20 = Font.loadFont(getClass().getResourceAsStream("/Shrek-Font.ttf"), 20);
+        shrekFont24 = Font.loadFont(getClass().getResourceAsStream("/Shrek-Font.ttf"), 26);
+        texFont19 = Font.loadFont(getClass().getResourceAsStream("/Tex-Font.ttf"), 19);
     }
 
 
@@ -120,7 +124,7 @@ public class Controller implements Initializable {
             } else {
                 ToggleButton toggleButton = new ToggleButton(obj);
                 toggleButton.setToggleGroup(group);
-                toggleButton.setFont(shrekFont);
+                toggleButton.setFont(shrekFont20);
                 toggleButton.setGraphic(iv);
                 toggleButton.setUserData(setSelected.apply(toggleButton));
                 setGraphic(toggleButton);
@@ -174,10 +178,10 @@ public class Controller implements Initializable {
     private TextField rightField;
 
     private void setupFields() {
-        formulaField.setFont(texFont);
-        epsilonField.setFont(texFont);
-        leftField.setFont(texFont);
-        rightField.setFont(texFont);
+        formulaField.setFont(texFont19);
+        epsilonField.setFont(texFont19);
+        leftField.setFont(texFont19);
+        rightField.setFont(texFont19);
         formulaField.textProperty().addListener(e -> setLineChart());
         epsilonField.textProperty().addListener(e -> setLineChart());
     }
@@ -207,16 +211,29 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private StackPane fxCanvasPane;
+    private Text fText;
 
     @FXML
-    private StackPane epsilonCanvasPane;
+    private Text epsilonText;
 
     @FXML
-    private StackPane leftCanvasPane;
+    private Text leftText;
 
     @FXML
-    private StackPane rightCanvasPane;
+    private Text rightText;
+
+    private void setupTextFields() {
+        setText(fText, "F(x) =");
+        setText(epsilonText, "Epsilon =");
+        setText(leftText, "Left =");
+        setText(rightText, "Right =");
+    }
+
+    private void setText(Text text, String textStr) {
+        text.setText(textStr);
+        text.setFont(shrekFont24);
+        text.setStyle("-fx-text-fill: #C3BC95;");
+    }
 
     @FXML
     private StackPane formulaCanvasPane;
@@ -226,10 +243,6 @@ public class Controller implements Initializable {
         Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/maths/jlm_cmsy10.ttf"), 1);
         Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/latin/jlm_cmr10.ttf"), 1);
 
-        createTex("f(x)=", fxCanvasPane, 0, 1);
-        createTex("\\varepsilon=", epsilonCanvasPane, 0, 1);
-        createTex("left=", leftCanvasPane, 0, 1);
-        createTex("right=", rightCanvasPane, 0, 1);
         createTex("Your formula will be displayed here", formulaCanvasPane, 0.5f, 2.7f);
     }
 

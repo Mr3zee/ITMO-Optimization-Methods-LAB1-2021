@@ -35,9 +35,16 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <StackPane fx:id="leftCanvasPane" layoutX="743.0" layoutY="19.0" prefHeight="31.0" prefWidth="69.0" />
-                  <StackPane fx:id="rightCanvasPane" layoutX="736.0" layoutY="69.0" prefHeight="31.0" prefWidth="76.0" />
                   <StackPane fx:id="formulaCanvasPane" layoutX="40.0" layoutY="10.0" prefHeight="94.0" prefWidth="514.0" AnchorPane.leftAnchor="40.0" />
+                  <Text fx:id="leftText" fill="#c3bc95" layoutX="747.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="59.13671875" AnchorPane.leftAnchor="747.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font></Text>
+                  <Text fx:id="rightText" fill="#c3bc95" layoutX="735.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="70.13671875" AnchorPane.leftAnchor="735.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
                </children></AnchorPane>
                 <AnchorPane layoutX="225.0" prefHeight="86.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
@@ -49,8 +56,16 @@
                      <font>
                         <Font size="14.0" />
                      </font></TextField>
-                  <StackPane fx:id="fxCanvasPane" layoutX="43.0" layoutY="31.0" prefHeight="31.0" prefWidth="57.0" AnchorPane.leftAnchor="43.0" />
-                  <StackPane fx:id="epsilonCanvasPane" layoutX="690.0" layoutY="31.0" prefHeight="25.0" prefWidth="37.0" AnchorPane.leftAnchor="690.0" />
+                  <Text fx:id="fText" fill="#c3bc95" layoutX="49.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="53.13671875" AnchorPane.leftAnchor="49.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="epsilonText" fill="#c3bc95" layoutX="644.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="84.6953125" AnchorPane.leftAnchor="644.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
                     </children>
                 </AnchorPane>
                 <LineChart fx:id="lineChart" layoutX="225.0" layoutY="86.0" prefHeight="521.0" prefWidth="1055.0" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
