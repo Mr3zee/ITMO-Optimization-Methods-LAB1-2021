@@ -101,7 +101,7 @@ public class BaseParser {
     }
 
     protected void skipWhitespaces() {
-        while (Character.isWhitespace(currentLex)) {
+        while (hasNext() && Character.isWhitespace(currentLex)) {
             nextChar();
         }
     }

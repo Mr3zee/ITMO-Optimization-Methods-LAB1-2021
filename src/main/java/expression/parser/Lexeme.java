@@ -16,6 +16,14 @@ public enum Lexeme {
     LOGARITHM("Logarithm", 2, "//"),
     POW2("Pow 2", 1, "pow2"),
     LOG2("Log 2", 1, "log2"),
+    LN("Ln", 1, "ln"),
+    EXP("Exp", 1, "exp"),
+    SIN("Sin", 1, "sin"),
+    COS("Cos", 1, "cos"),
+    TAN("Tan", 1, "tan"),
+    ASIN("Arcsin", 1, "arcsin"),
+    ACOS("Arccos", 1, "arccos"),
+    ATAN("Arctan", 1, "arctan"),
     ;
 
     private final String name;

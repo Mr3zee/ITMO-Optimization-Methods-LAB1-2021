@@ -26,5 +26,19 @@ public interface EType<T extends Number> {
 
     EType<T> log(EType<T> v);
 
-    // TODO: 06.03.2021 ask Gosha
+    EType<T> exp();
+
+    EType<T> ln();
+
+    EType<T> sin();
+
+    EType<T> asin();
+
+    EType<T> cos();
+
+    EType<T> acos();
+
+    EType<T> atan();
+
+    EType<T> tan();
 }

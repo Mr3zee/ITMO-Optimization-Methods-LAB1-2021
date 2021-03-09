@@ -64,6 +64,46 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
         return valueOf(calcLog(v.value()));
     }
 
+    @Override
+    public EType<T> exp() {
+        return valueOf(calcExp());
+    }
+
+    @Override
+    public EType<T> ln() {
+        return valueOf(calcLn());
+    }
+
+    @Override
+    public EType<T> sin() {
+        return valueOf(calcSin());
+    }
+
+    @Override
+    public EType<T> asin() {
+        return valueOf(calcAsin());
+    }
+
+    @Override
+    public EType<T> cos() {
+        return valueOf(calcCos());
+    }
+
+    @Override
+    public EType<T> acos() {
+        return valueOf(calcAcos());
+    }
+
+    @Override
+    public EType<T> atan() {
+        return valueOf(calcAtan());
+    }
+
+    @Override
+    public EType<T> tan() {
+        return valueOf(calcTan());
+    }
+
     protected abstract T calcAdd(T v);
 
     protected abstract T calcSubtract(T v);
@@ -73,6 +113,7 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
     protected abstract T calcDivide(T v);
 
     protected abstract T calcNegate();
+
     protected abstract T calcAbs();
 
     protected abstract T calcPow2();
@@ -82,6 +123,22 @@ public abstract class AbstractEType<T extends Number> implements EType<T> {
     protected abstract T calcLog2();
 
     protected abstract T calcLog(T v);
+
+    protected abstract T calcLn();
+
+    protected abstract T calcExp();
+
+    protected abstract T calcSin();
+
+    protected abstract T calcAsin();
+
+    protected abstract T calcCos();
+
+    protected abstract T calcAcos();
+
+    protected abstract T calcTan();
+
+    protected abstract T calcAtan();
 
     @Override
     public abstract EType<T> valueOf(T v);

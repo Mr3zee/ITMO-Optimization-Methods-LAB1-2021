@@ -1,30 +1,34 @@
 package algo;
 
+import app.Controller;
+import expression.expression_tools.Expression;
+import expression.type.DoubleEType;
+
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
 public enum Variant {
-    VAR_1(x -> x * x + Math.exp(-0.35 * x), -2, 3, "VAR_1"),
-    VAR_2(x -> Math.pow(x, 4) - 1.5 * Math.atan(x), -1, 1, "VAR_2"),
-    VAR_3(x -> x * Math.sin(x) + 2 * Math.cos(x), -6, -4, "VAR_3"),
-    VAR_4(x -> x - Math.log(x), 0.5, 5, "VAR_4"),
-    VAR_5(x -> 10 * x * Math.log(x) - x * x / 2, 0.1, 2.5, "VAR_5"),
-    VAR_6(x -> -5 * Math.pow(x, 5) + 4 * Math.pow(x, 4) - 12 * Math.pow(x, 3) + 11 * Math.pow(x, 2) - 2 * x  + 1, -0.5, 0.5, "VAR_6"),
-    VAR_7(x -> Math.pow(Math.log10(x - 2), 2) + Math.pow(Math.log10(10 - x), 2) - Math.pow(x, 0.2), 6, 9.9, "VAR_7"),
-    VAR_8(x -> -3 * Math.sin(0.75 * x) + Math.exp(-2 * x), 0, 2 * Math.PI, "VAR_8"),
-    VAR_9(x -> Math.exp(3 * x) + 5 * Math.exp(-2 * x), 0, 1, "VAR_9"),
-    VAR_10(x -> 0.2 * Math.log10(x) + Math.pow(x - 2.3, 2), 0.5, 2.5, "VAR_10"),
+    VAR_1("x * x + exp(-0.35 * x)", -2, 3, "VAR_1"),
+    VAR_2("x ^ 4 - 1.5 * arctan(x)", -1, 1, "VAR_2"),
+    VAR_3("x * sin(x) + 2 * cos(x)", -6, -4, "VAR_3"),
+    VAR_4("x - ln(x)", 0.5, 5, "VAR_4"),
+    VAR_5("10 * x * ln(x) - x ^ 2 / 2", 0.1, 2.5, "VAR_5"),
+    VAR_6("-5 * x ^ 5 + 4 * x ^ 4 - 12 * x ^ 3 + 11 * x ^ 2 - 2 * x + 1", -0.5, 0.5, "VAR_6"),
+    VAR_7("((x - 2) // 10 ) ^ 2 + ((10 - x) // 10) ^ 2", 6, 9.9, "VAR_7"),
+    VAR_8("-3 * sin(0.75 * x) + exp(-2 * x)", 0, 2 * Math.PI, "VAR_8"),
+    VAR_9("exp(3 * x) + 5 * (exp-2 * x)", 0, 1, "VAR_9"),
+    VAR_10("0.2 * (x // 10) + (x - 2.3) ^ 2", 0.5, 2.5, "VAR_10"),
     CUSTOM(null, 0, 0, "CUSTOM"),
     ;
 
-    private Function<Double, Double> f;
+    private Expression<Double> f;
     private double left;
     private double right;
     private final String name;
 
-    public Function<Double, Double> getF() {
-        return f;
+    public Function<Double, Double> getFuction() {
+        return f.toFunction(DoubleEType::toType);
     }
 
     public double getLeft() {
@@ -37,6 +41,10 @@ public enum Variant {
 
     public String getName() {
         return name;
+    }
+
+    public String getTex() {
+        return f.toTex();
     }
 
     public static final Map<String, Variant> VARIANTS = new TreeMap<>();
@@ -54,15 +62,15 @@ public enum Variant {
         VARIANTS.put(VAR_10.name, VAR_10);
     }
 
-    public static Variant createVariant(Function<Double, Double> f, double left, double right) {
-        CUSTOM.f = f;
+    public static Variant createVariant(String f, double left, double right) {
+        CUSTOM.f = Controller.PARSER.parse(f);
         CUSTOM.left = left;
         CUSTOM.right = right;
         return CUSTOM;
     }
 
-    Variant(Function<Double, Double> f, double left, double right, String name) {
-        this.f = f;
+    Variant(String f, double left, double right, String name) {
+        this.f = Controller.PARSER.parse(f);
         this.left = left;
         this.right = right;
         this.name = name;

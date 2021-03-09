@@ -2,34 +2,28 @@ package expression.expression_tools;
 
 import expression.type.EType;
 
-public class Pow2<T extends Number> extends UnaryOperations<T> {
-    public Pow2(CommonExpression<T> expression) {
+public class Cos<T extends Number> extends UnaryOperations<T>{
+    public Cos(CommonExpression<T> expression) {
         super(expression);
     }
 
     @Override
     protected EType<T> toCalculate(EType<T> arg) {
-        return arg.pow2();
+        return arg.cos();
     }
 
     @Override
     protected String getOperand() {
-        return "pow2";
-    }
-
-    @Override
-    public String toTex() {
-        return String.format(getTexOperand(), expression.toTex());
+        return "cos";
     }
 
     @Override
     protected String getTexOperand() {
-        return "(2 ^ %s)";
+        return "\\cos";
     }
 
     @Override
     protected int primary() {
-        return 4079;
+        return 2797;
     }
-
 }

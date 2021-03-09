@@ -56,6 +56,46 @@ public class DoubleEType extends AbstractEType<Double> {
     }
 
     @Override
+    protected Double calcLn() {
+        return Math.log(value());
+    }
+
+    @Override
+    protected Double calcExp() {
+        return Math.exp(value());
+    }
+
+    @Override
+    protected Double calcSin() {
+        return Math.sin(value());
+    }
+
+    @Override
+    protected Double calcAsin() {
+        return Math.asin(value());
+    }
+
+    @Override
+    protected Double calcCos() {
+        return Math.cos(value());
+    }
+
+    @Override
+    protected Double calcAcos() {
+        return Math.acos(value());
+    }
+
+    @Override
+    protected Double calcTan() {
+        return Math.tan(value());
+    }
+
+    @Override
+    protected Double calcAtan() {
+        return Math.atan(value());
+    }
+
+    @Override
     public EType<Double> valueOf(Double v) {
         return new DoubleEType(v);
     }
@@ -71,5 +111,13 @@ public class DoubleEType extends AbstractEType<Double> {
     @Override
     protected int primary() {
         return 1637;
+    }
+
+    @Override
+    public String toString() {
+        double v = value();
+        return v == (long) v
+                ? String.format("%d", (long) v)
+                : String.format("%s", v);
     }
 }

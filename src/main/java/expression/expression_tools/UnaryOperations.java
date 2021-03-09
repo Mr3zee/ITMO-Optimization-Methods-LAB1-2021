@@ -25,10 +25,22 @@ public abstract class UnaryOperations<T extends Number> implements CommonExpress
 
     @Override
     public String toTex() {
-        return String.format("%s(%s)",getOperand(), expression.toTex());
+        return String.format("%s(%s)", getTexOperand(), expression.toTex());
+    }
+
+    @Override
+    public int getPriority() {
+        return 40;
+    }
+
+    @Override
+    public boolean dependsOnOrder() {
+        return false;
     }
 
     protected abstract String getOperand();
+
+    protected abstract String getTexOperand();
 
     @Override
     public boolean equals(Object o) {

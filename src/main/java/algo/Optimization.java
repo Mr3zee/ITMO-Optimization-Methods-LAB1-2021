@@ -6,7 +6,7 @@ import java.util.function.Function;
 public class Optimization {
 
     private static Algorithm unwrapAlgo(FFunction<Function<Double, Double>, Double, Double, Double, OptimizationResult> algo) {
-        return new Algorithm((variant, epsilon) -> algo.apply(variant.getF(), variant.getLeft(), variant.getRight(), epsilon));
+        return new Algorithm((variant, epsilon) -> algo.apply(variant.getFuction(), variant.getLeft(), variant.getRight(), epsilon));
     }
 
     public static OptimizationResult run(Algorithm algorithm, Variant variant, double epsilon) {

@@ -12,7 +12,7 @@ import java.awt.*;
 class TexCanvas extends Canvas {
     private final FXGraphics2D graphics;
 
-    private final Box box;
+    private Box box;
 
     private final float dx;
     private final float dy;
@@ -24,13 +24,7 @@ class TexCanvas extends Canvas {
         this.graphics = new FXGraphics2D(getGraphicsContext2D());
         this.graphics.scale(20, 20);
 
-        // create a formula
-        TeXFormula formula = new TeXFormula(tex);
-        formula.setColor(new Color(0, 0, 0));
-        TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 25);
-
-        // the 'Box' seems to be the thing we can draw directly to Graphics2D
-        this.box = icon.getBox();
+        setCanvas(tex);
 
         // Redraw canvas when size changes.
         widthProperty().addListener(evt -> draw());
@@ -42,6 +36,21 @@ class TexCanvas extends Canvas {
         double height = getHeight();
         getGraphicsContext2D().clearRect(0, 0, width, height);
         this.box.draw(graphics, dx, dy);
+    }
+
+    private void setCanvas(String tex) {
+        // create a formula
+        TeXFormula formula = new TeXFormula(tex);
+        formula.setColor(new Color(0, 0, 0));
+        TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 25);
+
+        // the 'Box' seems to be the thing we can draw directly to Graphics2D
+        this.box = icon.getBox();
+    }
+
+    void changeCanvas(String tex) {
+        setCanvas(tex);
+        draw();
     }
 
     @Override

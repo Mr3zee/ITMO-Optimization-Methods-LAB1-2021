@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -59,6 +60,10 @@ public class Controller implements Initializable {
         shrekFont20 = Font.loadFont(getClass().getResourceAsStream("/Shrek-Font.ttf"), 20);
         shrekFont24 = Font.loadFont(getClass().getResourceAsStream("/Shrek-Font.ttf"), 26);
         texFont19 = Font.loadFont(getClass().getResourceAsStream("/Tex-Font.ttf"), 19);
+
+        Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/base/jlm_cmmi10.ttf"), 1);
+        Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/maths/jlm_cmsy10.ttf"), 1);
+        Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/latin/jlm_cmr10.ttf"), 1);
     }
 
 
@@ -152,6 +157,7 @@ public class Controller implements Initializable {
             Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
             enable(lineChart);
             test(algorithm, algoName, variant, variant.getName(), epsilon);
+            setNewTexFormula(variant.getTex());
             // TODO: 06.03.2021 todo
         } else {
             disable(lineChart);
@@ -163,7 +169,7 @@ public class Controller implements Initializable {
         System.out.format(Locale.US,"Algorithm %14s, %s: %.18f\n", algoName, variantName, result.getResult());
     }
 
-    private static final Parser<Double> PARSER = new ExpressionParser<>(DoubleEType::parseDouble);
+    public static final Parser<Double> PARSER = new ExpressionParser<>(DoubleEType::parseDouble);
 
     @FXML
     private TextField formulaField;
@@ -197,7 +203,7 @@ public class Controller implements Initializable {
     private Variant getVariant() {
         try {
             return Variant.createVariant(
-                    PARSER.parse(formulaField.textProperty().getValue()).toFunction(DoubleEType::toType),
+                    formulaField.textProperty().getValue(),
                     0.1,
                     2.5
             );
@@ -238,18 +244,21 @@ public class Controller implements Initializable {
     @FXML
     private StackPane formulaCanvasPane;
 
-    private void setupCanvas() {
-        Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/base/jlm_cmmi10.ttf"), 1);
-        Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/maths/jlm_cmsy10.ttf"), 1);
-        Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/latin/jlm_cmr10.ttf"), 1);
+    private TexCanvas texFormula;
 
-        createTex("Your formula will be displayed here", formulaCanvasPane, 0.5f, 2.7f);
+    private void setupCanvas() {
+        texFormula = createTex("Your formula will be displayed here", formulaCanvasPane, 0.5f, 2.7f);
     }
 
-    private void createTex(String tex, StackPane pane, float dx, float dy) {
+    private TexCanvas createTex(String tex, StackPane pane, float dx, float dy) {
         TexCanvas texCanvas = new TexCanvas(tex.replace(" ", "\\;"), dx, dy);
         pane.getChildren().add(texCanvas);
         texCanvas.widthProperty().bind(pane.widthProperty());
         texCanvas.heightProperty().bind(pane.heightProperty());
+        return texCanvas;
+    }
+
+    private void setNewTexFormula(String tex) {
+        texFormula.changeCanvas(String.format("f(x)=%s", tex));
     }
 }

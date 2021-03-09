@@ -14,26 +14,21 @@ public class Log2<T extends Number> extends UnaryOperations<T> {
 
     @Override
     protected String getOperand() {
-        return "log2 ";
+        return "log2";
     }
 
     @Override
     public String toTex() {
-        return String.format("(\\log_2 %s)", expression.toTex());
+        return String.format(getTexOperand(), expression.toTex());
+    }
+
+    @Override
+    protected String getTexOperand() {
+        return "(\\log_2 %s)";
     }
 
     @Override
     protected int primary() {
         return 4271;
-    }
-
-    @Override
-    public int getPriority() {
-        return 40;
-    }
-
-    @Override
-    public boolean dependsOnOrder() {
-        return false;
     }
 }

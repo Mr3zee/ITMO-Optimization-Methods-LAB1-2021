@@ -18,7 +18,7 @@ public class Const<T extends Number> implements CommonExpression<T> {
 
     @Override
     public String toString() {
-        return String.valueOf(value);
+        return value.toString();
     }
 
     @Override

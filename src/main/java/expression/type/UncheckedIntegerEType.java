@@ -2,7 +2,7 @@ package expression.type;
 
 import expression.exceptions.DivisionByZeroEException;
 
-public class UncheckedIntegerEType extends AbstractEType<Integer> implements ForbiddenDivisionByZero<Integer> {
+public class UncheckedIntegerEType extends IntegerCalculationsType<Integer> implements ForbiddenDivisionByZero<Integer> {
     public UncheckedIntegerEType(Integer value) {
         super(value);
     }

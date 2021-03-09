@@ -10,4 +10,5 @@ public interface Expression<T extends Number> extends ToTex {
     default Function<T, T> toFunction(Function<T, EType<T>> toEType) {
         return x -> evaluate(toEType.apply(x)).value();
     }
+
 }

@@ -16,12 +16,26 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
 
     public ExpressionParser(Function<String, EType<T>> parseEType) {
         super(Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '\0', '^'),
-                Set.of(Lexeme.COUNT, Lexeme.LOGARITHM, Lexeme.POW2, Lexeme.LOG2));
+                Set.of(
+                        Lexeme.COUNT,
+                        Lexeme.LOGARITHM,
+                        Lexeme.POW2,
+                        Lexeme.LOG2,
+                        Lexeme.LN,
+                        Lexeme.EXP,
+                        Lexeme.SIN,
+                        Lexeme.ASIN,
+                        Lexeme.COS,
+                        Lexeme.ACOS,
+                        Lexeme.TAN,
+                        Lexeme.ATAN
+                ));
         this.parseEType = parseEType;
     }
 
     @Override
     public CommonExpression<T> parse(final String expression) throws ParsingExpressionException {
+        if (expression == null) return null;
         source = new ExpressionSource(expression);
         nextChar();
         skipWhitespaces();
@@ -50,6 +64,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
                         break;
                     }
                 }
+                skipWhitespaces();
             }
             return result;
         };
@@ -137,6 +152,14 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
         return switch (word) {
             case "pow2" -> new Pow2<>(nextExpression);
             case "log2" -> new Log2<>(nextExpression);
+            case "ln" -> new Ln<>(nextExpression);
+            case "exp" -> new Exp<>(nextExpression);
+            case "sin" -> new Sin<>(nextExpression);
+            case "cos" -> new Cos<>(nextExpression);
+            case "tan" -> new Tan<>(nextExpression);
+            case "arcsin" -> new Arcsin<>(nextExpression);
+            case "arccos" -> new Arccos<>(nextExpression);
+            case "arctan" -> new Arctan<>(nextExpression);
             default -> null;
         };
     }

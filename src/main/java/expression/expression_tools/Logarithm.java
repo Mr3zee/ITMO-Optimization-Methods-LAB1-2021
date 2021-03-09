@@ -19,7 +19,7 @@ public class Logarithm<T extends Number> extends BinaryOperations<T> {
 
     @Override
     public String toTex() {
-        return String.format("(\\log_%s %s)", firstExp.toTex(), secondExp.toTex());
+        return String.format("(\\log_{%s} %s)", secondExp.toTex(), firstExp.toTex());
     }
 
     @Override
@@ -34,6 +34,6 @@ public class Logarithm<T extends Number> extends BinaryOperations<T> {
 
     @Override
     public boolean dependsOnOrder() {
-        return false;
+        return true;
     }
 }

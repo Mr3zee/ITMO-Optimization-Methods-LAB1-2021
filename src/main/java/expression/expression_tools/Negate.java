@@ -19,18 +19,18 @@ public class Negate<T extends Number> extends UnaryOperations<T> {
     }
 
     @Override
+    protected String getTexOperand() {
+        return "-";
+    }
+
+    @Override
+    public String toTex() {
+        return toString();
+    }
+
+    @Override
     protected int primary() {
         return 2027;
-    }
-
-    @Override
-    public int getPriority() {
-        return 40;
-    }
-
-    @Override
-    public boolean dependsOnOrder() {
-        return false;
     }
 
     @Override

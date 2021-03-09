@@ -2,34 +2,28 @@ package expression.expression_tools;
 
 import expression.type.EType;
 
-public class Pow2<T extends Number> extends UnaryOperations<T> {
-    public Pow2(CommonExpression<T> expression) {
+public class Arccos<T extends Number> extends UnaryOperations<T> {
+    public Arccos(CommonExpression<T> expression) {
         super(expression);
     }
 
     @Override
     protected EType<T> toCalculate(EType<T> arg) {
-        return arg.pow2();
+        return arg.acos();
     }
 
     @Override
     protected String getOperand() {
-        return "pow2";
-    }
-
-    @Override
-    public String toTex() {
-        return String.format(getTexOperand(), expression.toTex());
+        return "arccos";
     }
 
     @Override
     protected String getTexOperand() {
-        return "(2 ^ %s)";
+        return "\\arccos";
     }
 
     @Override
     protected int primary() {
-        return 4079;
+        return 6361;
     }
-
 }

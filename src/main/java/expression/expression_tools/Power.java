@@ -18,6 +18,11 @@ public class Power<T extends Number> extends BinaryOperations<T> {
     }
 
     @Override
+    public String toTex() {
+        return String.format("%s ^ {%s}", firstExp.toTex(), secondExp.toTex());
+    }
+
+    @Override
     protected int primary() {
         return 6827;
     }

@@ -27,7 +27,12 @@ public abstract class BinaryOperations<T extends Number> implements CommonExpres
 
     @Override
     public String toTex() {
-        return String.format("(%s %s %s)", firstExp.toTex(), getOperand(), secondExp.toTex());
+        boolean firstHigherPriority = this.getPriority() > firstExp.getPriority();
+        boolean secondHigherPriority = this.getPriority() > secondExp.getPriority() ||
+                (this.getPriority() == secondExp.getPriority() && (this.dependsOnOrder() || secondExp.dependsOnOrder()));
+        return (firstHigherPriority ? "(" : "") + firstExp.toTex() + (firstHigherPriority ? ")" : "")
+                + ' ' + getOperand() + ' ' +
+                (secondHigherPriority ? "(" : "") + secondExp.toTex() + (secondHigherPriority ? ")" : "");
     }
 
     protected abstract String getOperand();

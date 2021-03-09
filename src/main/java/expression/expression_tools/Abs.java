@@ -14,26 +14,21 @@ public class Abs<T extends Number> extends UnaryOperations<T> {
 
     @Override
     protected String getOperand() {
-        return "abs ";
+        return "abs";
     }
 
     @Override
     public String toTex() {
-        return String.format("\\left|%s\\right|", expression);
+        return String.format(getTexOperand(), expression);
+    }
+
+    @Override
+    protected String getTexOperand() {
+        return "\\left|%s\\right|";
     }
 
     @Override
     protected int primary() {
         return 1607;
-    }
-
-    @Override
-    public int getPriority() {
-        return 40;
-    }
-
-    @Override
-    public boolean dependsOnOrder() {
-        return false;
     }
 }
