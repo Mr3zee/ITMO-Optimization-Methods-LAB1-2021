@@ -9,33 +9,33 @@ import java.util.TreeMap;
 import java.util.function.Function;
 
 public enum Variant {
-    VAR_1("x * x + exp(-0.35 * x)", -2, 3, "VAR_1"),
-    VAR_2("x ^ 4 - 1.5 * arctan(x)", -1, 1, "VAR_2"),
-    VAR_3("x * sin(x) + 2 * cos(x)", -6, -4, "VAR_3"),
-    VAR_4("x - ln(x)", 0.5, 5, "VAR_4"),
+    VAR_1("x * x + exp(-0.35 * x)", -2d, 3d, "VAR_1"),
+    VAR_2("x ^ 4 - 1.5 * arctan(x)", -1d, 1d, "VAR_2"),
+    VAR_3("x * sin(x) + 2 * cos(x)", -6d, -4d, "VAR_3"),
+    VAR_4("x - ln(x)", 0.5, 5d, "VAR_4"),
     VAR_5("10 * x * ln(x) - x ^ 2 / 2", 0.1, 2.5, "VAR_5"),
     VAR_6("-5 * x ^ 5 + 4 * x ^ 4 - 12 * x ^ 3 + 11 * x ^ 2 - 2 * x + 1", -0.5, 0.5, "VAR_6"),
-    VAR_7("((x - 2) // 10 ) ^ 2 + ((10 - x) // 10) ^ 2", 6, 9.9, "VAR_7"),
-    VAR_8("-3 * sin(0.75 * x) + exp(-2 * x)", 0, 2 * Math.PI, "VAR_8"),
-    VAR_9("exp(3 * x) + 5 * (exp-2 * x)", 0, 1, "VAR_9"),
+    VAR_7("((x - 2) // 10 ) ^ 2 + ((10 - x) // 10) ^ 2", 6d, 9.9, "VAR_7"),
+    VAR_8("-3 * sin(0.75 * x) + exp(-2 * x)", 0d, 2 * Math.PI, "VAR_8"),
+    VAR_9("exp(3 * x) + 5 * (exp-2 * x)", 0d, 1d, "VAR_9"),
     VAR_10("0.2 * (x // 10) + (x - 2.3) ^ 2", 0.5, 2.5, "VAR_10"),
-    CUSTOM(null, 0, 0, "CUSTOM"),
+    CUSTOM(null, null, null, "CUSTOM"),
     ;
 
     private Expression<Double> f;
-    private double left;
-    private double right;
+    private Double left;
+    private Double right;
     private final String name;
 
     public Function<Double, Double> getFuction() {
         return f.toFunction(DoubleEType::toType);
     }
 
-    public double getLeft() {
+    public Double getLeft() {
         return left;
     }
 
-    public double getRight() {
+    public Double getRight() {
         return right;
     }
 
@@ -62,18 +62,24 @@ public enum Variant {
         VARIANTS.put(VAR_10.name, VAR_10);
     }
 
-    public static Variant createVariant(String f, double left, double right) {
+    public static Variant createVariant(String f, Double left, Double right) {
         CUSTOM.f = Controller.PARSER.parse(f);
         CUSTOM.left = left;
         CUSTOM.right = right;
         return CUSTOM;
     }
 
-    Variant(String f, double left, double right, String name) {
+    Variant(String f, Double left, Double right, String name) {
         this.f = Controller.PARSER.parse(f);
         this.left = left;
         this.right = right;
         this.name = name;
+    }
+
+
+    @Override
+    public String toString() {
+        return f.toString();
     }
 }
 

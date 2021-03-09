@@ -3,6 +3,7 @@ package expression.expression_tools;
 import expression.type.EType;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 public abstract class BinaryOperations<T extends Number> implements CommonExpression<T> {
     protected final CommonExpression<T> firstExp;
@@ -22,17 +23,21 @@ public abstract class BinaryOperations<T extends Number> implements CommonExpres
 
     @Override
     public String toString() {
-        return String.format("(%s %s %s)", firstExp, getOperand(), secondExp);
+        return toMiniString(Expression::toString);
     }
 
     @Override
     public String toTex() {
+        return toMiniString(ToTex::toTex);
+    }
+
+    private String toMiniString(Function<CommonExpression<T>, String> f) {
         boolean firstHigherPriority = this.getPriority() > firstExp.getPriority();
         boolean secondHigherPriority = this.getPriority() > secondExp.getPriority() ||
                 (this.getPriority() == secondExp.getPriority() && (this.dependsOnOrder() || secondExp.dependsOnOrder()));
-        return (firstHigherPriority ? "(" : "") + firstExp.toTex() + (firstHigherPriority ? ")" : "")
+        return (firstHigherPriority ? "(" : "") + f.apply(firstExp) + (firstHigherPriority ? ")" : "")
                 + ' ' + getOperand() + ' ' +
-                (secondHigherPriority ? "(" : "") + secondExp.toTex() + (secondHigherPriority ? ")" : "");
+                (secondHigherPriority ? "(" : "") + f.apply(secondExp) + (secondHigherPriority ? ")" : "");
     }
 
     protected abstract String getOperand();

@@ -9,6 +9,7 @@ import expression.parser.ExpressionParser;
 import expression.parser.Parser;
 import expression.type.DoubleEType;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -151,20 +152,31 @@ public class Controller implements Initializable {
     private void setLineChart() {
         ToggleButton algoButton = (ToggleButton) algoGroup.getSelectedToggle();
         Variant variant = getVariant();
+        if (variant != null) {
+            setField(leftField, variant.getLeft());
+            setField(rightField, variant.getRight());
+            setField(formulaField, variant.toString());
+            setNewTexFormula(variant.getTex());
+        }
         Double epsilon = getEpsilon();
         if (algoButton != null && variant != null && epsilon != null) {
             String algoName = algoButton.textProperty().getValue();
             Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
             enable(lineChart);
-            test(algorithm, algoName, variant, variant.getName(), epsilon);
-            setNewTexFormula(variant.getTex());
-            // TODO: 06.03.2021 todo
         } else {
             disable(lineChart);
         }
     }
 
-    private void test(Algorithm algorithm, String algoName, Variant variant, String variantName, double epsilon) {
+    private void setField(TextField field, Double value) {
+        setField(field, String.valueOf(value));
+    }
+
+    private void setField(TextField field, String value) {
+        field.textProperty().set(value == null ? "" : value);
+    }
+
+    private void test(Algorithm algorithm, String algoName, Variant variant, String variantName, Double epsilon) {
         OptimizationResult result = Optimization.run(algorithm, variant, epsilon);
         System.out.format(Locale.US,"Algorithm %14s, %s: %.18f\n", algoName, variantName, result.getResult());
     }
@@ -188,30 +200,54 @@ public class Controller implements Initializable {
         epsilonField.setFont(texFont19);
         leftField.setFont(texFont19);
         rightField.setFont(texFont19);
-        formulaField.textProperty().addListener(e -> setLineChart());
-        epsilonField.textProperty().addListener(e -> setLineChart());
+
+        var focusListener = new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> v, Boolean o, Boolean n) {
+                if (!n) {
+                    variantsGroup.selectToggle(null);
+                    setLineChart();
+                };
+            }
+        };
+        formulaField.focusedProperty().addListener(focusListener);
+        epsilonField.focusedProperty().addListener(focusListener);
+        leftField.focusedProperty().addListener(focusListener);
+        rightField.focusedProperty().addListener(focusListener);
     }
 
     private Double getEpsilon() {
+        return getNumberField(epsilonField);
+    }
+
+    private Double getLeft() {
+        return getNumberField(leftField);
+    }
+
+    private Double getRight() {
+        return getNumberField(rightField);
+    }
+
+    private Double getNumberField(TextField field) {
         try {
-            return Double.parseDouble(epsilonField.textProperty().getValue());
+            return Double.parseDouble(field.textProperty().getValue());
         } catch (NumberFormatException ignored) {
             return null;
         }
     }
 
     private Variant getVariant() {
+        ToggleButton variantButton = (ToggleButton) variantsGroup.getSelectedToggle();
+        if (variantButton != null) {
+            return Variant.VARIANTS.get(variantButton.textProperty().getValue());
+        }
         try {
             return Variant.createVariant(
                     formulaField.textProperty().getValue(),
-                    0.1,
-                    2.5
+                    getLeft(),
+                    getRight()
             );
         } catch (ExpressionException ignored) {
-            ToggleButton variantButton = (ToggleButton) variantsGroup.getSelectedToggle();
-            if (variantButton != null) {
-                return Variant.VARIANTS.get(variantButton.textProperty().getValue());
-            }
             return null;
         }
     }
@@ -260,5 +296,6 @@ public class Controller implements Initializable {
 
     private void setNewTexFormula(String tex) {
         texFormula.changeCanvas(String.format("f(x)=%s", tex));
+        // TODO: 10.03.2021 scroll canvas
     }
 }

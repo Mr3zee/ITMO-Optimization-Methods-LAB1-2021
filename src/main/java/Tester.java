@@ -7,8 +7,8 @@ public class Tester {
     public static void main(String[] args) {
         Parser<Double> parser = new ExpressionParser<>(DoubleEType::parseDouble);
 
-        var e = parser.parse("x + x + x + x");
+        var e = parser.parse("x * x + exp(-0.35 * x)");
         System.out.println(e.evaluate(new DoubleEType(2.0)));
-        System.out.println(e.toTex());
+        System.out.println(e.toString());
     }
 }
