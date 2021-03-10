@@ -7,13 +7,11 @@ import java.util.stream.Collectors;
 
 public class BaseParser {
     protected final Set<Character> LEXEMES;
-    protected final Map<String, Lexeme> WORDS;
     protected ExpressionSource source;
     private char currentLex;
 
-    public BaseParser(Set<Character> LEXEMES, Set<Lexeme> WORDS) {
+    public BaseParser(Set<Character> LEXEMES) {
         this.LEXEMES = LEXEMES;
-        this.WORDS = WORDS.stream().collect(Collectors.toMap(Lexeme::getOperand, lex -> lex));
     }
 
     protected void nextChar() {
@@ -118,7 +116,7 @@ public class BaseParser {
         if (c.length() == 1) {
             return LEXEMES.contains(c.charAt(0));
         }
-        return WORDS.containsKey(c);
+        return false;
     }
 
     protected void rollBack(int v) {

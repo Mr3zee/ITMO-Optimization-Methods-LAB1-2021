@@ -4,7 +4,6 @@ import expression.exceptions.*;
 import expression.expression_tools.*;
 import expression.type.EType;
 
-import java.util.Arrays;
 import java.util.Set;
 import java.util.function.*;
 
@@ -14,21 +13,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     private String lastLexeme;
 
     public ExpressionParser(Function<String, EType<T>> parseEType) {
-        super(Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '\0', '^'),
-                Set.of(
-                        Lexeme.COUNT,
-                        Lexeme.LOGARITHM,
-                        Lexeme.POW2,
-                        Lexeme.LOG2,
-                        Lexeme.LN,
-                        Lexeme.EXP,
-                        Lexeme.SIN,
-                        Lexeme.ASIN,
-                        Lexeme.COS,
-                        Lexeme.ACOS,
-                        Lexeme.TAN,
-                        Lexeme.ATAN
-                ));
+        super(Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '\0', '^'));
         this.parseEType = parseEType;
         this.fabric = new OperationFabric<>();
         initFabric();
@@ -73,7 +58,10 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
         return result;
     }
 
-    private Supplier<CommonExpression<T>> parseLevel(Supplier<CommonExpression<T>> nextLevel, String... lexemes) {
+    private Supplier<CommonExpression<T>> parseLevel(
+            Supplier<CommonExpression<T>> nextLevel,
+            String... lexemes
+    ) throws ParsingExpressionException {
         return () -> {
             CommonExpression<T> result = nextLevel.get();
             skipWhitespaces();
@@ -171,7 +159,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     }
 
     private ParsingExpressionException missingLexemeOrIllegalSymbolException(ExceptionParameters nextWord) {
-        if (findLexeme(nextWord.getWord())) {
+        if (findLexeme(nextWord.getWord()) || fabric.getU(nextWord.getWord()) != null) {
             return new MissingLexemePEException(lastLexeme, nextWord);
         }
         return new IllegalSymbolPEException(nextWord);
