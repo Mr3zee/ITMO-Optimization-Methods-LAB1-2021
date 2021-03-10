@@ -2,7 +2,7 @@ package expression.expression_tools;
 
 import expression.type.EType;
 
-public class Arcsin<T extends Number> extends UnaryOperations<T> {
+public class Arcsin<T extends Number> extends UnaryOperation<T> {
     public Arcsin(CommonExpression<T> expression) {
         super(expression);
     }

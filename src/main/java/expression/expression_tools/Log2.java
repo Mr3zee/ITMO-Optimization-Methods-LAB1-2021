@@ -2,7 +2,7 @@ package expression.expression_tools;
 
 import expression.type.EType;
 
-public class Log2<T extends Number> extends UnaryOperations<T> {
+public class Log2<T extends Number> extends UnaryOperation<T> {
     public Log2(CommonExpression<T> expression) {
         super(expression);
     }

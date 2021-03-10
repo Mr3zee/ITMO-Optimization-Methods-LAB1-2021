@@ -2,7 +2,7 @@ package expression.expression_tools;
 
 import expression.type.EType;
 
-public class Add<T extends Number> extends BinaryOperations<T> {
+public class Add<T extends Number> extends BinaryOperation<T> {
 
     public Add(CommonExpression<T> firstExp, CommonExpression<T> secondExp) {
         super(firstExp, secondExp);

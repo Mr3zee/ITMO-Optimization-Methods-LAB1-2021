@@ -2,7 +2,7 @@ package expression.expression_tools;
 
 import expression.type.EType;
 
-public class Logarithm<T extends Number> extends BinaryOperations<T> {
+public class Logarithm<T extends Number> extends BinaryOperation<T> {
     public Logarithm(CommonExpression<T> firstExp, CommonExpression<T> secondExp) {
         super(firstExp, secondExp);
     }

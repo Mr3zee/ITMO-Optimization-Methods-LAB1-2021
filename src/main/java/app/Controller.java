@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -37,6 +38,7 @@ public class Controller implements Initializable {
         // TODO: 06.03.2021 shrek progress bar
         Optimization.init();
         Variant.init();
+        setupScene();
         setupSplitPane();
         loadFonts();
         setupListViews();
@@ -44,6 +46,15 @@ public class Controller implements Initializable {
         setupCanvas();
         setLineChart();
         setupTextFields();
+    }
+
+    @FXML
+    private AnchorPane scene;
+
+    private void setupScene() {
+        scene.setOnMouseClicked((e) -> {
+            scene.requestFocus();
+        });
     }
 
     @FXML

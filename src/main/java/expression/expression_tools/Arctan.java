@@ -2,7 +2,7 @@ package expression.expression_tools;
 
 import expression.type.EType;
 
-public class Arctan<T extends Number> extends UnaryOperations<T> {
+public class Arctan<T extends Number> extends UnaryOperation<T> {
     public Arctan(CommonExpression<T> expression) {
         super(expression);
     }

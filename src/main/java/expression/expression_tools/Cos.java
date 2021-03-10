@@ -2,7 +2,7 @@ package expression.expression_tools;
 
 import expression.type.EType;
 
-public class Cos<T extends Number> extends UnaryOperations<T>{
+public class Cos<T extends Number> extends UnaryOperation<T> {
     public Cos(CommonExpression<T> expression) {
         super(expression);
     }

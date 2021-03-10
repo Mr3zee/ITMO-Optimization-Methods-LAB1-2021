@@ -4,11 +4,14 @@ public interface CommonExpression<T extends Number> extends Expression<T> {
     // Primary numbers used for hashCode():
     // Binary ops: 3527
     // Add: 3557
-    // Abs: 1607
-    // Divide: 1213
-    // Multiply: 1747
     // Subtract: 2777
+    // Multiply: 1747
+    // Divide: 1213
+    // Power: 6827
+    // Logarithm: 4271
+
     // Unary ops: 2467
+    // Abs: 1607
     // Negate: 2027
     // Cos: 2797
     // Arccos: 6361
@@ -18,9 +21,7 @@ public interface CommonExpression<T extends Number> extends Expression<T> {
     // Arctan: 7877
     // Exp: 3469
     // Ln: 7879
-    // Logarithm: 4271
     // Log2: 5693
-    // Power: 6827
     // Pow2: 4079
 
     // Abstract EType: 2399

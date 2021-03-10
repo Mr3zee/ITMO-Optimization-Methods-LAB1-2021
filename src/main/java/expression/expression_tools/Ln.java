@@ -2,7 +2,7 @@ package expression.expression_tools;
 
 import expression.type.EType;
 
-public class Ln<T extends Number> extends UnaryOperations<T> {
+public class Ln<T extends Number> extends UnaryOperation<T> {
     public Ln(CommonExpression<T> expression) {
         super(expression);
     }

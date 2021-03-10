@@ -5,11 +5,11 @@ import expression.type.EType;
 import java.util.Objects;
 import java.util.function.Function;
 
-public abstract class BinaryOperations<T extends Number> implements CommonExpression<T> {
+public abstract class BinaryOperation<T extends Number> implements CommonExpression<T> {
     protected final CommonExpression<T> firstExp;
     protected final CommonExpression<T> secondExp;
 
-    public BinaryOperations(CommonExpression<T> firstExp, CommonExpression<T> secondExp) {
+    public BinaryOperation(CommonExpression<T> firstExp, CommonExpression<T> secondExp) {
         this.firstExp = firstExp;
         this.secondExp = secondExp;
     }
@@ -46,7 +46,7 @@ public abstract class BinaryOperations<T extends Number> implements CommonExpres
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
-        BinaryOperations<?> that = (BinaryOperations<?>) o;
+        BinaryOperation<?> that = (BinaryOperation<?>) o;
         return Objects.equals(firstExp, that.firstExp) &&
                 Objects.equals(secondExp, that.secondExp);
     }

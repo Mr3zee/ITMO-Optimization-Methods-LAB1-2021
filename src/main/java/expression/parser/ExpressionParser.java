@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 
 public class ExpressionParser<T extends Number> extends BaseParser implements Parser<T> {
     private final Function<String, EType<T>> parseEType;
+    private final OperationFabric<T> fabric;
     private Lexeme lastLexeme;
 
     public ExpressionParser(Function<String, EType<T>> parseEType) {
@@ -31,6 +32,30 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
                         Lexeme.ATAN
                 ));
         this.parseEType = parseEType;
+        this.fabric = new OperationFabric<>();
+        initFabric();
+    }
+
+    private void initFabric() {
+        fabric.add("+" ,                                3557, 10, false, EType::add);
+        fabric.add("-" ,                                2777, 10, true, EType::subtract);
+        fabric.add("*" ,                                1747, 20, false, EType::multiply);
+        fabric.add("/" ,                                1213, 20, true, EType::divide);
+        fabric.add("^" ,                                6827, 30, false, EType::pow);
+        fabric.add("//", "(\\log_{%2$s} %$1s)",   4271, 30, true, EType::log);
+
+        fabric.add("abs"   , "\\left|%s\\right|", true, 1607, EType::abs);
+        fabric.add("-"     , "-"                , false, 2027, EType::negate);
+        fabric.add("cos"   , "\\cos"            , false, 2797, EType::cos);
+        fabric.add("arccos", "\\arccos"         , false, 6361, EType::acos);
+        fabric.add("sin"   , "\\sin"            , false, 3463, EType::sin);
+        fabric.add("arcsin", "\\arcsin"         , false, 6379, EType::asin);
+        fabric.add("tan"   , "\\tan"            , false, 7873, EType::tan);
+        fabric.add("arctan", "\\arctan"         , false, 7877, EType::atan);
+        fabric.add("exp"   , "\\exp"            , false, 3469, EType::exp);
+        fabric.add("ln"    , "\\ln"             , false, 7879, EType::ln);
+        fabric.add("log2"  , "(\\log_2 %s)"     , true, 5693, EType::log2);
+        fabric.add("pow2"  ,  "(2 ^ %s)"        , true, 4079, EType::pow2);
     }
 
     @Override

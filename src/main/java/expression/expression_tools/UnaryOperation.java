@@ -4,10 +4,10 @@ import expression.type.EType;
 
 import java.util.Objects;
 
-public abstract class UnaryOperations<T extends Number> implements CommonExpression<T> {
+public abstract class UnaryOperation<T extends Number> implements CommonExpression<T> {
     CommonExpression<T> expression;
 
-    public UnaryOperations(CommonExpression<T> expression) {
+    public UnaryOperation(CommonExpression<T> expression) {
         this.expression = expression;
     }
 
@@ -46,7 +46,7 @@ public abstract class UnaryOperations<T extends Number> implements CommonExpress
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
-        UnaryOperations<?> that = (UnaryOperations<?>) o;
+        UnaryOperation<?> that = (UnaryOperation<?>) o;
         return Objects.equals(expression, that.expression);
     }
 

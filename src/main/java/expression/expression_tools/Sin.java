@@ -2,7 +2,7 @@ package expression.expression_tools;
 
 import expression.type.EType;
 
-public class Sin<T extends Number> extends UnaryOperations<T> {
+public class Sin<T extends Number> extends UnaryOperation<T> {
     public Sin(CommonExpression<T> expression) {
         super(expression);
     }
