@@ -79,7 +79,7 @@
                 </AnchorPane>
                 <LineChart fx:id="lineChart" layoutX="225.0" layoutY="86.0" prefHeight="521.0" prefWidth="1055.0" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
                     <xAxis>
-                        <CategoryAxis side="BOTTOM" />
+                        <NumberAxis side="BOTTOM" />
                     </xAxis>
                     <yAxis>
                         <NumberAxis side="LEFT" />

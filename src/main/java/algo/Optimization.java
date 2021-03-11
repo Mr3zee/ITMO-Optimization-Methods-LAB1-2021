@@ -14,6 +14,8 @@ public class Optimization {
     }
 
     public static final Algorithm DICHOTOMY = unwrapAlgo((f, left, right, epsilon) -> {
+        OptimizationResult result = new OptimizationResult("DICHOTOMY");
+        Graph graph = new Graph("f(x)", f, left, right);
         double x;
         do {
             x = getMiddle(left, right);
@@ -25,7 +27,9 @@ public class Optimization {
                 left = x;
             }
         } while (checkBounds(left, right, epsilon));
-        return new OptimizationResult(f.apply(x));
+        result.setResult(f.apply(x));
+        result.addGraph(graph);
+        return result;
     });
 
     private static double getMiddle(double a, double b) {
@@ -39,6 +43,8 @@ public class Optimization {
     private static final double REVERSED_GOLDEN_CONST = (Math.sqrt(5) - 1) / 2;
 
     public static final Algorithm GOLDEN_SECTION = unwrapAlgo((f, left, right, epsilon) -> {
+        OptimizationResult result = new OptimizationResult("GOLDEN_SECTION");
+        Graph graph = new Graph("f(x)", f, left, right);
         do {
             double delta = (right - left) * REVERSED_GOLDEN_CONST;
             double x1 = right - delta;
@@ -49,12 +55,17 @@ public class Optimization {
                 right = x2;
             }
         } while (checkBounds(left, right, epsilon));
-        return new OptimizationResult(f.apply(getMiddle(left, right)));
+        result.setResult(f.apply(getMiddle(left, right)));
+        result.addGraph(graph);
+        return result;
     });
 
     private static final List<Double> FIBONACCI_NUMBERS = getNFibonacci();
 
     public static final Algorithm FIBONACCI = unwrapAlgo((f, left, right, epsilon) -> {
+        OptimizationResult result = new OptimizationResult("FIBONACCI");
+        Graph graph = new Graph("f(x)", f, left, right);
+
         int n = calculateFibonacciConst(left, right, epsilon);
         int k = 0;
         double lambda = getFibonacciVar(left, right, n, k + 2, k);
@@ -84,7 +95,9 @@ public class Optimization {
                 lambda = getFibonacciVar(left, right, n, k + 2, k);
             }
         }
-        return new OptimizationResult(f.apply(getMiddle(an, bn)));
+        result.setResult(f.apply(getMiddle(an, bn)));
+        result.addGraph(graph);
+        return result;
     });
 
     private static int calculateFibonacciConst(double left, double right, double epsilon) {
@@ -107,6 +120,8 @@ public class Optimization {
     }
 
     public static final Algorithm PARABOLIC = unwrapAlgo((f, a, c, epsilon) -> {
+        OptimizationResult result = new OptimizationResult("PARABOLIC");
+        Graph graph = new Graph("f(x)", f, a, c);
         double b = getMiddle(a, c), x;
         while (checkBounds(a, c, epsilon)) {
             x = parabolicMinimum(f, a, b, c);
@@ -125,7 +140,9 @@ public class Optimization {
                 }
             }
         }
-        return new OptimizationResult(f.apply(b));
+        result.setResult(f.apply(b));
+        result.addGraph(graph);
+        return result;
     });
 
     private static double parabolicMinimum(Function<Double, Double> f, double a, double b, double c) {
@@ -135,6 +152,8 @@ public class Optimization {
     }
 
     public static final Algorithm BRENT = unwrapAlgo((f, a, c, epsilon) -> {
+        OptimizationResult result = new OptimizationResult("BRENT");
+        Graph graph = new Graph("f(x)", f, a, c);
         double x, w, v, d, e, g, u, fx, fw, fv;
         x = w = v = a + REVERSED_GOLDEN_CONST * (c - a);
         fx = fw = fv = f.apply(x);
@@ -181,7 +200,9 @@ public class Optimization {
             }
             d = c - a;
         }
-        return new OptimizationResult(f.apply(x));
+        result.setResult(f.apply(x));
+        result.addGraph(graph);
+        return result;
     });
 
     private static boolean different(double a, double b, double c) {

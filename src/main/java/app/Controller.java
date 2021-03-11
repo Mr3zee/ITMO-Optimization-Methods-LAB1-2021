@@ -1,9 +1,6 @@
 package app;
 
-import algo.Algorithm;
-import algo.Optimization;
-import algo.OptimizationResult;
-import algo.Variant;
+import algo.*;
 import expression.exceptions.ExpressionException;
 import expression.parser.ExpressionParser;
 import expression.parser.Parser;
@@ -16,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -27,11 +26,13 @@ import javafx.scene.text.Text;
 
 import java.awt.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Controller implements Initializable {
     @Override
@@ -48,6 +49,7 @@ public class Controller implements Initializable {
         setupCanvas();
         setLineChart();
         setupTextFields();
+        setupLineChart();
     }
 
     @FXML
@@ -157,6 +159,11 @@ public class Controller implements Initializable {
     @FXML
     private LineChart<Double, Double> lineChart;
 
+    private void setupLineChart() {
+        lineChart.getXAxis().setLabel("X axis");
+        lineChart.getYAxis().setLabel("Y axis");
+    }
+
     private static void disable(Node node) {
         node.setStyle("visibility: hidden;");
     }
@@ -184,10 +191,22 @@ public class Controller implements Initializable {
         if (algoButton != null) {
             String algoName = algoButton.textProperty().getValue();
             Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
+            OptimizationResult result = Optimization.run(algorithm, variant, epsilon);
+            result.getGraphs().forEach(this::drawGraph);
             enable(lineChart);
         } else {
             disable(lineChart);
         }
+    }
+
+    private void drawGraph(Graph graph) {
+        XYChart.Series<Double, Double> series = new XYChart.Series<>();
+        series.setName(graph.getName());
+        series.getData().addAll(graph.getPoints().stream().map(
+                p -> new XYChart.Data<Double, Double>(p.getX(), p.getY())
+        ).collect(Collectors.toList()));
+        lineChart.getData().clear();
+        lineChart.getData().add(series);
     }
 
     private void setField(TextField field, Double value) {
