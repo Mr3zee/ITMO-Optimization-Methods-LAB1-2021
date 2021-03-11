@@ -38,6 +38,4 @@ public interface CommonExpression<T extends Number> extends Expression<T> {
     int getPriority();
 
     boolean dependsOnOrder();
-
-    // TODO: 06.03.2021 add new
 }

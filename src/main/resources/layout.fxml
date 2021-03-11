@@ -35,7 +35,7 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <StackPane fx:id="formulaCanvasPane" layoutX="40.0" layoutY="10.0" prefHeight="94.0" prefWidth="514.0" AnchorPane.leftAnchor="40.0" />
+                  <ScrollPane fx:id="formulaCanvasPane" layoutX="40.0" layoutY="10.0" prefHeight="94.0" prefWidth="529.0" AnchorPane.leftAnchor="40.0" />
                   <Text fx:id="leftText" fill="#c3bc95" layoutX="747.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="59.13671875" AnchorPane.leftAnchor="747.0">
                      <font>
                         <Font size="24.0" />

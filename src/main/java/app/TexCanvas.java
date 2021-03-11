@@ -1,6 +1,7 @@
 package app;
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.ScrollPane;
 import org.jfree.fx.FXGraphics2D;
 import org.scilab.forge.jlatexmath.Box;
 import org.scilab.forge.jlatexmath.TeXConstants;
@@ -11,6 +12,7 @@ import java.awt.*;
 
 class TexCanvas extends Canvas {
     private final FXGraphics2D graphics;
+    private ScrollPane parent;
 
     private Box box;
 
@@ -26,7 +28,6 @@ class TexCanvas extends Canvas {
 
         setCanvas(tex);
 
-        // Redraw canvas when size changes.
         widthProperty().addListener(evt -> draw());
         heightProperty().addListener(evt -> draw());
     }
@@ -39,12 +40,10 @@ class TexCanvas extends Canvas {
     }
 
     private void setCanvas(String tex) {
-        // create a formula
         TeXFormula formula = new TeXFormula(tex);
         formula.setColor(new Color(0, 0, 0));
         TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 25);
 
-        // the 'Box' seems to be the thing we can draw directly to Graphics2D
         this.box = icon.getBox();
     }
 
@@ -63,4 +62,17 @@ class TexCanvas extends Canvas {
 
     @Override
     public double prefHeight(double width) { return getHeight(); }
+
+    public void setRealWidth() {
+        widthProperty().bind(parent.widthProperty().subtract(10).multiply(Math.max(1, this.box.getWidth() / 25)));
+    }
+
+    public void setRealHeight() {
+        heightProperty().bind(parent.heightProperty().subtract(20));
+    }
+
+    public void setPane(ScrollPane pane) {
+        pane.contentProperty().set(this);
+        this.parent = pane;
+    }
 }

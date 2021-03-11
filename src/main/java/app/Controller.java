@@ -289,7 +289,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private StackPane formulaCanvasPane;
+    private ScrollPane formulaCanvasPane;
 
     private TexCanvas texFormula;
 
@@ -297,18 +297,16 @@ public class Controller implements Initializable {
         texFormula = createTex("Your formula will be displayed here", formulaCanvasPane, 0.5f, 2.7f);
     }
 
-    // TODO: 11.03.2021 check var 7
-
-    private TexCanvas createTex(String tex, StackPane pane, float dx, float dy) {
+    private TexCanvas createTex(String tex, ScrollPane pane, float dx, float dy) {
         TexCanvas texCanvas = new TexCanvas(tex.replace(" ", "\\;"), dx, dy);
-        pane.getChildren().add(texCanvas);
-        texCanvas.widthProperty().bind(pane.widthProperty());
-        texCanvas.heightProperty().bind(pane.heightProperty());
+        texCanvas.setPane(pane);
+        texCanvas.setRealHeight();
+        texCanvas.setRealWidth();
         return texCanvas;
     }
 
     private void setNewTexFormula(String tex) {
         texFormula.changeCanvas(String.format("f(x)=%s", tex));
-        // TODO: 10.03.2021 scroll canvas
+        texFormula.setRealWidth();
     }
 }

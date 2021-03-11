@@ -24,7 +24,6 @@ public class App extends Application {
             root = FXMLLoader.load(getClass().getResource("/layout.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
-            // TODO: 03.03.2021 manage
             return;
         }
         stage.getIcons().add(new Image("icon.jpg"));

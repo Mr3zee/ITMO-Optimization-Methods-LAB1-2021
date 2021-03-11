@@ -25,7 +25,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
         fabric.add("*" ,                                1747, 20, false, EType::multiply);
         fabric.add("/" ,                                1213, 20, true, EType::divide);
         fabric.add("^" ,                                6827, 30, false, EType::pow);
-        fabric.add("//", "\\log_{%2$s} {%1$s}",   4271, 30, true, EType::log);
+        fabric.add("//", "\\log_{%2$s} (%1$s)",   4271, 30, true, EType::log);
 
         fabric.add("abs"   , "\\left|%s\\right|", true, 1607, EType::abs);
         fabric.add("-"     , "-"                , false, 2027, EType::negate);
@@ -69,7 +69,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
                 for (var lexeme : lexemes) {
                     if (compareAndSkip(lexeme)) {
                         lastLexeme = lexeme;
-                        result = fabric.getBi(lexeme).apply(result, nextLevel.get());
+                        result = fabric.create(lexeme, result, nextLevel.get());
                         break;
                     }
                 }
@@ -112,7 +112,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
                     return parseNumber("-" + takeNumber());
                 }
                 lastLexeme = "-";
-                return fabric.getU("-").apply(lowLevelParse.get());
+                return fabric.create("-", lowLevelParse.get());
             } else {
                 return parseUnary();
             }
@@ -159,7 +159,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     }
 
     private ParsingExpressionException missingLexemeOrIllegalSymbolException(ExceptionParameters nextWord) {
-        if (findLexeme(nextWord.getWord()) || fabric.getU(nextWord.getWord()) != null) {
+        if (findLexeme(nextWord.getWord()) || fabric.containsU(nextWord.getWord())) {
             return new MissingLexemePEException(lastLexeme, nextWord);
         }
         return new IllegalSymbolPEException(nextWord);

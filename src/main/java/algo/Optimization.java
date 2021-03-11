@@ -142,7 +142,7 @@ public class Optimization {
         while(checkBounds(a, c, epsilon)) {
             g = e;
             e = d;
-            if (threesome(w, x, v) && threesome(fw, fx, fv)
+            if (different(w, x, v) && different(fw, fx, fv)
                     && (u = parabolicMinimum(f, w, x, v)) == u
                     && a <= u && u <= c && Math.abs(u - x) < (g / 2)) {
                 // u accepted
@@ -184,8 +184,7 @@ public class Optimization {
         return new OptimizationResult(f.apply(x));
     });
 
-    // TODO: 04.03.2021 rename 
-    private static boolean threesome(double a, double b, double c) {
+    private static boolean different(double a, double b, double c) {
         return a != b && b != c && c != a;
     }
 

@@ -74,6 +74,14 @@ public class OperationFabric<T extends Number> {
         uMap.put(operand, newFactory.create);
     }
 
+    public boolean containsU(String name) {
+        return uMap.containsKey(name);
+    }
+
+    public boolean containsBi(String name) {
+        return biMap.containsKey(name);
+    }
+
     private abstract static class Factory {
         protected final String operand;
         protected final int primary;
