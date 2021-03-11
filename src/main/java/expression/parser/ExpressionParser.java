@@ -13,7 +13,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
     private String lastLexeme;
 
     public ExpressionParser(Function<String, EType<T>> parseEType) {
-        super(Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', 'y', 'z', '+', '-', '*', '/', '(', ')', '\0', '^'));
+        super(Set.of('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'x', '+', '-', '*', '/', '(', ')', '\0', '^'));
         this.parseEType = parseEType;
         this.fabric = new OperationFabric<>();
         initFabric();
@@ -23,8 +23,8 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
         fabric.add("+" ,                                3557, 10, false, EType::add);
         fabric.add("-" ,                                2777, 10, true, EType::subtract);
         fabric.add("*" ,                                1747, 20, false, EType::multiply);
-        fabric.add("/" ,                                1213, 20, true, EType::divide);
-        fabric.add("^" ,                                6827, 30, false, EType::pow);
+        fabric.add("/" , "\\frac{%s} {%s}",       1213, 20, true, EType::divide);
+        fabric.add("^" , "(%s)^{%s}",             6827, 30, false, EType::pow);
         fabric.add("//", "\\log_{%2$s} (%1$s)",   4271, 30, true, EType::log);
 
         fabric.add("abs"   , "\\left|%s\\right|", true, 1607, EType::abs);
@@ -38,7 +38,7 @@ public class ExpressionParser<T extends Number> extends BaseParser implements Pa
         fabric.add("exp"   , "\\exp"            , false, 3469, EType::exp);
         fabric.add("ln"    , "\\ln"             , false, 7879, EType::ln);
         fabric.add("log2"  , "\\log_2 {%s}"     , true, 5693, EType::log2);
-        fabric.add("pow2"  ,  "2 ^ {%s}"        , true, 4079, EType::pow2);
+        fabric.add("pow2"  , "2 ^ {%s}"        , true, 4079, EType::pow2);
     }
 
     @Override

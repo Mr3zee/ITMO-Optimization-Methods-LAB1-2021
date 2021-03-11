@@ -1,5 +1,7 @@
 package app;
 
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import org.jfree.fx.FXGraphics2D;
@@ -64,7 +66,11 @@ class TexCanvas extends Canvas {
     public double prefHeight(double width) { return getHeight(); }
 
     public void setRealWidth() {
-        widthProperty().bind(parent.widthProperty().subtract(10).multiply(Math.max(1, this.box.getWidth() / 25)));
+        DoubleBinding parentWidth = parent.widthProperty().subtract(10);
+        if (parentWidth.get() / 21 < this.box.getWidth()) {
+            parentWidth = parentWidth.multiply(Math.max(1, this.box.getWidth() / 25));
+        }
+        widthProperty().bind(parentWidth);
     }
 
     public void setRealHeight() {
@@ -74,5 +80,8 @@ class TexCanvas extends Canvas {
     public void setPane(ScrollPane pane) {
         pane.contentProperty().set(this);
         this.parent = pane;
+        pane.widthProperty().addListener((e, o, n) -> {
+            setRealWidth();
+        });
     }
 }
