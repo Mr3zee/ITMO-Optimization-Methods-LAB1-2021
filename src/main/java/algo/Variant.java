@@ -20,6 +20,7 @@ public enum Variant {
     VAR_9("exp(3 * x) + 5 * (exp-2 * x)", 0d, 1d, "VAR_9"),
     VAR_10("0.2 * (x // 10) + (x - 2.3) ^ 2", 0.5, 2.5, "VAR_10"),
     CUSTOM(null, null, null, "CUSTOM"),
+    ERROR(null, null, null, "ERROR"),
     ;
 
     private Expression<Double> f;
@@ -27,7 +28,7 @@ public enum Variant {
     private Double right;
     private final String name;
 
-    public Function<Double, Double> getFuction() {
+    public Function<Double, Double> getFunction() {
         return f.toFunction(DoubleEType::toType);
     }
 
@@ -49,19 +50,6 @@ public enum Variant {
 
     public static final Map<String, Variant> VARIANTS = new TreeMap<>();
 
-    public static void init() {
-        VARIANTS.put(VAR_1.name, VAR_1);
-        VARIANTS.put(VAR_2.name, VAR_2);
-        VARIANTS.put(VAR_3.name, VAR_3);
-        VARIANTS.put(VAR_4.name, VAR_4);
-        VARIANTS.put(VAR_5.name, VAR_5);
-        VARIANTS.put(VAR_6.name, VAR_6);
-        VARIANTS.put(VAR_7.name, VAR_7);
-        VARIANTS.put(VAR_8.name, VAR_8);
-        VARIANTS.put(VAR_9.name, VAR_9);
-        VARIANTS.put(VAR_10.name, VAR_10);
-    }
-
     public static Variant createVariant(String f, Double left, Double right) {
         CUSTOM.f = Controller.PARSER.parse(f);
         CUSTOM.left = left;
@@ -76,10 +64,22 @@ public enum Variant {
         this.name = name;
     }
 
-
     @Override
     public String toString() {
         return f.toString();
+    }
+
+    public static void init() {
+        VARIANTS.put(VAR_1.name, VAR_1);
+        VARIANTS.put(VAR_2.name, VAR_2);
+        VARIANTS.put(VAR_3.name, VAR_3);
+        VARIANTS.put(VAR_4.name, VAR_4);
+        VARIANTS.put(VAR_5.name, VAR_5);
+        VARIANTS.put(VAR_6.name, VAR_6);
+        VARIANTS.put(VAR_7.name, VAR_7);
+        VARIANTS.put(VAR_8.name, VAR_8);
+        VARIANTS.put(VAR_9.name, VAR_9);
+        VARIANTS.put(VAR_10.name, VAR_10);
     }
 }
 

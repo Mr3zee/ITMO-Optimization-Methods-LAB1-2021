@@ -1,7 +1,6 @@
 package app;
 
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import org.jfree.fx.FXGraphics2D;
@@ -28,7 +27,7 @@ class TexCanvas extends Canvas {
         this.graphics = new FXGraphics2D(getGraphicsContext2D());
         this.graphics.scale(20, 20);
 
-        setCanvas(tex);
+        setCanvas(tex, Color.BLACK);
 
         widthProperty().addListener(evt -> draw());
         heightProperty().addListener(evt -> draw());
@@ -41,16 +40,16 @@ class TexCanvas extends Canvas {
         this.box.draw(graphics, dx, dy);
     }
 
-    private void setCanvas(String tex) {
+    private void setCanvas(String tex, Color color) {
         TeXFormula formula = new TeXFormula(tex);
-        formula.setColor(new Color(0, 0, 0));
+        formula.setColor(color);
         TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 25);
 
         this.box = icon.getBox();
     }
 
-    void changeCanvas(String tex) {
-        setCanvas(tex);
+    void changeCanvas(String tex, Color color) {
+        setCanvas(tex, color);
         draw();
     }
 

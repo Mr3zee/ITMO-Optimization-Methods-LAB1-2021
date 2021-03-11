@@ -17,17 +17,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -52,9 +54,7 @@ public class Controller implements Initializable {
     private AnchorPane scene;
 
     private void setupScene() {
-        scene.setOnMouseClicked((e) -> {
-            scene.requestFocus();
-        });
+        scene.setOnMouseClicked((e) -> scene.requestFocus());
     }
 
     @FXML
@@ -94,15 +94,20 @@ public class Controller implements Initializable {
     private static final ToggleGroup variantsGroup = new ToggleGroup();
 
     private void setupListViews() {
-        listAlgo.setCellFactory(a -> new ToggleListCell(algoGroup));
-        listAlgoNames.addAll(Optimization.ALGORITHMS.keySet());
-        listAlgo.setItems(listAlgoNames);
-        algoGroup.selectedToggleProperty().addListener(changeToggleImage);
+        setList(algoGroup, listAlgo, listAlgoNames, Optimization.ALGORITHMS.keySet());
+        setList(variantsGroup, listVariants, listVariantsNames, Variant.VARIANTS.keySet());
+    }
 
-        listVariants.setCellFactory(a -> new ToggleListCell(variantsGroup));
-        listVariantsNames.addAll(Variant.VARIANTS.keySet());
-        listVariants.setItems(listVariantsNames);
-        variantsGroup.selectedToggleProperty().addListener(changeToggleImage);
+    private void setList(
+            ToggleGroup group,
+            ListView<String> list,
+            ObservableList<String> stringList,
+            Set<String> namesSet
+    ) {
+        list.setCellFactory(a -> new ToggleListCell(group));
+        stringList.addAll(namesSet);
+        list.setItems(stringList);
+        group.selectedToggleProperty().addListener(changeToggleImage);
     }
 
     @SuppressWarnings("unchecked")
@@ -160,22 +165,35 @@ public class Controller implements Initializable {
         node.setStyle("visibility: visible;");
     }
 
+    private static class InputException extends RuntimeException {
+    }
+
     private void setLineChart() {
-        ToggleButton algoButton = (ToggleButton) algoGroup.getSelectedToggle();
-        Variant variant = getVariant();
-        if (variant != null) {
+        try {
+            ToggleButton algoButton = (ToggleButton) algoGroup.getSelectedToggle();
+            Variant variant = getVariant();
+            Double epsilon = getEpsilon();
+            if (variant == null) {
+                setTexText(DEFAULT_TEX_TEXT, Color.BLACK);
+                return;
+            }
+            if (epsilon == null || variant == Variant.ERROR) {
+                setTexError();
+                return;
+            }
             setField(leftField, variant.getLeft());
             setField(rightField, variant.getRight());
             setField(formulaField, variant.toString());
             setNewTexFormula(variant.getTex());
-        }
-        Double epsilon = getEpsilon();
-        if (algoButton != null && variant != null && epsilon != null) {
-            String algoName = algoButton.textProperty().getValue();
-            Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
-            enable(lineChart);
-        } else {
-            disable(lineChart);
+            if (algoButton != null) {
+                String algoName = algoButton.textProperty().getValue();
+                Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
+                enable(lineChart);
+            } else {
+                disable(lineChart);
+            }
+        } catch (InputException ignored) {
+
         }
     }
 
@@ -185,11 +203,6 @@ public class Controller implements Initializable {
 
     private void setField(TextField field, String value) {
         field.textProperty().set(value == null ? "" : value);
-    }
-
-    private void test(Algorithm algorithm, String algoName, Variant variant, String variantName, Double epsilon) {
-        OptimizationResult result = Optimization.run(algorithm, variant, epsilon);
-        System.out.format(Locale.US,"Algorithm %14s, %s: %.18f\n", algoName, variantName, result.getResult());
     }
 
     public static final Parser<Double> PARSER = new ExpressionParser<>(DoubleEType::parseDouble);
@@ -218,7 +231,7 @@ public class Controller implements Initializable {
                 if (!n) {
                     variantsGroup.selectToggle(null);
                     setLineChart();
-                };
+                }
             }
         };
         formulaField.focusedProperty().addListener(focusListener);
@@ -253,13 +266,18 @@ public class Controller implements Initializable {
             return Variant.VARIANTS.get(variantButton.textProperty().getValue());
         }
         try {
-            return Variant.createVariant(
-                    formulaField.textProperty().getValue(),
-                    getLeft(),
-                    getRight()
-            );
+            String expression = formulaField.textProperty().getValue();
+            if (expression.isBlank()) {
+                return null;
+            }
+            Double left = getLeft();
+            Double right = getRight();
+            if (left == null || right == null) {
+                return Variant.ERROR;
+            }
+            return Variant.createVariant(expression, left, right);
         } catch (ExpressionException ignored) {
-            return null;
+            return Variant.ERROR;
         }
     }
 
@@ -293,12 +311,14 @@ public class Controller implements Initializable {
 
     private TexCanvas texFormula;
 
+    private static final String DEFAULT_TEX_TEXT = "Your formula will be displayed here";
+
     private void setupCanvas() {
-        texFormula = createTex("Your formula will be displayed here", formulaCanvasPane, 0.5f, 2.7f);
+        texFormula = createTex(DEFAULT_TEX_TEXT, formulaCanvasPane, 0.5f, 2.7f);
     }
 
     private TexCanvas createTex(String tex, ScrollPane pane, float dx, float dy) {
-        TexCanvas texCanvas = new TexCanvas(tex.replace(" ", "\\;"), dx, dy);
+        TexCanvas texCanvas = new TexCanvas(tex, dx, dy);
         texCanvas.setPane(pane);
         texCanvas.setRealHeight();
         texCanvas.setRealWidth();
@@ -306,7 +326,19 @@ public class Controller implements Initializable {
     }
 
     private void setNewTexFormula(String tex) {
-        texFormula.changeCanvas(String.format("f(x)=%s", tex));
+        changeTex(String.format("f(x)=%s", tex), Color.BLACK);
+    }
+
+    private void setTexError() {
+        setTexText("Input fields contain errors", Color.RED);
+    }
+
+    private void setTexText(String text, Color color) {
+        changeTex(text.replace(" ", "\\;"), color);
+    }
+
+    private void changeTex(String tex, Color color) {
+        texFormula.changeCanvas(tex, color);
         texFormula.setRealWidth();
     }
 }
