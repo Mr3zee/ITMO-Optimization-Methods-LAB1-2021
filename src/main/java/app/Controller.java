@@ -165,35 +165,28 @@ public class Controller implements Initializable {
         node.setStyle("visibility: visible;");
     }
 
-    private static class InputException extends RuntimeException {
-    }
-
     private void setLineChart() {
-        try {
-            ToggleButton algoButton = (ToggleButton) algoGroup.getSelectedToggle();
-            Variant variant = getVariant();
-            Double epsilon = getEpsilon();
-            if (variant == null) {
-                setTexText(DEFAULT_TEX_TEXT, Color.BLACK);
-                return;
-            }
-            if (epsilon == null || variant == Variant.ERROR) {
-                setTexError();
-                return;
-            }
-            setField(leftField, variant.getLeft());
-            setField(rightField, variant.getRight());
-            setField(formulaField, variant.toString());
-            setNewTexFormula(variant.getTex());
-            if (algoButton != null) {
-                String algoName = algoButton.textProperty().getValue();
-                Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
-                enable(lineChart);
-            } else {
-                disable(lineChart);
-            }
-        } catch (InputException ignored) {
-
+        ToggleButton algoButton = (ToggleButton) algoGroup.getSelectedToggle();
+        Variant variant = getVariant();
+        Double epsilon = getEpsilon();
+        if (variant == null) {
+            setTexText(DEFAULT_TEX_TEXT, Color.BLACK);
+            return;
+        }
+        if (epsilon == null || variant == Variant.ERROR) {
+            setTexError();
+            return;
+        }
+        setField(leftField, variant.getLeft());
+        setField(rightField, variant.getRight());
+        setField(formulaField, variant.toString());
+        setNewTexFormula(variant.getTex());
+        if (algoButton != null) {
+            String algoName = algoButton.textProperty().getValue();
+            Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
+            enable(lineChart);
+        } else {
+            disable(lineChart);
         }
     }
 
