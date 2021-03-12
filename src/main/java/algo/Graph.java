@@ -19,6 +19,10 @@ public class Graph{
         iterations.add(new Iteration(left, right));
     }
 
+    public void addGraphToLastIteration(SingleGraph graph) {
+        iterations.get(iterations.size() - 1).addGraph(graph);
+    }
+
     public String getName() {
         return name;
     }

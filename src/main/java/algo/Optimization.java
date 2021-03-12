@@ -43,6 +43,7 @@ public class Optimization {
             } else {
                 left = x;
             }
+            graph.addIteration(left, right);
         } while (checkBounds(left, right, epsilon));
         return f.apply(x);
     });
@@ -67,6 +68,7 @@ public class Optimization {
             } else {
                 right = x2;
             }
+            graph.addIteration(left, right);
         } while (checkBounds(left, right, epsilon));
         return f.apply(getMiddle(left, right));
     });
@@ -91,6 +93,7 @@ public class Optimization {
                     an = left;
                     bn = mu;
                 }
+                graph.addIteration(an, bn);
                 break;
             }
             if (f.apply(lambda) > f.apply(mu)) {
@@ -102,6 +105,7 @@ public class Optimization {
                 mu = lambda;
                 lambda = getFibonacciVar(left, right, n, k + 2, k);
             }
+            graph.addIteration(left, right);
         }
         return f.apply(getMiddle(an, bn));
     });
@@ -129,6 +133,7 @@ public class Optimization {
         double b = getMiddle(a, c), x;
         while (checkBounds(a, c, epsilon)) {
             x = parabolicMinimum(f, a, b, c);
+            graph.addGraphToLastIteration(new SingleGraph("Parabola", createParabola(f, a, b, c), a, c));
             if (f.apply(x) < f.apply(b)) {
                 if (x < b) {
                     c = b;
@@ -143,6 +148,7 @@ public class Optimization {
                     c = x;
                 }
             }
+            graph.addIteration(a, c);
         }
         return f.apply(b);
     });
@@ -151,6 +157,15 @@ public class Optimization {
         double fa = f.apply(a), fb = f.apply(b), fc = f.apply(c);
         return b + 0.5 * ((fa - fb) * (c - b) * (c - b) - (fc - fb) * (b - a) * (b - a))
                 / ((fa - fb) * (c - b) + (fc - fb) * (b - a));
+    }
+
+    private static Function<Double, Double> createParabola(Function<Double, Double> f, double x1, double x2, double x3) {
+        double f1 = f.apply(x1), f2 = f.apply(x2), f3 = f.apply(x3);
+        double d = ((x1 - x2) * (x1 * x2 - x1 * x3 - x2 * x3 + x3 * x3));
+        double a =   ( (f1 - f3)           * x2      + (f2 - f1)           * x3      + (f3 - f2)           * x1     ) / d;
+        double b = - ( (f1 - f3)           * x2 * x2 + (f2 - f1)           * x3 * x3 + (f3 - f2)           * x1 * x1) / d;
+        double c = - (-(f1 * x3 - f3 * x1) * x2 * x2 - (f2 * x1 - f1 * x2) * x3 * x3 - (f3 * x2 - f2 * x3) * x1 * x1) / d;
+        return x -> a * x * x + b * x + c;
     }
 
     public static final Algorithm BRENT = unwrapAlgo("BRENT", (f, a, c, epsilon, result, graph) -> {
@@ -164,7 +179,7 @@ public class Optimization {
             if (different(w, x, v) && different(fw, fx, fv)
                     && (u = parabolicMinimum(f, w, x, v)) == u
                     && a <= u && u <= c && Math.abs(u - x) < (g / 2)) {
-                // u accepted
+                graph.addGraphToLastIteration(new SingleGraph("Parabola", createParabola(f, w, x, v), a, c));
             } else  {
                 // u - rejected, u - golden section
                 if (x < getMiddle(a, c)) {
@@ -198,6 +213,7 @@ public class Optimization {
                     fv = fu;
                 }
             }
+            graph.addIteration(a, c);
             d = c - a;
         }
         return f.apply(x);

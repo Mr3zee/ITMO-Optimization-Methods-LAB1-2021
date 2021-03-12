@@ -214,7 +214,6 @@ public class Controller implements Initializable {
     }
 
     private void drawGraph(Graph graph) {
-
         XYChart.Series<Double, Double> series = new XYChart.Series<>();
         series.setName(graph.getName());
         series.getData().addAll(graph.getPoints(0).stream().map(

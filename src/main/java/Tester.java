@@ -8,7 +8,9 @@ import expression.type.EType;
 
 public class Tester {
     public static void main(String[] args) {
-        Parser<Double> parser = new ExpressionParser<>(DoubleEType::parseDouble);
-        System.out.println(parser.parse("sin(x)").toFunction(DoubleEType::toType).apply(Math.PI));
+        int n = 17;
+        double v = (Math.log(n - 1)) / Math.log(2);
+        System.out.println(v);
+        System.out.println(1 << (int)(v + 1));
     }
 }
