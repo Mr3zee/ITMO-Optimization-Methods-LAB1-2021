@@ -9,6 +9,6 @@ import expression.type.EType;
 public class Tester {
     public static void main(String[] args) {
         Parser<Double> parser = new ExpressionParser<>(DoubleEType::parseDouble);
-        System.out.println(parser.parse("cos(2) * exp(1 + x)").toTex());
+        System.out.println(parser.parse("sin(x)").toFunction(DoubleEType::toType).apply(Math.PI));
     }
 }

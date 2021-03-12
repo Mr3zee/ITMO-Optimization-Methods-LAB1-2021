@@ -26,8 +26,6 @@ import javafx.scene.text.Text;
 
 import java.awt.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -159,9 +157,19 @@ public class Controller implements Initializable {
     @FXML
     private LineChart<Double, Double> lineChart;
 
+    @FXML
+    private NumberAxis xAxis;
+
+    @FXML
+    private NumberAxis yAxis;
+
     private void setupLineChart() {
-        lineChart.getXAxis().setLabel("X axis");
-        lineChart.getYAxis().setLabel("Y axis");
+        xAxis.setLabel("X axis");
+        yAxis.setLabel("Y axis");
+        xAxis.setAutoRanging(false);
+
+        lineChart.setCreateSymbols(false);
+        lineChart.setAnimated(false);
     }
 
     private static void disable(Node node) {
@@ -192,7 +200,13 @@ public class Controller implements Initializable {
             String algoName = algoButton.textProperty().getValue();
             Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
             OptimizationResult result = Optimization.run(algorithm, variant, epsilon);
+
+            xAxis.setLowerBound(result.getLeftBound());
+            xAxis.setUpperBound(result.getRightBound());
+            xAxis.setTickUnit((result.getRightBound() - result.getLeftBound()) / 20);
+
             result.getGraphs().forEach(this::drawGraph);
+
             enable(lineChart);
         } else {
             disable(lineChart);
@@ -200,10 +214,11 @@ public class Controller implements Initializable {
     }
 
     private void drawGraph(Graph graph) {
+
         XYChart.Series<Double, Double> series = new XYChart.Series<>();
         series.setName(graph.getName());
-        series.getData().addAll(graph.getPoints().stream().map(
-                p -> new XYChart.Data<Double, Double>(p.getX(), p.getY())
+        series.getData().addAll(graph.getPoints(0).stream().map(
+                p -> new XYChart.Data<>(p.getX(), p.getY())
         ).collect(Collectors.toList()));
         lineChart.getData().clear();
         lineChart.getData().add(series);

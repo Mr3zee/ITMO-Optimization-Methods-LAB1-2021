@@ -223,5 +223,4 @@ public class OperationFabric<T extends Number> {
             }
         }
     }
-    
 }
