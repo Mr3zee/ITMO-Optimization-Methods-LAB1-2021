@@ -35,7 +35,6 @@ import java.util.List;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -175,7 +174,7 @@ public class Controller implements Initializable {
     @FXML
     private NumberAxis yAxis;
 
-    private class SmartLineChart {
+    private class LineChartSpecs {
         private MainGraph graph;
         private int iteration;
         private int maxIteration;
@@ -235,6 +234,10 @@ public class Controller implements Initializable {
             return maxIteration;
         }
 
+        public int iterationDelta() {
+            return maxIteration - iteration;
+        }
+
         public void incIteration() {
             iteration += iteration < maxIteration ? 1 : 0;
         }
@@ -263,7 +266,7 @@ public class Controller implements Initializable {
     @FXML
     private LineChart<Double, Double> lineChart;
 
-    private final SmartLineChart lineChartSpecs = new SmartLineChart();
+    private final LineChartSpecs lineChartSpecs = new LineChartSpecs();
 
     private void setupLineChart() {
         xAxis.setLabel("X axis");
@@ -443,12 +446,15 @@ public class Controller implements Initializable {
         progressTimeline = new Timeline(new KeyFrame(Duration.millis(400), e -> {
             lineChartSpecs.incIteration();
             drawIteration();
+            if (lineChartSpecs.iterationDelta() == 0) {
+                stopTimeline();
+            }
         }));
 
         playButton.setUserData(false);
         playButton.setOnMouseClicked(e -> {
-            if (!(boolean) playButton.getUserData()) {
-                progressTimeline.setCycleCount(lineChartSpecs.getMaxIteration() - lineChartSpecs.getIteration());
+            if (!(boolean) playButton.getUserData() && lineChartSpecs.iterationDelta() != 0) {
+                progressTimeline.setCycleCount(lineChartSpecs.iterationDelta());
                 progressTimeline.play();
                 setBackground(playButton, shrekStopImage);
                 playButton.setUserData(true);
