@@ -3,9 +3,9 @@ package algo;
 import java.util.function.Function;
 
 public class SingleGraph extends MainGraph {
-    public SingleGraph(String name, Function<Double, Double> f, double left, double right) {
+    public SingleGraph(String name, Function<Double, Double> f) {
         super(name, f);
-        super.addIteration(left, right);
+        super.addIteration();
     }
 
     @Override
@@ -14,12 +14,7 @@ public class SingleGraph extends MainGraph {
     }
 
     @Override
-    public double getLeft(int iterationIndex) {
-        throw new UnsupportedOperationException("getLeft");
-    }
-
-    @Override
-    public double getRight(int iterationIndex) {
-        throw new UnsupportedOperationException("getRight");
+    public void addIteration() {
+        throw new UnsupportedOperationException("addIteration");
     }
 }

@@ -2,6 +2,7 @@ package algo;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public class Optimization {
     private interface OptimizationAlgorithm extends QuinaryFunction<
@@ -132,7 +133,6 @@ public class Optimization {
         double b = getMiddle(a, c), x;
         while (checkBounds(a, c, epsilon)) {
             x = parabolicMinimum(f, a, b, c);
-            graph.addGraphToLastIteration(new SingleGraph("Parabola", createParabola(f, a, b, c), a, c));
             if (f.apply(x) < f.apply(b)) {
                 if (x < b) {
                     c = b;
@@ -148,9 +148,11 @@ public class Optimization {
                 }
             }
             graph.addIteration(a, c);
+            graph.addGraphToLastIteration(createParabola(f, a, b, c));
         }
         return f.apply(b);
     });
+
 
     private static double parabolicMinimum(Function<Double, Double> f, double a, double b, double c) {
         double fa = f.apply(a), fb = f.apply(b), fc = f.apply(c);
@@ -158,13 +160,13 @@ public class Optimization {
                 / ((fa - fb) * (c - b) + (fc - fb) * (b - a));
     }
 
-    private static Function<Double, Double> createParabola(Function<Double, Double> f, double x1, double x2, double x3) {
+    private static SingleGraph createParabola(Function<Double, Double> f, double x1, double x2, double x3) {
         double f1 = f.apply(x1), f2 = f.apply(x2), f3 = f.apply(x3);
         double d = ((x1 - x2) * (x1 * x2 - x1 * x3 - x2 * x3 + x3 * x3));
         double a =   ( (f1 - f3)           * x2      + (f2 - f1)           * x3      + (f3 - f2)           * x1     ) / d;
         double b = - ( (f1 - f3)           * x2 * x2 + (f2 - f1)           * x3 * x3 + (f3 - f2)           * x1 * x1) / d;
         double c = - (-(f1 * x3 - f3 * x1) * x2 * x2 - (f2 * x1 - f1 * x2) * x3 * x3 - (f3 * x2 - f2 * x3) * x1 * x1) / d;
-        return x -> a * x * x + b * x + c;
+        return new SingleGraph("Parabola", x -> a * x * x + b * x + c);
     }
 
     public static final Algorithm BRENT = unwrapAlgo("BRENT", (f, a, c, epsilon, graph) -> {
@@ -178,7 +180,7 @@ public class Optimization {
             if (different(w, x, v) && different(fw, fx, fv)
                     && (u = parabolicMinimum(f, w, x, v)) == u
                     && a <= u && u <= c && Math.abs(u - x) < (g / 2)) {
-                graph.addGraphToLastIteration(new SingleGraph("Parabola", createParabola(f, w, x, v), a, c));
+                graph.addGraphToLastIteration(createParabola(f, w, x, v));
             } else  {
                 // u - rejected, u - golden section
                 if (x < getMiddle(a, c)) {

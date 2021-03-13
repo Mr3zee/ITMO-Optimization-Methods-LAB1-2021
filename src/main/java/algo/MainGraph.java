@@ -21,6 +21,10 @@ public class MainGraph implements Graph {
         iterations.add(new Iteration(left, right));
     }
 
+    public void addIteration() {
+        iterations.add(new Iteration());
+    }
+
     public void addGraphToLastIteration(SingleGraph graph) {
         iterations.get(iterations.size() - 1).addGraph(graph);
     }
@@ -60,14 +64,6 @@ public class MainGraph implements Graph {
             }
         }
         return initial;
-    }
-
-    public double getLeft(int iterationIndex) {
-        return iterations.get(iterationIndex).getLeft();
-    }
-
-    public double getRight(int iterationIndex) {
-        return iterations.get(iterationIndex).getRight();
     }
 
     public int getNIterations() {
