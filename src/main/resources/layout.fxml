@@ -85,11 +85,11 @@
                         <NumberAxis fx:id="yAxis" side="LEFT" />
                     </yAxis>
                 </LineChart>
-            <AnchorPane layoutX="1158.0" layoutY="569.0" prefHeight="37.0" prefWidth="107.0">
+            <AnchorPane layoutX="1114.0" layoutY="551.0" prefHeight="52.0" prefWidth="152.0">
                <children>
-                  <Button fx:id="playButton" layoutX="40.0" layoutY="5.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" AnchorPane.leftAnchor="40.0" />
-                  <Button fx:id="leftButton" layoutY="5.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" AnchorPane.leftAnchor="0.0" />
-                  <Button fx:id="rightButton" layoutX="80.0" layoutY="5.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" AnchorPane.leftAnchor="80.0" />
+                  <Button fx:id="playButton" layoutX="54.0" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="54.0" />
+                  <Button fx:id="leftButton" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="0.0" />
+                  <Button fx:id="rightButton" layoutX="108.0" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="108.0" />
                </children>
             </AnchorPane>
             </children>

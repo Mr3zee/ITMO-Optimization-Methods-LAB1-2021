@@ -9,6 +9,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -21,6 +22,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -72,9 +74,9 @@ public class Controller implements Initializable {
     private static Font texFont19;
 
     private void loadFonts() {
-        shrekFont20 = Font.loadFont(getClass().getResourceAsStream("/Shrek-Font.ttf"), 20);
-        shrekFont24 = Font.loadFont(getClass().getResourceAsStream("/Shrek-Font.ttf"), 26);
-        texFont19 = Font.loadFont(getClass().getResourceAsStream("/Tex-Font.ttf"), 19);
+        shrekFont20 = Font.loadFont(getClass().getResourceAsStream("/fonts/Shrek-Font.ttf"), 20);
+        shrekFont24 = Font.loadFont(getClass().getResourceAsStream("/fonts/Shrek-Font.ttf"), 26);
+        texFont19 = Font.loadFont(getClass().getResourceAsStream("/fonts/Tex-Font.ttf"), 19);
 
         Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/base/jlm_cmmi10.ttf"), 1);
         Font.loadFont(getClass().getResourceAsStream("/org/scilab/forge/jlatexmath/fonts/maths/jlm_cmsy10.ttf"), 1);
@@ -126,8 +128,8 @@ public class Controller implements Initializable {
 
     private static class ToggleListCell extends ListCell<String> {
         private final ToggleGroup group;
-        private static final Image selected = new Image("/selected-button.png", 35, 35, true, true);
-        private static final Image notSelected = new Image("/not-selected-button.png", 35, 35, true, true);
+        private static final Image selected = new Image("/images/selected-button.png", 35, 35, true, true);
+        private static final Image notSelected = new Image("/images/not-selected-button.png", 35, 35, true, true);
         private final ImageView iv;
         private final Function<ToggleButton, Consumer<Boolean>> setSelected;
 
@@ -164,6 +166,9 @@ public class Controller implements Initializable {
     private NumberAxis yAxis;
 
     private class SmartLineChart {
+        private MainGraph graph;
+        private int iteration;
+        private int maxIteration;
         private double left;
         private double right;
         private double top;
@@ -171,7 +176,19 @@ public class Controller implements Initializable {
         private double xDelta;
         private double yDelta;
 
-        public void setDimensions(double left, double right, double top, double bottom) {
+        public void setDimensions(
+                MainGraph graph,
+                int iteration,
+                int nIterations,
+                double left,
+                double right,
+                double top,
+                double bottom
+        ) {
+            this.graph = graph;
+            this.iteration = iteration;
+            this.maxIteration = nIterations - 1;
+
             double xDelta = (right - left) / 20;
             double yDelta = (top - bottom) / 20;
 
@@ -196,6 +213,26 @@ public class Controller implements Initializable {
             yAxis.setTickUnit(yDelta);
         }
 
+        public MainGraph getGraph() {
+            return graph;
+        }
+
+        public int getIteration() {
+            return iteration;
+        }
+
+        public int getMaxIteration() {
+            return maxIteration;
+        }
+
+        public void incIteration() {
+            iteration += iteration < maxIteration ? 1 : 0;
+        }
+
+        public void decIteration() {
+            iteration -= iteration > 0 ? 1 : 0;
+        }
+
         public double getLeft() {
             return left;
         }
@@ -210,14 +247,6 @@ public class Controller implements Initializable {
 
         public double getBottom() {
             return bottom;
-        }
-
-        public double getXDelta() {
-            return xDelta;
-        }
-
-        public double getYDelta() {
-            return yDelta;
         }
     }
 
@@ -275,9 +304,9 @@ public class Controller implements Initializable {
             double top = graph.getMax(left, right);
             double bottom = graph.getMin(left, right);
 
-            lineChartSpecs.setDimensions(left, right, top, bottom);
+            lineChartSpecs.setDimensions(graph, 0, graph.getNIterations(), left, right, top, bottom);
 
-            drawIteration(graph);
+            drawIteration();
 
             enable(lineChart);
         } else {
@@ -285,15 +314,12 @@ public class Controller implements Initializable {
         }
     }
 
-    private void drawIteration(MainGraph graph) {
-        drawIteration(graph, 0);
-    }
-
-    private void drawIteration(MainGraph graph, int index) {
+    private void drawIteration() {
         lineChart.getData().clear();
+        MainGraph graph = lineChartSpecs.getGraph();
         drawGraph(graph, lineChartSpecs.getLeft(), lineChartSpecs.getRight());
 
-        Iteration iteration = graph.getIteration(index);
+        Iteration iteration = graph.getIteration(lineChartSpecs.getIteration());
         for (SingleGraph singleGraph : iteration.getSingleGraphs()) {
             drawGraph(singleGraph, lineChartSpecs.getLeft(), lineChartSpecs.getRight());
         }
@@ -326,12 +352,25 @@ public class Controller implements Initializable {
     @FXML
     private Button rightButton;
 
-    private static final Image shrekLeft = new Image("/shrek-left.png", 27, 27, true, true);
-    private static final Image shrekRight = new Image("/shrek-right.png", 27, 27, true, true);
+    private static final int shrekButtonSize = 44;
+    private static final Image shrekLeft = new Image("/images/shrek-left.png", shrekButtonSize, shrekButtonSize, true, true);
+    private static final Image shrekRight = new Image("/images/shrek-right.png", shrekButtonSize, shrekButtonSize, true, true);
+    private static final Image shrekPlay = new Image("/images/shrek-play.png", shrekButtonSize, shrekButtonSize, true, true);
+    private static final Image shrekStop = new Image("/images/shrek-stop.png", shrekButtonSize, shrekButtonSize, true, true);
 
     private void setupButtons() {
         setButton(leftButton, shrekLeft);
         setButton(rightButton, shrekRight);
+        setButton(playButton, shrekPlay);
+
+        Function<Procedure, EventHandler<MouseEvent>> onClicked = f ->  mouseEvent -> {
+            if (lineChartSpecs.getGraph() != null) {
+                f.run();
+                drawIteration();
+            }
+        };
+        leftButton.setOnMouseClicked(onClicked.apply(lineChartSpecs::decIteration));
+        rightButton.setOnMouseClicked(onClicked.apply(lineChartSpecs::incIteration));
     }
 
     private void setButton(Button button, Image image) {

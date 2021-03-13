@@ -69,4 +69,8 @@ public class MainGraph implements Graph {
     public double getRight(int iterationIndex) {
         return iterations.get(iterationIndex).getRight();
     }
+
+    public int getNIterations() {
+        return iterations.size();
+    }
 }

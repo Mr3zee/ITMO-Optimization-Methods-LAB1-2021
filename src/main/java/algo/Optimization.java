@@ -4,15 +4,14 @@ import java.util.*;
 import java.util.function.Function;
 
 public class Optimization {
-    private interface OptimizationAlgorithm extends SenaryFunction<
-            Function<Double, Double>,
-            Double,
-            Double,
-            Double,
-            OptimizationResult,
-            MainGraph,
-            Double
-            > { }
+    private interface OptimizationAlgorithm extends QuinaryFunction<
+                Function<Double, Double>,
+                Double,
+                Double,
+                Double,
+                MainGraph,
+                Double
+                > { }
 
     private static Algorithm unwrapAlgo(String name, OptimizationAlgorithm algo) {
         return new Algorithm((variant, epsilon) -> {
@@ -22,7 +21,7 @@ public class Optimization {
             MainGraph graph = new MainGraph("f(x)", variant.getFunction());
             graph.addIteration(left, right);
             result.setGraph(graph);
-            double finalPoint = algo.apply(variant.getFunction(), left, right, epsilon, result, graph);
+            double finalPoint = algo.apply(variant.getFunction(), left, right, epsilon, graph);
             result.setResult(finalPoint);
             return result;
         });
@@ -32,7 +31,7 @@ public class Optimization {
         return algorithm.f.apply(variant, epsilon);
     }
 
-    public static final Algorithm DICHOTOMY = unwrapAlgo("DICHOTOMY", (f, left, right, epsilon, result, graph) -> {
+    public static final Algorithm DICHOTOMY = unwrapAlgo("DICHOTOMY", (f, left, right, epsilon, graph) -> {
         double x;
         do {
             x = getMiddle(left, right);
@@ -58,7 +57,7 @@ public class Optimization {
 
     private static final double REVERSED_GOLDEN_CONST = (Math.sqrt(5) - 1) / 2;
 
-    public static final Algorithm GOLDEN_SECTION = unwrapAlgo("GOLDEN_SECTION", (f, left, right, epsilon, result, graph) -> {
+    public static final Algorithm GOLDEN_SECTION = unwrapAlgo("GOLDEN_SECTION", (f, left, right, epsilon, graph) -> {
         do {
             double delta = (right - left) * REVERSED_GOLDEN_CONST;
             double x1 = right - delta;
@@ -75,7 +74,7 @@ public class Optimization {
 
     private static final List<Double> FIBONACCI_NUMBERS = getNFibonacci();
 
-    public static final Algorithm FIBONACCI = unwrapAlgo("FIBONACCI", (f, left, right, epsilon, result, graph) -> {
+    public static final Algorithm FIBONACCI = unwrapAlgo("FIBONACCI", (f, left, right, epsilon, graph) -> {
         int n = calculateFibonacciConst(left, right, epsilon);
         int k = 0;
         double lambda = getFibonacciVar(left, right, n, k + 2, k);
@@ -129,7 +128,7 @@ public class Optimization {
         return arr;
     }
 
-    public static final Algorithm PARABOLIC = unwrapAlgo("PARABOLIC", (f, a, c, epsilon, result, graph) -> {
+    public static final Algorithm PARABOLIC = unwrapAlgo("PARABOLIC", (f, a, c, epsilon, graph) -> {
         double b = getMiddle(a, c), x;
         while (checkBounds(a, c, epsilon)) {
             x = parabolicMinimum(f, a, b, c);
@@ -168,7 +167,7 @@ public class Optimization {
         return x -> a * x * x + b * x + c;
     }
 
-    public static final Algorithm BRENT = unwrapAlgo("BRENT", (f, a, c, epsilon, result, graph) -> {
+    public static final Algorithm BRENT = unwrapAlgo("BRENT", (f, a, c, epsilon, graph) -> {
         double x, w, v, d, e, g, u, fx, fw, fv;
         x = w = v = a + REVERSED_GOLDEN_CONST * (c - a);
         fx = fw = fv = f.apply(x);
