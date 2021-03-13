@@ -77,14 +77,21 @@
                   </Text>
                     </children>
                 </AnchorPane>
-                <LineChart fx:id="lineChart" layoutX="225.0" layoutY="86.0" prefHeight="521.0" prefWidth="1055.0" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
+                <LineChart fx:id="lineChart" layoutX="225.0" layoutY="86.0" prefHeight="483.0" prefWidth="1055.0" AnchorPane.bottomAnchor="151.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
                     <xAxis>
-                        <NumberAxis fx:id="xAxis" side="BOTTOM" />
+                        <NumberAxis side="BOTTOM" fx:id="xAxis" />
                     </xAxis>
                     <yAxis>
                         <NumberAxis fx:id="yAxis" side="LEFT" />
                     </yAxis>
                 </LineChart>
+            <AnchorPane layoutX="1158.0" layoutY="569.0" prefHeight="37.0" prefWidth="107.0">
+               <children>
+                  <Button fx:id="playButton" layoutX="40.0" layoutY="5.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" AnchorPane.leftAnchor="40.0" />
+                  <Button fx:id="leftButton" layoutY="5.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" AnchorPane.leftAnchor="0.0" />
+                  <Button fx:id="rightButton" layoutX="80.0" layoutY="5.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="27.0" AnchorPane.leftAnchor="80.0" />
+               </children>
+            </AnchorPane>
             </children>
         </AnchorPane>
     </children>

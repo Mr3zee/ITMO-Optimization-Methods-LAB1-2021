@@ -16,11 +16,12 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -49,6 +50,7 @@ public class Controller implements Initializable {
         setLineChart();
         setupTextFields();
         setupLineChart();
+        setupButtons();
     }
 
     @FXML
@@ -226,12 +228,14 @@ public class Controller implements Initializable {
 
     private void setupLineChart() {
         xAxis.setLabel("X axis");
-        yAxis.setLabel("Y axis");
+        yAxis.setLabel("F(X) axis");
         xAxis.setAutoRanging(false);
         yAxis.setAutoRanging(false);
 
         lineChart.setCreateSymbols(false);
         lineChart.setAnimated(false);
+        lineChart.setLegendVisible(false);
+        // TODO: 13.03.2021 add legend
     }
 
     private static void disable(Node node) {
@@ -311,6 +315,35 @@ public class Controller implements Initializable {
                 .filter(p -> !Double.isNaN(p.getY()))
                 .map(p -> new XYChart.Data<>(p.getX(), p.getY()))
                 .collect(Collectors.toList());
+    }
+
+    @FXML
+    private Button leftButton;
+
+    @FXML
+    private Button playButton;
+
+    @FXML
+    private Button rightButton;
+
+    private static final Image shrekLeft = new Image("/shrek-left.png", 27, 27, true, true);
+    private static final Image shrekRight = new Image("/shrek-right.png", 27, 27, true, true);
+
+    private void setupButtons() {
+        setButton(leftButton, shrekLeft);
+        setButton(rightButton, shrekRight);
+    }
+
+    private void setButton(Button button, Image image) {
+        button.setBackground(new Background(
+                new BackgroundImage(
+                        image,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        BackgroundSize.DEFAULT
+                )
+        ));
     }
 
     private void setField(TextField field, Double value) {
