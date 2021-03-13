@@ -104,10 +104,6 @@
     -fx-background-color: #D3CCA5;
 }
 
-#chartPane {
-    visibility: hidden;
-}
-
 .text-field {
     -fx-padding: 7;
 }
@@ -119,4 +115,16 @@
 #leftButton:pressed, #playButton:pressed, #rightButton:pressed {
     -fx-scale-x: 0.95;
     -fx-scale-y: 0.95;
+}
+
+.progress-bar .track {
+    -fx-background-color: transparent;
+    -fx-border-color: #523213;
+    -fx-border-radius: 4;
+    -fx-border-width: 4;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #523213;
+    -fx-background-radius: 0;
 }

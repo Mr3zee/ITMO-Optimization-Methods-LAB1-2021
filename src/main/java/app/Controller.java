@@ -52,7 +52,7 @@ public class Controller implements Initializable {
         setLineChart();
         setupTextFields();
         setupLineChart();
-        setupButtons();
+        setupControls();
     }
 
     @FXML
@@ -330,6 +330,25 @@ public class Controller implements Initializable {
         for (VLineGraph vLineGraph : iteration.getVLineGraphs()) {
             drawGraph(vLineGraph, lineChartSpecs.getBottom(), lineChartSpecs.getTop());
         }
+
+        double progress = calcProgress();
+        progressBar.setProgress(progress);
+        moveShrekProgress(progress);
+    }
+
+    public double calcProgress() {
+        return (double) lineChartSpecs.getIteration() / lineChartSpecs.getMaxIteration();
+    }
+
+    public void moveShrekProgress(double progress) {
+        if (progress == 1) {
+            setBackground(shrekProgressFinishPane, shrekProgress100Image);
+            disable(shrekProgressPane);
+        } else {
+            enable(shrekProgressPane);
+            setBackground(shrekProgressFinishPane, shrekProgressNot100Image);
+            shrekProgressPane.setTranslateX(progress * progressBar.getWidth());
+        }
     }
 
     private void drawGraph(final Graph graph, double lowerBound, double upperBound) {
@@ -355,16 +374,32 @@ public class Controller implements Initializable {
     @FXML
     private Button rightButton;
 
-    private static final int shrekButtonSize = 44;
-    private static final Image shrekLeft = new Image("/images/shrek-left.png", shrekButtonSize, shrekButtonSize, true, true);
-    private static final Image shrekRight = new Image("/images/shrek-right.png", shrekButtonSize, shrekButtonSize, true, true);
-    private static final Image shrekPlay = new Image("/images/shrek-play.png", shrekButtonSize, shrekButtonSize, true, true);
-    private static final Image shrekStop = new Image("/images/shrek-stop.png", shrekButtonSize, shrekButtonSize, true, true);
+    @FXML
+    private ProgressBar progressBar;
 
-    private void setupButtons() {
-        setButton(leftButton, shrekLeft);
-        setButton(rightButton, shrekRight);
-        setButton(playButton, shrekPlay);
+    @FXML
+    private Pane shrekProgressPane;
+
+    @FXML
+    private Pane shrekProgressFinishPane;
+
+    private static final int shrekButtonSize = 44;
+    private static final int shrekProgressSize = 54;
+
+    private static final Image shrekLeftImage = new Image("/images/shrek-left.png", shrekButtonSize, shrekButtonSize, true, true);
+    private static final Image shrekRightImage = new Image("/images/shrek-right.png", shrekButtonSize, shrekButtonSize, true, true);
+    private static final Image shrekPlayImage = new Image("/images/shrek-play.png", shrekButtonSize, shrekButtonSize, true, true);
+    private static final Image shrekStopImage = new Image("/images/shrek-stop.png", shrekButtonSize, shrekButtonSize, true, true);
+    private static final Image shrekProgressImage = new Image("/images/shrek-progress.png", shrekButtonSize, shrekButtonSize, true, true);
+    private static final Image shrekProgress100Image = new Image("/images/shrek-progress-100.png", shrekProgressSize, shrekProgressSize, true, true);
+    private static final Image shrekProgressNot100Image = new Image("/images/shrek-progress-not-100.png", shrekProgressSize, shrekProgressSize, true, true);
+
+    private void setupControls() {
+        disable(chartPane);
+
+        setBackground(leftButton, shrekLeftImage);
+        setBackground(rightButton, shrekRightImage);
+        setBackground(playButton, shrekPlayImage);
 
         Function<Procedure, EventHandler<MouseEvent>> onClicked = f ->  mouseEvent -> {
             if (lineChartSpecs.getGraph() != null) {
@@ -374,9 +409,13 @@ public class Controller implements Initializable {
         };
         leftButton.setOnMouseClicked(onClicked.apply(lineChartSpecs::decIteration));
         rightButton.setOnMouseClicked(onClicked.apply(lineChartSpecs::incIteration));
+
+        setBackground(shrekProgressPane, shrekProgressImage);
+        setBackground(shrekProgressFinishPane, shrekProgressNot100Image);
+        progressBar.widthProperty().addListener((e, o, n) -> moveShrekProgress(calcProgress()));
     }
 
-    private void setButton(Button button, Image image) {
+    private void setBackground(Region button, Image image) {
         button.setBackground(new Background(
                 new BackgroundImage(
                         image,

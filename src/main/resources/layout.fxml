@@ -57,11 +57,11 @@
                </children></AnchorPane>
                 <AnchorPane layoutX="225.0" prefHeight="86.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <TextField fx:id="formulaField" layoutX="108.0" layoutY="22.0" prefHeight="43.0" prefWidth="492.0" promptText="Enter Your Formula Here" AnchorPane.leftAnchor="108.0">
+                        <TextField fx:id="formulaField" layoutX="108.0" layoutY="22.0" prefHeight="43.0" prefWidth="492.0" promptText="Enter Your Formula Here" AnchorPane.leftAnchor="108.0" AnchorPane.rightAnchor="455.0">
                      <font>
                         <Font size="14.0" />
                      </font></TextField>
-                        <TextField fx:id="epsilonField" layoutX="734.0" layoutY="22.0" prefHeight="43.0" prefWidth="261.0" promptText="Enter Epsilon Value" text="0.00001" AnchorPane.leftAnchor="734.0">
+                        <TextField fx:id="epsilonField" layoutX="771.0" layoutY="23.0" prefHeight="43.0" prefWidth="261.0" promptText="Enter Epsilon Value" text="0.00001" AnchorPane.rightAnchor="41.0">
                      <font>
                         <Font size="14.0" />
                      </font></TextField>
@@ -70,7 +70,7 @@
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <Text fx:id="epsilonText" fill="#c3bc95" layoutX="644.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="84.6953125" AnchorPane.leftAnchor="644.0">
+                  <Text fx:id="epsilonText" fill="#c3bc95" layoutX="662.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="84.6953125" AnchorPane.rightAnchor="308.3046875">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -94,6 +94,9 @@
                         <Button fx:id="rightButton" layoutX="108.0" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="108.0" />
                      </children>
                   </AnchorPane>
+                  <ProgressBar fx:id="progressBar" layoutX="38.0" prefHeight="33.0" prefWidth="795.0" progress="0.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="221.0" />
+                  <Pane fx:id="shrekProgressPane" layoutX="16.0" layoutY="475.0" prefHeight="44.0" prefWidth="44.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="16.0" />
+                  <Pane fx:id="shrekProgressFinishPane" layoutX="811.0" layoutY="475.0" prefHeight="54.0" prefWidth="54.0" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="199.0" />
                </children>
             </AnchorPane>
             </children>
