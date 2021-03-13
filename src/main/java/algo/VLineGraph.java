@@ -2,7 +2,7 @@ package algo;
 
 import java.util.List;
 
-public class VLineGraph {
+public class VLineGraph implements Graph {
     private final String name;
     private final double xPoint;
 
@@ -15,7 +15,7 @@ public class VLineGraph {
         return name;
     }
 
-    public List<DataPoint> getPoints(double top, double bottom) {
+    public List<DataPoint> getPoints(double bottom, double top) {
         return List.of(new DataPoint(xPoint, top), new DataPoint(xPoint, bottom));
     }
 }

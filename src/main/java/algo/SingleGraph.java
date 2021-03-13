@@ -1,9 +1,8 @@
 package algo;
 
-import java.util.List;
 import java.util.function.Function;
 
-public class SingleGraph extends Graph {
+public class SingleGraph extends MainGraph {
     public SingleGraph(String name, Function<Double, Double> f, double left, double right) {
         super(name, f);
         super.addIteration(left, right);

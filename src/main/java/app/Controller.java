@@ -156,13 +156,73 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    private LineChart<Double, Double> lineChart;
-
-    @FXML
     private NumberAxis xAxis;
 
     @FXML
     private NumberAxis yAxis;
+
+    private class SmartLineChart {
+        private double left;
+        private double right;
+        private double top;
+        private double bottom;
+        private double xDelta;
+        private double yDelta;
+
+        public void setDimensions(double left, double right, double top, double bottom) {
+            double xDelta = (right - left) / 20;
+            double yDelta = (top - bottom) / 20;
+
+            this.xDelta = xDelta;
+            this.yDelta = yDelta;
+
+            this.left = left - xDelta;
+            this.right = right + xDelta;
+            this.top = top + yDelta;
+            this.bottom = bottom - yDelta;
+
+            setBounds();
+        }
+
+        private void setBounds() {
+            xAxis.setLowerBound(left);
+            xAxis.setUpperBound(right);
+            xAxis.setTickUnit(xDelta);
+
+            yAxis.setLowerBound(bottom);
+            yAxis.setUpperBound(top);
+            yAxis.setTickUnit(yDelta);
+        }
+
+        public double getLeft() {
+            return left;
+        }
+
+        public double getRight() {
+            return right;
+        }
+
+        public double getTop() {
+            return top;
+        }
+
+        public double getBottom() {
+            return bottom;
+        }
+
+        public double getXDelta() {
+            return xDelta;
+        }
+
+        public double getYDelta() {
+            return yDelta;
+        }
+    }
+
+    @FXML
+    private LineChart<Double, Double> lineChart;
+
+    private final SmartLineChart lineChartSpecs = new SmartLineChart();
 
     private void setupLineChart() {
         xAxis.setLabel("X axis");
@@ -203,28 +263,17 @@ public class Controller implements Initializable {
             Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
             OptimizationResult result = Optimization.run(algorithm, variant, epsilon);
 
-            Graph graph = result.getGraph();
+            MainGraph graph = result.getGraph();
 
-            double xDelta = (result.getRightBound() - result.getLeftBound()) / 20;
-            double left = result.getLeftBound() - xDelta;
-            double right = result.getRightBound() + xDelta;
+            double left = result.getLeftBound();
+            double right = result.getRightBound();
 
-            double max = graph.getMax(left, right);
-            double min = graph.getMin(left, right);
-            double yDelta = (max - min) / 20;
+            double top = graph.getMax(left, right);
+            double bottom = graph.getMin(left, right);
 
-            double top = max + yDelta;
-            double bottom = min - yDelta;
+            lineChartSpecs.setDimensions(left, right, top, bottom);
 
-            xAxis.setLowerBound(left);
-            xAxis.setUpperBound(right);
-            xAxis.setTickUnit(xDelta);
-
-            yAxis.setLowerBound(bottom);
-            yAxis.setUpperBound(top);
-            yAxis.setTickUnit(yDelta);
-
-            drawIteration(graph, left, right, top, bottom);
+            drawIteration(graph);
 
             enable(lineChart);
         } else {
@@ -232,32 +281,32 @@ public class Controller implements Initializable {
         }
     }
 
-    private void drawIteration(Graph graph, double left, double right, double top, double bottom) {
-        drawIteration(graph, 0, left, right, top, bottom);
+    private void drawIteration(MainGraph graph) {
+        drawIteration(graph, 0);
     }
 
-    private void drawIteration(Graph graph, int index, double left, double right, double top, double bottom) {
+    private void drawIteration(MainGraph graph, int index) {
         lineChart.getData().clear();
-        drawGraph(graph.getName(), graph.getPoints(left, right));
+        drawGraph(graph, lineChartSpecs.getLeft(), lineChartSpecs.getRight());
 
         Iteration iteration = graph.getIteration(index);
         for (SingleGraph singleGraph : iteration.getSingleGraphs()) {
-            drawGraph(singleGraph.getName(), singleGraph.getPoints(left, right));
+            drawGraph(singleGraph, lineChartSpecs.getLeft(), lineChartSpecs.getRight());
         }
 
         for (VLineGraph vLineGraph : iteration.getVLineGraphs()) {
-            drawGraph(vLineGraph.getName(), vLineGraph.getPoints(top, bottom));
+            drawGraph(vLineGraph, lineChartSpecs.getBottom(), lineChartSpecs.getTop());
         }
     }
 
-    private void drawGraph(String name, List<DataPoint> pointList) {
+    private void drawGraph(final Graph graph, double lowerBound, double upperBound) {
         XYChart.Series<Double, Double> series = new XYChart.Series<>();
-        series.setName(name);
-        series.getData().addAll(getPoints(pointList));
+        series.setName(graph.getName());
+        series.getData().addAll(convertPoints(graph.getPoints(lowerBound, upperBound)));
         lineChart.getData().add(series);
     }
 
-    private List<XYChart.Data<Double, Double>> getPoints(List<DataPoint> pointList) {
+    private List<XYChart.Data<Double, Double>> convertPoints(List<DataPoint> pointList) {
         return pointList.stream()
                 .filter(p -> !Double.isNaN(p.getY()))
                 .map(p -> new XYChart.Data<>(p.getX(), p.getY()))

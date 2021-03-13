@@ -10,7 +10,7 @@ public class Optimization {
             Double,
             Double,
             OptimizationResult,
-            Graph,
+            MainGraph,
             Double
             > { }
 
@@ -19,7 +19,7 @@ public class Optimization {
             double left = variant.getLeft();
             double right = variant.getRight();
             OptimizationResult result = new OptimizationResult(name, left, right);
-            Graph graph = new Graph("f(x)", variant.getFunction());
+            MainGraph graph = new MainGraph("f(x)", variant.getFunction());
             graph.addIteration(left, right);
             result.setGraph(graph);
             double finalPoint = algo.apply(variant.getFunction(), left, right, epsilon, result, graph);

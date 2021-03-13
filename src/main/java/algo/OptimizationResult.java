@@ -1,12 +1,9 @@
 package algo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class OptimizationResult {
     private final String name;
     private Double result = null;
-    private Graph graph;
+    private MainGraph graph;
     private final double leftBound;
     private final double rightBound;
 
@@ -24,11 +21,11 @@ public class OptimizationResult {
         return rightBound;
     }
 
-    public Graph getGraph() {
+    public MainGraph getGraph() {
         return graph;
     }
 
-    public void setGraph(Graph graph) {
+    public void setGraph(MainGraph graph) {
         this.graph = graph;
     }
 
