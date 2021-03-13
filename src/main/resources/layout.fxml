@@ -94,7 +94,7 @@
                         <Button fx:id="rightButton" layoutX="108.0" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="108.0" />
                      </children>
                   </AnchorPane>
-                  <ProgressBar fx:id="progressBar" layoutX="38.0" prefHeight="33.0" prefWidth="795.0" progress="0.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="221.0" />
+                  <ProgressBar fx:id="progressBar" layoutX="38.0" prefHeight="33.0" prefWidth="698.0" progress="0.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="221.0" />
                   <Pane fx:id="shrekProgressPane" layoutX="16.0" layoutY="475.0" prefHeight="44.0" prefWidth="44.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="16.0" />
                   <Pane fx:id="shrekProgressFinishPane" layoutX="811.0" layoutY="475.0" prefHeight="54.0" prefWidth="54.0" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="199.0" />
                </children>

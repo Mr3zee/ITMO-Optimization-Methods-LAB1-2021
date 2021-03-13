@@ -5,10 +5,13 @@ import expression.exceptions.ExpressionException;
 import expression.parser.ExpressionParser;
 import expression.parser.Parser;
 import expression.type.DoubleEType;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,12 +29,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.util.List;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -279,6 +284,7 @@ public class Controller implements Initializable {
     private AnchorPane chartPane;
 
     private void setLineChart() {
+        stopTimeline();
         ToggleButton algoButton = (ToggleButton) algoGroup.getSelectedToggle();
         Variant variant = getVariant();
         Double epsilon = getEpsilon();
@@ -331,16 +337,16 @@ public class Controller implements Initializable {
             drawGraph(vLineGraph, lineChartSpecs.getBottom(), lineChartSpecs.getTop());
         }
 
-        double progress = calcProgress();
-        progressBar.setProgress(progress);
-        moveShrekProgress(progress);
+        moveShrekProgress();
     }
 
     public double calcProgress() {
         return (double) lineChartSpecs.getIteration() / lineChartSpecs.getMaxIteration();
     }
 
-    public void moveShrekProgress(double progress) {
+    public void moveShrekProgress() {
+        double progress = calcProgress();
+        progressBar.setProgress(progress);
         if (progress == 1) {
             setBackground(shrekProgressFinishPane, shrekProgress100Image);
             disable(shrekProgressPane);
@@ -394,6 +400,8 @@ public class Controller implements Initializable {
     private static final Image shrekProgress100Image = new Image("/images/shrek-progress-100.png", shrekProgressSize, shrekProgressSize, true, true);
     private static final Image shrekProgressNot100Image = new Image("/images/shrek-progress-not-100.png", shrekProgressSize, shrekProgressSize, true, true);
 
+    private Timeline progressTimeline;
+
     private void setupControls() {
         disable(chartPane);
 
@@ -401,18 +409,43 @@ public class Controller implements Initializable {
         setBackground(rightButton, shrekRightImage);
         setBackground(playButton, shrekPlayImage);
 
-        Function<Procedure, EventHandler<MouseEvent>> onClicked = f ->  mouseEvent -> {
+        Function<Procedure, EventHandler<MouseEvent>> onClickedChangeButton = f ->  mouseEvent -> {
             if (lineChartSpecs.getGraph() != null) {
+                stopTimeline();
                 f.run();
                 drawIteration();
             }
         };
-        leftButton.setOnMouseClicked(onClicked.apply(lineChartSpecs::decIteration));
-        rightButton.setOnMouseClicked(onClicked.apply(lineChartSpecs::incIteration));
+        leftButton.setOnMouseClicked(onClickedChangeButton.apply(lineChartSpecs::decIteration));
+        rightButton.setOnMouseClicked(onClickedChangeButton.apply(lineChartSpecs::incIteration));
 
         setBackground(shrekProgressPane, shrekProgressImage);
         setBackground(shrekProgressFinishPane, shrekProgressNot100Image);
-        progressBar.widthProperty().addListener((e, o, n) -> moveShrekProgress(calcProgress()));
+        progressBar.widthProperty().addListener((e, o, n) -> moveShrekProgress());
+
+        progressTimeline = new Timeline(new KeyFrame(Duration.millis(400), e -> {
+            lineChartSpecs.incIteration();
+            drawIteration();
+        }));
+
+        playButton.setUserData(false);
+        playButton.setOnMouseClicked(e -> {
+            if (!(boolean) playButton.getUserData()) {
+                progressTimeline.setCycleCount(lineChartSpecs.getMaxIteration() - lineChartSpecs.getIteration());
+                progressTimeline.play();
+                setBackground(playButton, shrekStopImage);
+                playButton.setUserData(true);
+            } else {
+                stopTimeline();
+            }
+        });
+    }
+
+    private void stopTimeline() {
+        if (progressTimeline == null) return;
+        progressTimeline.stop();
+        setBackground(playButton, shrekPlayImage);
+        playButton.setUserData(false);
     }
 
     private void setBackground(Region button, Image image) {
