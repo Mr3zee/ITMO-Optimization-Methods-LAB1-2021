@@ -104,7 +104,7 @@
     -fx-background-color: #D3CCA5;
 }
 
-#lineChart {
+#chartPane {
     visibility: hidden;
 }
 

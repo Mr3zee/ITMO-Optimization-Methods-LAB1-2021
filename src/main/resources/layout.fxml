@@ -77,19 +77,23 @@
                   </Text>
                     </children>
                 </AnchorPane>
-                <LineChart fx:id="lineChart" layoutX="225.0" layoutY="86.0" prefHeight="483.0" prefWidth="1055.0" AnchorPane.bottomAnchor="151.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="86.0">
-                    <xAxis>
-                        <NumberAxis side="BOTTOM" fx:id="xAxis" />
-                    </xAxis>
-                    <yAxis>
-                        <NumberAxis fx:id="yAxis" side="LEFT" />
-                    </yAxis>
-                </LineChart>
-            <AnchorPane layoutX="1114.0" layoutY="551.0" prefHeight="52.0" prefWidth="152.0" AnchorPane.bottomAnchor="117.0" AnchorPane.rightAnchor="14.0">
+            <AnchorPane fx:id="chartPane" layoutX="225.0" layoutY="86.0" prefHeight="520.0" prefWidth="1055.0" AnchorPane.bottomAnchor="114.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="86.0">
                <children>
-                  <Button fx:id="playButton" layoutX="54.0" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="54.0" />
-                  <Button fx:id="leftButton" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="0.0" />
-                  <Button fx:id="rightButton" layoutX="108.0" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="108.0" />
+                      <LineChart fx:id="lineChart" prefHeight="486.0" prefWidth="1055.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <xAxis>
+                              <NumberAxis side="BOTTOM" fx:id="xAxis" />
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis fx:id="yAxis" side="LEFT" />
+                          </yAxis>
+                      </LineChart>
+                  <AnchorPane layoutX="889.0" layoutY="459.0" prefHeight="52.0" prefWidth="152.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="14.0">
+                     <children>
+                        <Button fx:id="playButton" layoutX="54.0" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="54.0" />
+                        <Button fx:id="leftButton" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="0.0" />
+                        <Button fx:id="rightButton" layoutX="108.0" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="108.0" />
+                     </children>
+                  </AnchorPane>
                </children>
             </AnchorPane>
             </children>

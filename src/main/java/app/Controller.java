@@ -275,6 +275,9 @@ public class Controller implements Initializable {
         node.setStyle("visibility: visible;");
     }
 
+    @FXML
+    private AnchorPane chartPane;
+
     private void setLineChart() {
         ToggleButton algoButton = (ToggleButton) algoGroup.getSelectedToggle();
         Variant variant = getVariant();
@@ -308,9 +311,9 @@ public class Controller implements Initializable {
 
             drawIteration();
 
-            enable(lineChart);
+            enable(chartPane);
         } else {
-            disable(lineChart);
+            disable(chartPane);
         }
     }
 
