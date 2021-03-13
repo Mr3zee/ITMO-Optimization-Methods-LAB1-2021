@@ -2,7 +2,6 @@ package algo;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.UnaryOperator;
 
 public class Optimization {
     private interface OptimizationAlgorithm extends QuinaryFunction<
@@ -181,6 +180,7 @@ public class Optimization {
                     && (u = parabolicMinimum(f, w, x, v)) == u
                     && a <= u && u <= c && Math.abs(u - x) < (g / 2)) {
                 graph.addGraphToLastIteration(createParabola(f, w, x, v));
+                // u - accepted
             } else  {
                 // u - rejected, u - golden section
                 if (x < getMiddle(a, c)) {
