@@ -215,6 +215,9 @@ public class Optimization {
                 }
             }
             graph.addIteration(a, c);
+            graph.addVLineGraphToLastIteration(new VLineGraph("x", x));
+            graph.addVLineGraphToLastIteration(new VLineGraph("w", w));
+            graph.addVLineGraphToLastIteration(new VLineGraph("v", v));
             d = c - a;
         }
         return f.apply(x);

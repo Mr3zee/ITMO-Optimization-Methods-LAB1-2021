@@ -22,6 +22,10 @@ public class Iteration {
         this.graphs.add(graph);
     }
 
+    public void addVLineGraph(VLineGraph graph) {
+        this.vLineGraphs.add(graph);
+    }
+
     public List<SingleGraph> getSingleGraphs() {
         return graphs;
     }

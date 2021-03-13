@@ -29,6 +29,10 @@ public class MainGraph implements Graph {
         iterations.get(iterations.size() - 1).addGraph(graph);
     }
 
+    public void addVLineGraphToLastIteration(VLineGraph graph) {
+        iterations.get(iterations.size() - 1).addVLineGraph(graph);
+    }
+
     public Iteration getIteration(int iterationIndex) {
         return iterations.get(iterationIndex);
     }
