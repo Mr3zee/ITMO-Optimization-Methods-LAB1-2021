@@ -11,7 +11,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -45,7 +44,6 @@ public class Controller implements Initializable {
     @Override
     public void initialize(final URL url, final ResourceBundle rb) {
         // TODO: 05.03.2021 графики следами шрека
-        // TODO: 06.03.2021 shrek progress bar
         Optimization.init();
         Variant.init();
         setupScene();
@@ -59,6 +57,13 @@ public class Controller implements Initializable {
         setupLineChart();
         setupControls();
     }
+
+    private static final Color limerick = new Color(176, 196, 0);
+    private static final Color pear = new Color(213, 222, 46);
+    private static final Color coyoteBrown = new Color(121, 90, 45);
+    private static final Color pineapple = new Color(82, 50, 19);
+    private static final Color sage = new Color(195, 188, 149);
+    private static final Color darkVanila = new Color(211, 204, 165);
 
     @FXML
     private AnchorPane scene;
@@ -326,15 +331,16 @@ public class Controller implements Initializable {
     private void drawIteration() {
         lineChart.getData().clear();
         MainGraph graph = lineChartSpecs.getGraph();
-        drawGraph(graph, lineChartSpecs.getLeft(), lineChartSpecs.getRight());
+        drawGraph(graph, lineChartSpecs.getLeft(), lineChartSpecs.getRight(), pineapple);
 
         Iteration iteration = graph.getIteration(lineChartSpecs.getIteration());
         for (SingleGraph singleGraph : iteration.getSingleGraphs()) {
-            drawGraph(singleGraph, lineChartSpecs.getLeft(), lineChartSpecs.getRight());
+            drawGraph(singleGraph, lineChartSpecs.getLeft(), lineChartSpecs.getRight(), sage);
+
         }
 
         for (VLineGraph vLineGraph : iteration.getVLineGraphs()) {
-            drawGraph(vLineGraph, lineChartSpecs.getBottom(), lineChartSpecs.getTop());
+            drawGraph(vLineGraph, lineChartSpecs.getBottom(), lineChartSpecs.getTop(), limerick);
         }
 
         moveShrekProgress();
@@ -357,11 +363,17 @@ public class Controller implements Initializable {
         }
     }
 
-    private void drawGraph(final Graph graph, double lowerBound, double upperBound) {
+    private void drawGraph(final Graph graph, double lowerBound, double upperBound, Color color) {
         XYChart.Series<Double, Double> series = new XYChart.Series<>();
         series.setName(graph.getName());
         series.getData().addAll(convertPoints(graph.getPoints(lowerBound, upperBound)));
         lineChart.getData().add(series);
+        Node line = lineChart.lookup(String.format(".series%d", lineChart.getData().size() - 1));
+        line.setStyle(String.format("-fx-stroke: %s;", toHex(color)));
+    }
+
+    private String toHex(Color color) {
+        return String.format("#%s", Integer.toHexString(color.getRGB()).substring(2));
     }
 
     private List<XYChart.Data<Double, Double>> convertPoints(List<DataPoint> pointList) {

@@ -128,3 +128,6 @@
     -fx-background-color: #523213;
     -fx-background-radius: 0;
 }
+
+.default-color0.chart-series-line { -fx-stroke: #523213; }
+.default-color0.chart-line-symbol { -fx-background-color: #523213; }
