@@ -333,6 +333,7 @@ public class Controller implements Initializable {
 
     private void drawIteration() {
         lineChart.getData().clear();
+
         MainGraph graph = lineChartSpecs.getGraph();
         drawGraph(graph, lineChartSpecs.getLeft(), lineChartSpecs.getRight(), pineapple);
 
@@ -347,6 +348,7 @@ public class Controller implements Initializable {
         }
 
         moveShrekProgress();
+        setText(iterationsText, String.format("Iterations: %d / %d", lineChartSpecs.getIteration(), lineChartSpecs.getMaxIteration()));
     }
 
     public double calcProgress() {
@@ -580,6 +582,9 @@ public class Controller implements Initializable {
     @FXML
     private Text resultText;
 
+    @FXML
+    private Text iterationsText;
+
     private void setupTextFields() {
         setText(fText, "F(x) =");
         setText(epsilonText, "Epsilon =");
@@ -591,6 +596,12 @@ public class Controller implements Initializable {
     private void setText(Text text, String textStr) {
         text.setText(textStr);
         text.setFont(shrekFont24);
+        text.setStyle("-fx-text-fill: #C3BC95;");
+    }
+
+    private void setText(Text text, String textStr, Font font) {
+        text.setText(textStr);
+        text.setFont(font);
         text.setStyle("-fx-text-fill: #C3BC95;");
     }
 
