@@ -310,6 +310,8 @@ public class Controller implements Initializable {
             Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
             OptimizationResult result = Optimization.run(algorithm, variant, epsilon);
 
+            resultField.textProperty().set(String.format("%.12f", result.getResult()));
+
             MainGraph graph = result.getGraph();
 
             double left = result.getLeftBound();
@@ -324,6 +326,7 @@ public class Controller implements Initializable {
 
             enable(chartPane);
         } else {
+            resultField.textProperty().set("");
             disable(chartPane);
         }
     }
@@ -494,11 +497,17 @@ public class Controller implements Initializable {
     @FXML
     private TextField rightField;
 
+    @FXML
+    private TextField resultField;
+
     private void setupFields() {
         formulaField.setFont(texFont19);
         epsilonField.setFont(texFont19);
         leftField.setFont(texFont19);
         rightField.setFont(texFont19);
+        resultField.setFont(texFont19);
+
+        resultField.setEditable(false);
 
         var focusListener = new ChangeListener<Boolean>() {
             @Override
@@ -568,11 +577,15 @@ public class Controller implements Initializable {
     @FXML
     private Text rightText;
 
+    @FXML
+    private Text resultText;
+
     private void setupTextFields() {
         setText(fText, "F(x) =");
         setText(epsilonText, "Epsilon =");
         setText(leftText, "Left =");
         setText(rightText, "Right =");
+        setText(resultText, "Result:");
     }
 
     private void setText(Text text, String textStr) {
