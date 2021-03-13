@@ -25,6 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.awt.*;
+import java.util.List;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -167,6 +168,7 @@ public class Controller implements Initializable {
         xAxis.setLabel("X axis");
         yAxis.setLabel("Y axis");
         xAxis.setAutoRanging(false);
+        yAxis.setAutoRanging(false);
 
         lineChart.setCreateSymbols(false);
         lineChart.setAnimated(false);
@@ -201,11 +203,28 @@ public class Controller implements Initializable {
             Algorithm algorithm = Optimization.ALGORITHMS.get(algoName);
             OptimizationResult result = Optimization.run(algorithm, variant, epsilon);
 
-            xAxis.setLowerBound(result.getLeftBound());
-            xAxis.setUpperBound(result.getRightBound());
-            xAxis.setTickUnit((result.getRightBound() - result.getLeftBound()) / 20);
+            Graph graph = result.getGraph();
 
-            result.getGraphs().forEach(this::drawGraph);
+            double xDelta = (result.getRightBound() - result.getLeftBound()) / 20;
+            double left = result.getLeftBound() - xDelta;
+            double right = result.getRightBound() + xDelta;
+
+            double max = graph.getMax(left, right);
+            double min = graph.getMin(left, right);
+            double yDelta = (max - min) / 20;
+
+            double top = max + yDelta;
+            double bottom = min - yDelta;
+
+            xAxis.setLowerBound(left);
+            xAxis.setUpperBound(right);
+            xAxis.setTickUnit(xDelta);
+
+            yAxis.setLowerBound(bottom);
+            yAxis.setUpperBound(top);
+            yAxis.setTickUnit(yDelta);
+
+            drawIteration(graph, left, right, top, bottom);
 
             enable(lineChart);
         } else {
@@ -213,14 +232,36 @@ public class Controller implements Initializable {
         }
     }
 
-    private void drawGraph(Graph graph) {
-        XYChart.Series<Double, Double> series = new XYChart.Series<>();
-        series.setName(graph.getName());
-        series.getData().addAll(graph.getPoints(0).stream().map(
-                p -> new XYChart.Data<>(p.getX(), p.getY())
-        ).collect(Collectors.toList()));
+    private void drawIteration(Graph graph, double left, double right, double top, double bottom) {
+        drawIteration(graph, 0, left, right, top, bottom);
+    }
+
+    private void drawIteration(Graph graph, int index, double left, double right, double top, double bottom) {
         lineChart.getData().clear();
+        drawGraph(graph.getName(), graph.getPoints(left, right));
+
+        Iteration iteration = graph.getIteration(index);
+        for (SingleGraph singleGraph : iteration.getSingleGraphs()) {
+            drawGraph(singleGraph.getName(), singleGraph.getPoints(left, right));
+        }
+
+        for (VLineGraph vLineGraph : iteration.getVLineGraphs()) {
+            drawGraph(vLineGraph.getName(), vLineGraph.getPoints(top, bottom));
+        }
+    }
+
+    private void drawGraph(String name, List<DataPoint> pointList) {
+        XYChart.Series<Double, Double> series = new XYChart.Series<>();
+        series.setName(name);
+        series.getData().addAll(getPoints(pointList));
         lineChart.getData().add(series);
+    }
+
+    private List<XYChart.Data<Double, Double>> getPoints(List<DataPoint> pointList) {
+        return pointList.stream()
+                .filter(p -> !Double.isNaN(p.getY()))
+                .map(p -> new XYChart.Data<>(p.getX(), p.getY()))
+                .collect(Collectors.toList());
     }
 
     private void setField(TextField field, Double value) {

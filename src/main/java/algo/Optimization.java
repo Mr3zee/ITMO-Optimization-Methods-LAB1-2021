@@ -21,7 +21,7 @@ public class Optimization {
             OptimizationResult result = new OptimizationResult(name, left, right);
             Graph graph = new Graph("f(x)", variant.getFunction());
             graph.addIteration(left, right);
-            result.addGraph(graph);
+            result.setGraph(graph);
             double finalPoint = algo.apply(variant.getFunction(), left, right, epsilon, result, graph);
             result.setResult(finalPoint);
             return result;

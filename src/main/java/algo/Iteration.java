@@ -6,20 +6,28 @@ import java.util.List;
 public class Iteration {
     private final double left;
     private final double right;
-    private final List<Graph> graphs;
+    private final List<SingleGraph> graphs;
+    private final List<VLineGraph> vLineGraphs;
 
     public Iteration(double left, double right) {
         this.left = left;
         this.right = right;
         this.graphs = new ArrayList<>();
+        this.vLineGraphs = new ArrayList<>();
+        this.vLineGraphs.add(new VLineGraph("Left", left));
+        this.vLineGraphs.add(new VLineGraph("Right", right));
     }
 
-    public void addGraph(Graph graph) {
+    public void addGraph(SingleGraph graph) {
         this.graphs.add(graph);
     }
 
-    public List<Graph> getGraphs() {
+    public List<SingleGraph> getSingleGraphs() {
         return graphs;
+    }
+
+    public List<VLineGraph> getVLineGraphs() {
+        return vLineGraphs;
     }
 
     public double getLeft() {

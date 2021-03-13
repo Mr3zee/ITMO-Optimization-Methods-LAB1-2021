@@ -6,13 +6,12 @@ import java.util.List;
 public class OptimizationResult {
     private final String name;
     private Double result = null;
-    private final List<Graph> graphs;
+    private Graph graph;
     private final double leftBound;
     private final double rightBound;
 
     OptimizationResult(String name, double leftBound, double rightBound) {
         this.name = name;
-        this.graphs = new ArrayList<>();
         this.leftBound = leftBound;
         this.rightBound = rightBound;
     }
@@ -25,12 +24,12 @@ public class OptimizationResult {
         return rightBound;
     }
 
-    public List<Graph> getGraphs() {
-        return graphs;
+    public Graph getGraph() {
+        return graph;
     }
 
-    public void addGraph(Graph graph) {
-        this.graphs.add(graph);
+    public void setGraph(Graph graph) {
+        this.graph = graph;
     }
 
     public void setResult(Double result) {
