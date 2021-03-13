@@ -600,15 +600,13 @@ public class Controller implements Initializable {
     }
 
     private void setText(Text text, String textStr) {
-        text.setText(textStr);
-        text.setFont(shrekFont24);
-        text.setStyle("-fx-text-fill: #C3BC95;");
+        setText(text, textStr, shrekFont24);
     }
 
     private void setText(Text text, String textStr, Font font) {
         text.setText(textStr);
         text.setFont(font);
-        text.setStyle("-fx-text-fill: #C3BC95;");
+        text.setStyle(String.format("-fx-text-fill: %s;", toHex(sage)));
     }
 
     @FXML
