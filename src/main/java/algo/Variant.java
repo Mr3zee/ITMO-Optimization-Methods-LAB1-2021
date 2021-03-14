@@ -1,6 +1,7 @@
 package algo;
 
 import app.Controller;
+import expression.expression_tools.DoubleEParser;
 import expression.expression_tools.Expression;
 import expression.type.DoubleEType;
 
@@ -50,15 +51,17 @@ public enum Variant {
 
     public static final Map<String, Variant> VARIANTS = new TreeMap<>();
 
+    private static final DoubleEParser PARSER = DoubleEParser.getInstance();
+
     public static Variant createVariant(String f, Double left, Double right) {
-        CUSTOM.f = Controller.PARSER.parse(f);
+        CUSTOM.f = PARSER.parse(f);
         CUSTOM.left = left;
         CUSTOM.right = right;
         return CUSTOM;
     }
 
     Variant(String f, Double left, Double right, String name) {
-        this.f = Controller.PARSER.parse(f);
+        this.f = DoubleEParser.getInstance().parse(f);
         this.left = left;
         this.right = right;
         this.name = name;

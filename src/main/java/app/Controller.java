@@ -2,6 +2,7 @@ package app;
 
 import algo.*;
 import expression.exceptions.ExpressionException;
+import expression.expression_tools.DoubleEParser;
 import expression.parser.ExpressionParser;
 import expression.parser.Parser;
 import expression.type.DoubleEType;
@@ -491,7 +492,7 @@ public class Controller implements Initializable {
         field.textProperty().set(value == null ? "" : value);
     }
 
-    public static final Parser<Double> PARSER = new ExpressionParser<>(DoubleEType::parseDouble);
+    public static final DoubleEParser PARSER = DoubleEParser.getInstance();
 
     @FXML
     private TextField formulaField;
