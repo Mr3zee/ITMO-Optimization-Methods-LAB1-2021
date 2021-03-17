@@ -35,8 +35,8 @@ public class Optimization {
         double x;
         do {
             x = getMiddle(left, right);
-            double f1 = f.apply(x - epsilon);
-            double f2 = f.apply(x + epsilon);
+            double f1 = f.apply(x - epsilon / 2);
+            double f2 = f.apply(x + epsilon / 2);
             if (f1 < f2) {
                 right = x;
             } else {
@@ -79,13 +79,14 @@ public class Optimization {
         int k = 0;
         double lambda = getFibonacciVar(left, right, n, k + 2, k);
         double mu = getFibonacciVar(left, right, n, k + 1, k);
+        double f_mu = f.apply(mu), f_lambda = f.apply(lambda);
 
         double an, bn;
         while (true) {
             k++;
             if (k == n - 2) {
                 mu = lambda + epsilon;
-                if (f.apply(mu) >= f.apply(lambda)) {
+                if (f_mu >= f_lambda) {
                     an = lambda;
                     bn = right;
                 } else {
@@ -95,14 +96,18 @@ public class Optimization {
                 graph.addIteration(an, bn);
                 break;
             }
-            if (f.apply(lambda) > f.apply(mu)) {
+            if (f_lambda > f_mu) {
                 left = lambda;
                 lambda = mu;
+                f_lambda = f_mu;
                 mu = getFibonacciVar(left, right, n, k + 1, k);
+                f_mu = f.apply(mu);
             } else {
                 right = mu;
                 mu = lambda;
+                f_mu = f_lambda;
                 lambda = getFibonacciVar(left, right, n, k + 2, k);
+                f_lambda = f.apply(lambda);
             }
             graph.addIteration(left, right);
         }
