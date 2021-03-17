@@ -143,15 +143,18 @@ public class Optimization {
 
     public static final Algorithm PARABOLIC = unwrapAlgo("PARABOLIC", (f, a, c, epsilon, graph) -> {
         double b = getMiddle(a, c), x;
+        double fb = f.apply(b);
         while (checkBounds(a, c, epsilon)) {
             x = parabolicMinimum(f, a, b, c);
-            if (f.apply(x) < f.apply(b)) {
+            double fx = f.apply(x);
+            if (fx < fb) {
                 if (x < b) {
                     c = b;
                 } else {
                     a = b;
                 }
                 b = x;
+                fb = fx;
             } else {
                 if (x < b) {
                     a = x;
@@ -164,7 +167,6 @@ public class Optimization {
         }
         return f.apply(b);
     });
-
 
     private static double parabolicMinimum(Function<Double, Double> f, double a, double b, double c) {
         double fa = f.apply(a), fb = f.apply(b), fc = f.apply(c);
