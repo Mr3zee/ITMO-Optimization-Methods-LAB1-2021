@@ -58,17 +58,25 @@ public class Optimization {
     private static final double REVERSED_GOLDEN_CONST = (Math.sqrt(5) - 1) / 2;
 
     public static final Algorithm GOLDEN_SECTION = unwrapAlgo("GOLDEN_SECTION", (f, left, right, epsilon, graph) -> {
+        double delta = (right - left) * REVERSED_GOLDEN_CONST;
+
+        double x2 = left + delta;
+        double x1 = right - delta;
+
+        double f2 = f.apply(x2);
+        double f1 = f.apply(x1);
+
         do {
-            double delta = (right - left) * REVERSED_GOLDEN_CONST;
-            double x1 = right - delta;
-            double x2 = left + delta;
-            if (f.apply(x1) > f.apply(x2)) {
-                left = x1;
+            delta = REVERSED_GOLDEN_CONST * delta;
+            if (f1 >= f2) {
+                left = x1; x1 = x2; x2 = left + delta;
+                f1 = f2; f2 = f.apply(x2);
             } else {
-                right = x2;
+                right = x2; x2 = x1; x1 = right - delta;
+                f2 = f1; f1 = f.apply(x1);
             }
             graph.addIteration(left, right);
-        } while (checkBounds(left, right, epsilon));
+        } while (delta > epsilon);
         return f.apply(getMiddle(left, right));
     });
 
