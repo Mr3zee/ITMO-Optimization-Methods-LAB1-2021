@@ -167,7 +167,7 @@ public class Optimization {
                 }
             }
             graph.addIteration(a, c);
-            graph.addGraphToLastIteration(createParabola(f, a, b, c));
+            graph.addGraphToLastIteration(createParabola(a, b, c, fa, fb, fc));
         }
         return f.apply(b);
     });
@@ -177,8 +177,7 @@ public class Optimization {
                 / ((fa - fb) * (c - b) + (fc - fb) * (b - a));
     }
 
-    private static SingleGraph createParabola(Function<Double, Double> f, double x1, double x2, double x3) {
-        double f1 = f.apply(x1), f2 = f.apply(x2), f3 = f.apply(x3);
+    private static SingleGraph createParabola(double x1, double x2, double x3, double f1, double f2, double f3) {
         double d = ((x1 - x2) * (x1 * x2 - x1 * x3 - x2 * x3 + x3 * x3));
         double a =   ( (f1 - f3)           * x2      + (f2 - f1)           * x3      + (f3 - f2)           * x1     ) / d;
         double b = - ( (f1 - f3)           * x2 * x2 + (f2 - f1)           * x3 * x3 + (f3 - f2)           * x1 * x1) / d;
@@ -197,7 +196,7 @@ public class Optimization {
             if (different(w, x, v) && different(fw, fx, fv)
                     && (u = parabolicMinimum(w, x, v, fw, fx, fv)) == u
                     && a <= u && u <= c && Math.abs(u - x) < (g / 2)) {
-                graph.addGraphToLastIteration(createParabola(f, w, x, v));
+                graph.addGraphToLastIteration(createParabola(w, x, v, fw, fx, fv));
                 // u - accepted
             } else  {
                 // u - rejected, u - golden section
