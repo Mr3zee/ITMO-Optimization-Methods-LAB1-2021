@@ -143,23 +143,27 @@ public class Optimization {
 
     public static final Algorithm PARABOLIC = unwrapAlgo("PARABOLIC", (f, a, c, epsilon, graph) -> {
         double b = getMiddle(a, c), x;
-        double fb = f.apply(b);
+        double fa = f.apply(a), fb = f.apply(b), fc = f.apply(c);
         while (checkBounds(a, c, epsilon)) {
-            x = parabolicMinimum(f, a, b, c);
+            x = parabolicMinimum(a, b, c, fa, fb, fc);
             double fx = f.apply(x);
             if (fx < fb) {
                 if (x < b) {
                     c = b;
+                    fc = fb;
                 } else {
                     a = b;
+                    fa = fb;
                 }
                 b = x;
                 fb = fx;
             } else {
                 if (x < b) {
                     a = x;
+                    fa = fx;
                 } else {
                     c = x;
+                    fc = fx;
                 }
             }
             graph.addIteration(a, c);
@@ -168,8 +172,7 @@ public class Optimization {
         return f.apply(b);
     });
 
-    private static double parabolicMinimum(Function<Double, Double> f, double a, double b, double c) {
-        double fa = f.apply(a), fb = f.apply(b), fc = f.apply(c);
+    private static double parabolicMinimum(double a, double b, double c, double fa, double fb, double fc) {
         return b + 0.5 * ((fa - fb) * (c - b) * (c - b) - (fc - fb) * (b - a) * (b - a))
                 / ((fa - fb) * (c - b) + (fc - fb) * (b - a));
     }
@@ -192,7 +195,7 @@ public class Optimization {
             g = e;
             e = d;
             if (different(w, x, v) && different(fw, fx, fv)
-                    && (u = parabolicMinimum(f, w, x, v)) == u
+                    && (u = parabolicMinimum(w, x, v, fw, fx, fv)) == u
                     && a <= u && u <= c && Math.abs(u - x) < (g / 2)) {
                 graph.addGraphToLastIteration(createParabola(f, w, x, v));
                 // u - accepted
