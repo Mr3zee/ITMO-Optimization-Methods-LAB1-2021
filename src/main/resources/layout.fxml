@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane minHeight="720.0" minWidth="1280.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Controller">
+    <children>
+        <AnchorPane fx:id="scene" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <SplitPane fx:id="splitPane" dividerPositions="0.37637362637362637" orientation="VERTICAL" prefHeight="720.0" prefWidth="225.0" styleClass="side-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                            <children>
+                                <ListView fx:id="listAlgo" editable="true" prefHeight="268.0" prefWidth="184.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <styleClass>
+                              <String fx:value="side-pane" />
+                              <String fx:value="with-scroll-bar" />
+                           </styleClass></ListView>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                            <children>
+                                <ListView fx:id="listVariants" editable="true" prefHeight="446.0" prefWidth="184.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <styleClass>
+                              <String fx:value="side-pane" />
+                              <String fx:value="with-scroll-bar" />
+                           </styleClass></ListView>
+                            </children>
+                        </AnchorPane>
+                    </items>
+                </SplitPane>
+                <AnchorPane layoutX="225.0" layoutY="614.0" prefHeight="114.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <TextField fx:id="leftField" layoutX="669.0" layoutY="10.0" prefHeight="43.0" prefWidth="174.0" promptText="Enter Left Bound" AnchorPane.rightAnchor="212.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="rightField" layoutX="669.0" layoutY="61.0" prefHeight="43.0" prefWidth="174.0" promptText="Enter Right Bound" AnchorPane.rightAnchor="212.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <ScrollPane fx:id="formulaCanvasPane" layoutX="40.0" layoutY="10.0" prefHeight="94.0" prefWidth="529.0" styleClass="with-scroll-bar" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="486.0" />
+                  <Text fx:id="leftText" fill="#c3bc95" layoutX="597.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="59.13671875" AnchorPane.rightAnchor="398.86328125">
+                     <font>
+                        <Font size="24.0" />
+                     </font></Text>
+                  <Text fx:id="rightText" fill="#c3bc95" layoutX="588.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="70.13671875" AnchorPane.rightAnchor="396.86328125">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="resultField" layoutX="877.0" layoutY="61.0" prefHeight="43.0" prefWidth="174.0" promptText="No Result Yet" AnchorPane.rightAnchor="12.0" />
+                  <Text fx:id="resultText" fill="#c3bc95" layoutX="904.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="104.6953125" AnchorPane.rightAnchor="46.3046875">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children></AnchorPane>
+                <AnchorPane layoutX="225.0" prefHeight="86.0" prefWidth="1055.0" styleClass="select-pane" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <children>
+                        <TextField fx:id="formulaField" layoutX="108.0" layoutY="22.0" prefHeight="43.0" prefWidth="492.0" promptText="Enter Your Formula Here" AnchorPane.leftAnchor="108.0" AnchorPane.rightAnchor="455.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                        <TextField fx:id="epsilonField" layoutX="771.0" layoutY="23.0" prefHeight="43.0" prefWidth="261.0" promptText="Enter Epsilon Value" text="0.00001" AnchorPane.rightAnchor="41.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <Text fx:id="fText" fill="#c3bc95" layoutX="49.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="53.13671875" AnchorPane.leftAnchor="49.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="epsilonText" fill="#c3bc95" layoutX="662.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="84.6953125" AnchorPane.rightAnchor="308.3046875">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                    </children>
+                </AnchorPane>
+            <AnchorPane fx:id="chartPane" layoutX="225.0" layoutY="86.0" prefHeight="520.0" prefWidth="1055.0" AnchorPane.bottomAnchor="114.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="86.0">
+               <children>
+                      <LineChart fx:id="lineChart" prefHeight="486.0" prefWidth="1055.0" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <xAxis>
+                              <NumberAxis side="BOTTOM" fx:id="xAxis" />
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis fx:id="yAxis" side="LEFT" />
+                          </yAxis>
+                      </LineChart>
+                  <AnchorPane layoutX="889.0" layoutY="459.0" prefHeight="52.0" prefWidth="152.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="14.0">
+                     <children>
+                        <Button fx:id="playButton" layoutX="54.0" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="54.0" />
+                        <Button fx:id="leftButton" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="0.0" />
+                        <Button fx:id="rightButton" layoutX="108.0" layoutY="5.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="44.0" AnchorPane.leftAnchor="108.0" />
+                     </children>
+                  </AnchorPane>
+                  <ProgressBar fx:id="progressBar" layoutX="38.0" prefHeight="33.0" prefWidth="599.0" progress="0.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="417.0" />
+                  <Pane fx:id="shrekProgressPane" layoutX="16.0" layoutY="475.0" prefHeight="44.0" prefWidth="44.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="16.0" />
+                  <Pane fx:id="shrekProgressFinishPane" layoutX="610.0" layoutY="464.0" prefHeight="54.0" prefWidth="54.0" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="390.0" />
+                  <Text fx:id="iterationsText" fill="#523213" layoutX="646.0" layoutY="505.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="197.0" AnchorPane.bottomAnchor="8.9765625" AnchorPane.rightAnchor="173.0">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
