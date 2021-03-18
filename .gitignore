@@ -10,3 +10,4 @@
 exeConfig.xml
 dependency-reduced-pom.xml
 *.cmd
+*.gz

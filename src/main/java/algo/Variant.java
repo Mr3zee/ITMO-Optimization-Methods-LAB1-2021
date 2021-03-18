@@ -17,7 +17,7 @@ public enum Variant {
     VAR_5("10 * x * ln(x) - x ^ 2 / 2", 0.1, 2.5, "VAR_5"),
     VAR_6("-5 * x ^ 5 + 4 * x ^ 4 - 12 * x ^ 3 + 11 * x ^ 2 - 2 * x + 1", -0.5, 0.5, "VAR_6"),
     VAR_7("((x - 2) // 10 ) ^ 2 + ((10 - x) // 10) ^ 2", 6d, 9.9, "VAR_7"),
-    VAR_8("-3 * sin(0.75 * x) + exp(-2 * x)", 0d, 2 * Math.PI, "VAR_8"),
+    VAR_8("-3 * x * sin(0.75 * x) + exp(-2 * x)", 0d, 2 * Math.PI, "VAR_8"),
     VAR_9("exp(3 * x) + 5 * (exp-2 * x)", 0d, 1d, "VAR_9"),
     VAR_10("0.2 * (x // 10) + (x - 2.3) ^ 2", 0.5, 2.5, "VAR_10"),
     CUSTOM(null, null, null, "CUSTOM"),
