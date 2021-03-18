@@ -4,3 +4,9 @@
 *.iml
 **/out
 *txt
+**/target
+*.log
+*.exe
+exeConfig.xml
+dependency-reduced-pom.xml
+*.cmd
