@@ -18,11 +18,11 @@ GUI was done in a *Shrek* style, because I was having fun during the development
 
 ### Screenshots
 
-![image-20210330192648176](docs/images/readme1.png)
+![image-20210330192648176](https://github.com/Mr3zee/ITMO-Optimization-Methods-LAB1-2021/blob/master/docs/images/readme1.png)
 
 ###### pic.1 Dichotomy method, 0 iteration
 
-![image-20210330192733173](docs/images/readme2.png)
+![image-20210330192733173](https://github.com/Mr3zee/ITMO-Optimization-Methods-LAB1-2021/blob/master/docs/images/readme2.png)
 
 ###### pic.2 Parabolic method, 3 iteration
 
