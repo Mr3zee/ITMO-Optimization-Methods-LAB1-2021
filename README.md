@@ -30,3 +30,7 @@ GUI was done in a *Shrek* style, because I was having fun during the development
 
 - Methods' source [code](https://github.com/Mr3zee/ITMO-Optimization-Methods-LAB1-2021/blob/master/src/main/java/algo/Optimization.java)
 - [Statement](https://github.com/Mr3zee/ITMO-Optimization-Methods-LAB1-2021/blob/master/docs/Statement.pdf) (ru) / [Report](https://github.com/Mr3zee/ITMO-Optimization-Methods-LAB1-2021/blob/master/docs/Result.pdf) (ru)
+- Jar files:
+  - [Windows Java 15](https://github.com/Mr3zee/One-Dimensional-Optimization/blob/master/jar/java15win.jar)
+  - [Windows Java 11](https://github.com/Mr3zee/One-Dimensional-Optimization/blob/master/jar/java11win.jar)
+  - [Linux (ubuntu) Java 11](https://github.com/Mr3zee/One-Dimensional-Optimization/blob/master/jar/java11linux.jar) 
